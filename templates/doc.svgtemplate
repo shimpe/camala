@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="${spec['Global']['W']}" height="${spec['Global']['H']}"
+     viewBox="${-int(spec['Global']['W'])//2} ${-int(spec['Global']['H'])//2} ${spec['Global']['W']} ${spec['Global']['H']}">
+% if spec['Styles']:
+<style type="text/css">
+<![CDATA[
+    % for style in spec['Styles']:
+  .${style} {
+       % for property in spec['Styles'][style]['StyleProperties']:
+       ${property} : ${spec['Styles'][style]['StyleProperties'][property]};
+       % endfor
+  }
+    % endfor
+]]>
+</style>
+% endif
+% for line in spec['Caption']:
+% if x is not None and y is not None:
+    <text x="<%text>$</%text>{${line}_x}" y="<%text>$</%text>{${line}_y}">
+    % for segment in spec['Caption'][line]['Segments']:
+    % if 'style' in spec['Caption'][line]['Segments'][segment]:
+        <tspan class="${spec['Caption'][line]['Segments'][segment]['style'][9:-1]}">${spec['Caption'][line]['Segments'][segment]['text']}</tspan>
+    % else:
+        <tspan>${spec['Caption'][line]['Segments'][segment]['text']}</tspan>
+    % endif
+    % endfor
+    </text>
+% endif
+% endfor
+</svg>
+
