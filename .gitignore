@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Project specific folders to ignore
+sandbox/
+templates/modules/
+outputs/
+
