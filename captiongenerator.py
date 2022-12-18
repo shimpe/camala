@@ -23,6 +23,10 @@ class CaptionGenerator(object):
     def __init__(self, template_folder: str):
         self.template_folder = template_folder
         self.frame_maker = None
+        self.save_svg = False
+
+    def set_enable_save_svg(self, flag : bool):
+        self.save_svg = flag
 
     def duration(self):
         return self._eval_expr(self._replace_globals('${Global.duration}'))
@@ -339,9 +343,25 @@ class CaptionGenerator(object):
 
             # resolve the different positions and position animations
             for caption in self.spec['Caption']:
+
+                if 'x_offset' not in self.spec['Caption'][caption]:
+                    x_offset = 0
+                elif "${" in self.spec['Caption'][caption]['x_offset']:
+                    x_offset = 0 #  todo animated offset
+                else:
+                    x_offset = self._eval_expr(self._replace_globals(self.spec['Caption'][caption]['x_offset']))
+
+                if 'y_offset' not in self.spec['Caption'][caption]:
+                    y_offset = 0
+                elif "${" in self.spec['Caption'][caption]['y_offset']:
+                    y_offset = 0 #  todo animated offset
+                else:
+                    y_offset = self._eval_expr(self._replace_globals(self.spec['Caption'][caption]['y_offset']))
+
                 if not 'pos' in self.spec['Caption'][caption]:  # no position
                     print(f"Warning: no position specified i caption Caption.{caption}. Using [0, 0] instead.")
-                    resolved_values = {caption + '_x': current_pos[0], caption + "_y": current_pos[1]}
+                    resolved_values = {caption + '_x': current_pos[0] + x_offset,
+                                       caption + "_y": current_pos[1] + y_offset}
                     svg = string.Template(svg).safe_substitute(resolved_values)
                 else:
                     birth_frame = None
@@ -405,11 +425,11 @@ class CaptionGenerator(object):
                                     return False
                                 animation_value = float(animation)
                                 current_pos[index] = animation_value
-                        resolved_values = {caption + '_x': current_pos[0], caption + "_y": current_pos[1]}
+                        resolved_values = {caption + '_x': current_pos[0] + x_offset, caption + "_y": current_pos[1] + y_offset}
                         svg = string.Template(svg).safe_substitute(resolved_values)
                     else:  # fixed position
                         current_pos = self._eval_expr(self._replace_globals(self.spec['Caption'][caption]['pos']))
-                        resolved_values = {caption + '_x': current_pos[0], caption + "_y": current_pos[1]}
+                        resolved_values = {caption + '_x': current_pos[0] + x_offset, caption + "_y": current_pos[1] + y_offset}
                         svg = string.Template(svg).safe_substitute(resolved_values)
 
                 # resolve style animations
@@ -486,10 +506,10 @@ class CaptionGenerator(object):
             pngdata = result.stdout
             img = PIL.Image.open(io.BytesIO(pngdata), formats=["PNG"])
 
-            #with open(os.path.join(self.template_folder, "..", "sandbox", f"frame_{int(t*fps):05}.svg"), "w") as f:
-            #    f.write(svg)
+            if self.save_svg:
+                with open(os.path.join(self.template_folder, "..", "sandbox", f"frame_{int(t*fps):05}.svg"), "w") as f:
+                    f.write(svg)
 
             return to_numpy(img, W, H)
-
 
         return make_frame

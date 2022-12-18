@@ -18,7 +18,7 @@ duration = "10"
     [Animations.Position]
         [Animations.Position.top_to_bottom]
             type = "PointAnimation"
-            begin = "[-${Global.W}, -${Global.H}/2]"
+            begin = "[0, -${Global.H}/1.5]"
             end = "[0, ${Global.H}/3]"
             tween = "easeOutBounce"
             ytween = "easeOutBounce"
@@ -77,18 +77,19 @@ duration = "10"
         [Styles.h2.StyleProperties]
             text-anchor="middle"
             stroke-width="2px"
-            font-family="serif"
+            font-family="sans-serif"
             fill="gold"
             stroke="maroon"
-            font-size="90"
+            font-size="33"
             font-style="italic"
+            transform="rotate(51deg)"
     [Styles.h3_grow]
         [Styles.h3_grow.StyleProperties]
             text-anchor="middle"
             font-family="serif"
             fill="green"
             stroke="white"
-            stroke-width="6px"
+            stroke-width="3px"
             font-size="${Animations.Style.grow}"
         [Styles.h3_grow.StyleAnimation]
             [Styles.h3_grow.StyleAnimation.grow]
@@ -100,10 +101,8 @@ duration = "10"
             font-family="serif"
             fill="green"
             stroke="white"
-            stroke-width="6px"
+            stroke-width="3px"
             font-size="${Animations.Style.grow}"
-            rotate = "${Animations.Style.pulse}"
-            dy = "-0.3em"
         [Styles.h3_pulse.StyleAnimation]
             [Styles.h3_pulse.StyleAnimation.grow]
                 begin_time = '0'
@@ -138,5 +137,27 @@ duration = "10"
         [Caption.Line2.Segments]
             [Caption.Line2.Segments.Segment1]
                 style = "${Styles.h3_pulse}"
-                text= "London Bridge."
-
+                text= "London Bridge "
+            [Caption.Line2.Segments.Segment2]
+                style = "${Styles.h2}"
+                text = "is falling down!"
+                dy = "1.5em"
+    [Caption.Line3]
+        pos = "${Animations.Position.top_to_bottom}"
+        x_offset = "10"
+        y_offset = "30"
+        [Caption.Line3.PositionAnimation]
+            birth_time = "${Global.duration}/2"
+            begin_time = "${Global.duration}/2"
+            end_time = "${Global.duration}"
+            death_time = "${Global.duration}"
+        [Caption.Line3.TextProvider]
+            style = "${Animations.TextProvider.typewriter}"
+        [Caption.Line3.Segments]
+            [Caption.Line3.Segments.Segment1]
+                style = "${Styles.h3_pulse}"
+                text= "London Bridge "
+            [Caption.Line3.Segments.Segment2]
+                style = "${Styles.h2}"
+                text = "is falling down!"
+                dy = "1.5em"
