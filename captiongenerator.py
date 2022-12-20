@@ -170,12 +170,9 @@ class CaptionGenerator(object):
         return the_string
 
     def _replace_globals(self, the_string):
-        placeholders = {
-            '${Global.W}': self.spec['Global']['W'],
-            '${Global.H}': self.spec['Global']['H'],
-            '${Global.duration}': self.spec['Global']['duration'],
-            '${Global.fps}': self.spec['Global']['fps']
-        }
+        placeholders = {}
+        for key in self.spec['Global']:
+            placeholders[f"${{Global.{key}}}"] = self.spec['Global'][key]
         return self._replace_placeholders(the_string, placeholders)
 
     def _eval_expr(self, expr):
