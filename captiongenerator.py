@@ -26,13 +26,12 @@ class CaptionGenerator(object):
     def __init__(self):
         self.template_folder = str(Path(__file__).absolute().parent.joinpath("templates"))
         self.frame_maker = None
-        self.save_svg = False
-
-    def set_enable_save_svg(self, flag : bool):
-        self.save_svg = flag
 
     def duration(self):
         return self._eval_expr(self._replace_globals('${Global.duration}'))
+
+    def video_format(self):
+        return self.spec['Global']['format'].tolower()
 
     def fps(self):
         return self._eval_expr(self._replace_globals('${Global.fps}'))
@@ -110,6 +109,13 @@ class CaptionGenerator(object):
                     return False
         return True
 
+    def _check_styles_properties(self, stylesspec):
+        for key in stylesspec:
+            if f"{key}.StyleProperties" not in stylesspec:
+                print(f"Error! In section Styles.{key} no StyleProperties section is found.")
+                return False
+        return True
+
     def _supported_tween_methods(self):
         return ['linear',
                 'easeInQuad', 'easeOutQuad', 'easeInOutQuad',
@@ -158,6 +164,7 @@ class CaptionGenerator(object):
         all_ok = self._check_section_present('Animations', self.spec) and all_ok
         all_ok = self._check_animation_types(self.spec['Animations']) and all_ok
         all_ok = self._check_section_present('Styles', self.spec) and all_ok
+        all_ok = self._check_styles_properties(self.spec['Styles']) and all_ok
         all_ok = self._check_section_present('Caption', self.spec) and all_ok
         all_ok = self._check_all_leaves_are_strings('', self.spec) and all_ok
         all_ok = self._check_styles(self.spec) and all_ok
@@ -510,7 +517,7 @@ class CaptionGenerator(object):
             pngdata = result.stdout
             img = PIL.Image.open(io.BytesIO(pngdata), formats=["PNG"])
 
-            if self.save_svg:
+            if self.video_format() == 'svg':
                 with open(os.path.join(self.template_folder, "..", "sandbox", f"frame_{int(t*fps):05}.svg"), "w") as f:
                     f.write(svg)
 
@@ -519,11 +526,19 @@ class CaptionGenerator(object):
         return make_frame
 
     def write_videofile(self, input, output, debug=False):
-        self.initialize_from_file(input)
+        success = self.initialize_from_file(input)
+        if not success:
+            print("Fatal error. Giving up.")
+            return False
         self.set_enable_save_svg(debug)
-        txt_clip = moviepy.video.VideoClip.VideoClip(make_frame=self.frame_maker, duration=self.duration())
-        video = CompositeVideoClip([txt_clip])
-        video.write_videofile(output, fps=c.fps())
+        vf = self.video_format()
+        if vfin ['gif', 'mp4']:
+            txt_clip = moviepy.video.VideoClip.VideoClip(make_frame=self.frame_maker, duration=self.duration())
+            video = CompositeVideoClip([txt_clip])
+            if vf == 'gif':
+                video.write_gif(output, fps=c.fps())
+            else if vf == 'mp4':
+                video.write_videofile(output, fps=c.fps())
 
 if __name__ == "__main__":
     c = CaptionGenerator()

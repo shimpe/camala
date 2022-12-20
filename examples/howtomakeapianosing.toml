@@ -3,6 +3,7 @@ W = "1920"
 H = "1080"
 duration = "10"
 fps = "30"
+format = "mp4"
 
 [Animations]
     [Animations.Position]
@@ -115,6 +116,3 @@ fps = "30"
             [Caption.Line3.Segments.Segment1]
                 text = "An empirical study."
                 style = "${Styles.subsubtitle}"
-
-
-
