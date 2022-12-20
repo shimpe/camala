@@ -31,7 +31,7 @@ class CaptionGenerator(object):
         return self._eval_expr(self._replace_globals('${Global.duration}'))
 
     def video_format(self):
-        return self.spec['Global']['format'].tolower()
+        return self.spec['Global']['format'].lower()
 
     def fps(self):
         return self._eval_expr(self._replace_globals('${Global.fps}'))
@@ -111,7 +111,7 @@ class CaptionGenerator(object):
 
     def _check_styles_properties(self, stylesspec):
         for key in stylesspec:
-            if f"{key}.StyleProperties" not in stylesspec:
+            if "StyleProperties" not in stylesspec[key]:
                 print(f"Error! In section Styles.{key} no StyleProperties section is found.")
                 return False
         return True
@@ -530,14 +530,13 @@ class CaptionGenerator(object):
         if not success:
             print("Fatal error. Giving up.")
             return False
-        self.set_enable_save_svg(debug)
         vf = self.video_format()
-        if vfin ['gif', 'mp4']:
+        if vf in ['gif', 'mp4']:
             txt_clip = moviepy.video.VideoClip.VideoClip(make_frame=self.frame_maker, duration=self.duration())
             video = CompositeVideoClip([txt_clip])
             if vf == 'gif':
                 video.write_gif(output, fps=c.fps())
-            else if vf == 'mp4':
+            elif vf == 'mp4':
                 video.write_videofile(output, fps=c.fps())
 
 if __name__ == "__main__":
