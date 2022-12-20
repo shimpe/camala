@@ -1,6 +1,8 @@
 import toml
 from mako.template import Template
 from mako import exceptions
+import platform
+from collections import defaultdict
 import os.path
 from vectortween.NumberAnimation import NumberAnimation
 from vectortween.PointAnimation import PointAnimation
@@ -27,6 +29,11 @@ class CaptionGenerator(object):
         self.template_folder = str(Path(__file__).absolute().parent.joinpath("templates"))
         self.output_file = output_file
         self.output_folder = str(Path(output_file).parent)
+        guess = defaultdict(lambda key : "")
+        guess['Linux'] = '/usr/bin/inkscape'
+        guess['Windows'] = r'c:\Program Files\Inkscape\Inkscape.exe'
+        guess['Darwin'] = r'/Applications/Inkscape.app/Contents/MacOS/inkscape'  # ???
+        self.inkscape = guess[platform.system()]
         self.frame_maker = None
 
     def duration(self):
@@ -506,8 +513,7 @@ class CaptionGenerator(object):
 
             W = self._eval_expr(self._replace_globals('${Global.W}'))
             H = self._eval_expr(self._replace_globals('${Global.H}'))
-            inkscape = "/usr/bin/inkscape"
-            result = subprocess.run([inkscape,
+            result = subprocess.run([self.inkscape,
                                      '--export-background=black',
                                      '--export-type=png',
                                      '--export-filename=-',
