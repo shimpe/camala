@@ -8,7 +8,7 @@
     % for style in spec['Styles']:
   .${style} {
        % for property in spec['Styles'][style]['StyleProperties']:
-       ${property} : ${spec['Styles'][style]['StyleProperties'][property]};
+       ${property} : ${spec['Styles'][style]['StyleProperties'][property] | x};
        % endfor
   }
     % endfor
