@@ -12,6 +12,9 @@ import PIL.Image
 import subprocess
 import io
 import numpy as np
+import moviepy
+from moviepy.editor import CompositeVideoClip
+from pathlib import Path
 
 def to_numpy(image, width, height):
     '''  Converts a QImage into numpy format  '''
@@ -20,8 +23,8 @@ def to_numpy(image, width, height):
 
 
 class CaptionGenerator(object):
-    def __init__(self, template_folder: str):
-        self.template_folder = template_folder
+    def __init__(self):
+        self.template_folder = str(Path(__file__).absolute().parent.joinpath("templates"))
         self.frame_maker = None
         self.save_svg = False
 
@@ -30,6 +33,9 @@ class CaptionGenerator(object):
 
     def duration(self):
         return self._eval_expr(self._replace_globals('${Global.duration}'))
+
+    def fps(self):
+        return self._eval_expr(self._replace_globals('${Global.fps}'))
     def initialize_from_file(self, filename: str) -> bool:
         try:
             with open(filename, "r") as f:
@@ -168,6 +174,7 @@ class CaptionGenerator(object):
             '${Global.W}': self.spec['Global']['W'],
             '${Global.H}': self.spec['Global']['H'],
             '${Global.duration}': self.spec['Global']['duration'],
+            '${Global.fps}': self.spec['Global']['fps']
         }
         return self._replace_placeholders(the_string, placeholders)
 
@@ -513,3 +520,17 @@ class CaptionGenerator(object):
             return to_numpy(img, W, H)
 
         return make_frame
+
+    def write_videofile(self, input, output, debug=False):
+        self.initialize_from_file(input)
+        self.set_enable_save_svg(debug)
+        txt_clip = moviepy.video.VideoClip.VideoClip(make_frame=self.frame_maker, duration=self.duration())
+        video = CompositeVideoClip([txt_clip])
+        video.write_videofile(output, fps=c.fps())
+
+if __name__ == "__main__":
+    c = CaptionGenerator()
+    input_file = str(Path(__file__).absolute().parent.joinpath("examples/thisvideomaycontaintracesofmath.toml"))
+    output_file = str(Path(__file__).absolute().parent.joinpath("outputs/thisvideomaycontaintracesofmath.mp4"))
+    c.write_videofile(input=input_file, output=output_file)
+

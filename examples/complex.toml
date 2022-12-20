@@ -2,6 +2,7 @@
 W = "1000"
 H = "500"
 duration = "10"
+fps = "25"
 
 [Animations]
     [Animations.TextProvider]

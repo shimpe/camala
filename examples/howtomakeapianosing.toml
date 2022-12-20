@@ -2,6 +2,7 @@
 W = "1920"
 H = "1080"
 duration = "10"
+fps = "30"
 
 [Animations]
     [Animations.Position]
