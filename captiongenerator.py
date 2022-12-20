@@ -23,8 +23,10 @@ def to_numpy(image, width, height):
 
 
 class CaptionGenerator(object):
-    def __init__(self):
+    def __init__(self, output_file):
         self.template_folder = str(Path(__file__).absolute().parent.joinpath("templates"))
+        self.output_file = output_file
+        self.output_folder = str(Path(output_file).parent)
         self.frame_maker = None
 
     def duration(self):
@@ -518,30 +520,34 @@ class CaptionGenerator(object):
             img = PIL.Image.open(io.BytesIO(pngdata), formats=["PNG"])
 
             if self.video_format() == 'svg':
-                with open(os.path.join(self.template_folder, "..", "sandbox", f"frame_{int(t*fps):05}.svg"), "w") as f:
+                with open(os.path.join(self.output_folder, f"frame_{int(t*fps):08}.svg"), "w") as f:
                     f.write(svg)
 
             return to_numpy(img, W, H)
 
         return make_frame
 
-    def write_videofile(self, input, output, debug=False):
+    def write_videofile(self, input, debug=False):
         success = self.initialize_from_file(input)
         if not success:
             print("Fatal error. Giving up.")
             return False
         vf = self.video_format()
+        txt_clip = moviepy.video.VideoClip.VideoClip(make_frame=self.frame_maker, duration=self.duration())
         if vf in ['gif', 'mp4']:
-            txt_clip = moviepy.video.VideoClip.VideoClip(make_frame=self.frame_maker, duration=self.duration())
             video = CompositeVideoClip([txt_clip])
             if vf == 'gif':
-                video.write_gif(output, fps=c.fps())
+                if not self.output_file.endswith(".gif"):
+                    self.output_file += ".gif"
+                video.write_gif(self.output_file, fps=c.fps())
             elif vf == 'mp4':
-                video.write_videofile(output, fps=c.fps())
+                if not self.output_file.endswith(".mp4"):
+                    self.output_file += ".mp4"
+                video.write_videofile(self.output_file+".mp4", fps=c.fps())
 
 if __name__ == "__main__":
-    c = CaptionGenerator()
+    output_file = str(Path(__file__).absolute().parent.joinpath("outputs/thisvideomaycontaintracesofmath"))
+    c = CaptionGenerator(output_file)
     input_file = str(Path(__file__).absolute().parent.joinpath("examples/thisvideomaycontaintracesofmath.toml"))
-    output_file = str(Path(__file__).absolute().parent.joinpath("outputs/thisvideomaycontaintracesofmath.mp4"))
-    c.write_videofile(input=input_file, output=output_file)
+    c.write_videofile(input=input_file)
 
