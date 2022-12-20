@@ -1,0 +1,119 @@
+[Global]
+W = "1920"
+H = "1080"
+duration = "10"
+
+[Animations]
+    [Animations.Position]
+        [Animations.Position.top_to_bottom]
+            type = "PointAnimation"
+            begin = "[0, -${Global.H}/1.5]"
+            end = "[0, 0]"
+            tween = "easeOutBounce"
+            ytween = "easeOutBounce"
+        [Animations.Position.bottom_to_top]
+            type = "PointAnimation"
+            begin = "[0, ${Global.H}*1.5]"
+            end = "[0, ${Global.H}/4]"
+            tween = "easeOutBounce"
+            ytween = "easeOutBounce"
+        [Animations.Position.dontmove]
+            type = "PointAnimation"
+            begin = "[0,100]"
+            end = "[0,100]"
+            tween = "linear"
+            ytween = "linear"
+    [Animations.Style]
+        [Animations.Style.grow]
+            type = "NumberAnimation"
+            begin = "0"
+            end = "100"
+            tween = "easeOutBounce"
+        [Animations.Style.shrink]
+            type = "NumberAnimation"
+            begin = "100"
+            end = "0"
+            tween = "easeOutQuad"
+        [Animations.Style.shrink2]
+            type = "NumberAnimation"
+            begin = "500"
+            end = "0"
+            tween = "easeOutQuad"
+        [Animations.Style.subsubtitle]
+            type = "SequentialAnimation"
+            elements = "[${Animations.Style.grow}, ${Animations.Style.shrink}]"
+            time_weights = "[0.5, 1.0]"
+            repeats = "3"
+
+[Styles]
+    [Styles.title]
+        [Styles.title.StyleProperties]
+            text-anchor="middle"
+            fill="white"
+            stroke="black"
+            stroke-width="2px"
+            font-size="80"
+            font-family="Bitstream Vera Sans"
+    [Styles.subtitle]
+        [Styles.subtitle.StyleProperties]
+            text-anchor="middle"
+            fill="white"
+            stroke="black"
+            stroke-width="2px"
+            font-size="60"
+            font-family="Bitstream Vera Sans"
+            font-style="oblique"
+    [Styles.subsubtitle]
+        [Styles.subsubtitle.StyleProperties]
+            text-anchor="middle"
+            fill="black"
+            stroke="white"
+            stroke-width="2px"
+            font-size="50"
+            font-family="Bitstream Vera Sans"
+            font-style="bold"
+            letter-spacing="${Animations.Style.shrink2}"
+        [Styles.subsubtitle.StyleAnimation.subsubtitle]
+            begin_time = "${Global.duration}*2/3"
+            end_time = "${Global.duration}"
+        [Styles.subsubtitle.StyleAnimation.shrink2]
+            begin_time = "${Global.duration}*2/3"
+            end_time = "${Global.duration}*3/4"
+
+[Caption]
+    [Caption.Line1]
+        pos = "${Animations.Position.top_to_bottom}"
+        [Caption.Line1.PositionAnimation]
+            birth_time = "0"
+            begin_time = "0"
+            end_time = "${Global.duration}/3"
+            death_time = "${Global.duration}"
+        [Caption.Line1.Segments]
+            [Caption.Line1.Segments.Segment1]
+                text= "How to make a piano sing."
+                style = "${Styles.title}"
+    [Caption.Line2]
+        pos = "${Animations.Position.bottom_to_top}"
+        [Caption.Line2.PositionAnimation]
+            birth_time = "0"
+            begin_time = "${Global.duration}/3"
+            end_time = "${Global.duration}*2/3"
+            death_time = "${Global.duration}"
+        [Caption.Line2.Segments]
+            [Caption.Line2.Segments.Segment1]
+                style = "${Styles.subtitle}"
+                text= "No. Really."
+    [Caption.Line3]
+        pos = "${Animations.Position.dontmove}"
+        [Caption.Line3.PositionAnimation]
+            birth_time = "${Global.duration}*2/3"
+            begin_time = "${Global.duration}*2/3"
+            end_time = "${Global.duration}*5/6"
+            death_time = "${Global.duration}"
+        [Caption.Line3.Segments]
+            [Caption.Line3.Segments.Segment1]
+                text = "An empirical study."
+                style = "${Styles.subsubtitle}"
+
+
+

@@ -56,6 +56,16 @@ duration = "10"
             elements = "[${Animations.Style.grow}, ${Animations.Style.shrink}]"
             time_weights = "[1.0, 1.0]"
             repeats = "3"
+        [Animations.Style.space_shrink]
+            type = "NumberAnimation"
+            begin = "50"
+            end = "0"
+            tween = "linear"
+        [Animations.Style.space_grow]
+            type = "NumberAnimation"
+            begin = "-50"
+            end = "0"
+            tween = "linear"
 [Styles]
     [Styles.normal]
         [Styles.normal.StyleProperties]
@@ -103,6 +113,8 @@ duration = "10"
             stroke="white"
             stroke-width="3px"
             font-size="${Animations.Style.grow}"
+            letter-spacing="${Animations.Style.space_shrink}"
+            word-spacing="${Animations.Style.space_grow}"
         [Styles.h3_pulse.StyleAnimation]
             [Styles.h3_pulse.StyleAnimation.grow]
                 begin_time = '0'
@@ -110,6 +122,10 @@ duration = "10"
             [Styles.h3_pulse.StyleAnimation.pulse]
                 begin_time = '0'
                 end_time = '${Global.duration}'
+            [Styles.h3_pulse.StyleAnimation.space_shrink]
+                begin_time = '0'
+                end_time = '${Global.duration}'
+
 [Caption]
     [Caption.Line1]
         pos = "[0, 0]"
@@ -128,9 +144,9 @@ duration = "10"
     [Caption.Line2]
         pos = "${Animations.Position.top_to_bottom}"
         [Caption.Line2.PositionAnimation]
-            birth_time = "${Global.duration}/2"
-            begin_time = "${Global.duration}/2"
-            end_time = "${Global.duration}"
+            birth_time = "0"
+            begin_time = "${Global.duration}/4"
+            end_time = "${Global.duration}*2/3"
             death_time = "${Global.duration}"
         [Caption.Line2.TextProvider]
             style = "${Animations.TextProvider.typewriter}"
