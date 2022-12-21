@@ -355,7 +355,6 @@ class CaptionGenerator(object):
     def build_make_frame(self, fps):
         def make_frame(t):
             current_frame = t * fps
-            last_frame = math.ceil(float(self.spec['Global']['duration']) * fps)
             success, svg = self.make_svg_string()
             if not success:
                 print(f"Error rendering svg template.")
@@ -490,7 +489,7 @@ class CaptionGenerator(object):
                                                                           end_frame,
                                                                           death_frame)
                                     resolved_style_values = {
-                                        "${Animations.Style." + property_animation_short + "}": animated_value}
+                                        "${Animations.Style." + property_animation_short + "_for_style_" + style_name_short + "}": animated_value}
                                     svg = self._replace_placeholders(svg, resolved_style_values)
                                 else:
                                     # unknown animated property
@@ -514,6 +513,13 @@ class CaptionGenerator(object):
             W = self._eval_expr(self._replace_globals('${Global.W}'))
             H = self._eval_expr(self._replace_globals('${Global.H}'))
             background = self._replace_globals('${Global.background}')
+
+            if self.video_format() == 'svg':
+                frame = f"frame_{int(t*fps):08}.svg"
+                destination = os.path.join(self.output_folder, frame)
+                with open(destination, "w") as f:
+                    f.write(svg)
+
             result = subprocess.run([self.inkscape,
                                      f'--export-background={background}',
                                      '--export-type=png',
@@ -525,11 +531,6 @@ class CaptionGenerator(object):
                                     capture_output=True)
             pngdata = result.stdout
             img = PIL.Image.open(io.BytesIO(pngdata), formats=["PNG"])
-
-            if self.video_format() == 'svg':
-                with open(os.path.join(self.output_folder, f"frame_{int(t*fps):08}.svg"), "w") as f:
-                    f.write(svg)
-
             return to_numpy(img, W, H)
 
         return make_frame
@@ -541,19 +542,19 @@ class CaptionGenerator(object):
             return False
         vf = self.video_format()
         txt_clip = moviepy.video.VideoClip.VideoClip(make_frame=self.frame_maker, duration=self.duration())
-        if vf in ['gif', 'mp4']:
+        if vf in ['gif', 'mp4', 'svg']:
             video = CompositeVideoClip([txt_clip])
             if vf == 'gif':
                 if not self.output_file.endswith(".gif"):
                     self.output_file += ".gif"
                 video.write_gif(self.output_file, fps=c.fps())
-            elif vf == 'mp4':
+            elif vf == 'mp4' or vf == "svg":  # if we don't write a video file/gif the system stops after a single frame
                 if not self.output_file.endswith(".mp4"):
                     self.output_file += ".mp4"
                 video.write_videofile(self.output_file, fps=c.fps())
 
 if __name__ == "__main__":
-    output_file = str(Path(__file__).absolute().parent.joinpath("outputs/thisvideomaycontaintracesofmath"))
+    output_file = str(Path(__file__).absolute().parent.joinpath("outputs/debug/thisvideomaycontaintracesofmath"))
     c = CaptionGenerator(output_file)
     input_file = str(Path(__file__).absolute().parent.joinpath("examples/thisvideomaycontaintracesofmath.toml"))
     c.write_videofile(input=input_file)

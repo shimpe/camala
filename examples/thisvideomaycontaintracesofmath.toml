@@ -3,25 +3,15 @@ W = "1920"
 H = "1080"
 duration = "3"
 fps = "30"
-format = "mp4"
+format = "svg"
 background = "black"
 
 [Animations]
     #[Animations.Style]
-        [Animations.Style.grow1]
+        [Animations.Style.grow]
             type = "NumberAnimation"
             begin = "0"
             end = "100"
-            tween = "easeOutBounce"
-        [Animations.Style.grow2]
-            type = "NumberAnimation"
-            begin = "0"
-            end = "100"
-            tween = "easeOutBounce"
-        [Animations.Style.grow3]
-            type = "NumberAnimation"
-            begin = "0"
-            end = "120"
             tween = "easeOutBounce"
 [Styles]
     [Styles.h3_grow1]
@@ -31,9 +21,9 @@ background = "black"
             stroke="black"
             stroke-width="1px"
             font-family="Bitstream Vera Sans"
-            font-size="${Animations.Style.grow1}"
+            font-size="${Animations.Style.grow}"
         [Styles.h3_grow1.StyleAnimation]
-            [Styles.h3_grow1.StyleAnimation.grow1]
+            [Styles.h3_grow1.StyleAnimation.grow]
                 begin_time = '0'
                 end_time = '${Global.duration}-1.2'
     [Styles.h3_grow2]
@@ -43,9 +33,9 @@ background = "black"
             stroke="black"
             stroke-width="1px"
             font-family="Bitstream Vera Sans"
-            font-size="${Animations.Style.grow2}"
+            font-size="${Animations.Style.grow}"
         [Styles.h3_grow2.StyleAnimation]
-            [Styles.h3_grow2.StyleAnimation.grow2]
+            [Styles.h3_grow2.StyleAnimation.grow]
                 begin_time = '0.1'
                 end_time = '${Global.duration}-1.1'
     [Styles.h3_grow3]
@@ -56,9 +46,9 @@ background = "black"
             stroke-width="1px"
             font-family="Bitstream Vera Sans"
             font-style="oblique"
-            font-size="${Animations.Style.grow3}"
+            font-size="${Animations.Style.grow}"
         [Styles.h3_grow3.StyleAnimation]
-            [Styles.h3_grow3.StyleAnimation.grow3]
+            [Styles.h3_grow3.StyleAnimation.grow]
                 begin_time = '0.2'
                 end_time = '${Global.duration}-1'
 [Caption]

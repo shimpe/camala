@@ -8,7 +8,11 @@
     % for style in spec['Styles']:
   .${style} {
        % for property in spec['Styles'][style]['StyleProperties']:
+       % if "${" in spec['Styles'][style]['StyleProperties'][property]:
+       ${property} : ${spec['Styles'][style]['StyleProperties'][property].replace("}","_for_style_"+style+"}") | x};
+       % else:
        ${property} : ${spec['Styles'][style]['StyleProperties'][property] | x};
+       % endif
        % endfor
   }
     % endfor
