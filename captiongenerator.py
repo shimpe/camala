@@ -2,11 +2,12 @@ import toml
 from mako.template import Template
 from mako import exceptions
 import platform
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 import os.path
 from vectortween.NumberAnimation import NumberAnimation
 from vectortween.PointAnimation import PointAnimation
 from vectortween.SequentialAnimation import SequentialAnimation
+from vectortween.Mapping import Mapping
 import string
 import ast
 import PIL.Image
@@ -212,6 +213,7 @@ class CaptionGenerator(object):
         self.animations = {}
         self.animations['Position'] = {}
         self.animations['Style'] = {}
+        self.animations['TextProvider'] = {}
         if 'Position' in self.spec['Animations']:
             # first collect all point animations
             for pos_anim in self.spec['Animations']['Position']:
@@ -342,7 +344,114 @@ class CaptionGenerator(object):
                         timeweight=timeweights,
                         repeats=repeats,
                         tween=[tween])
+
+        # collect all textprovider effects
+        if 'TextProvider' in self.spec['Animations']:
+            for textprovider in self.spec['Animations']['TextProvider']:
+                tp = self.spec['Animations']['TextProvider'][textprovider]
+                the_type = tp['type']
+                if the_type == "NumberAnimation":
+                    if 'begin' not in tp:
+                        print(f"Warning: no 'begin' specified in Animations.TextProvider.{textprovider}. Using 0 instead.")
+                    begin_str = self._replace_globals(tp['begin']) if 'begin' in tp else '0'
+                    begin_numeric = self._eval_expr(begin_str)
+                    if not isinstance(begin_numeric, (int, float)):
+                        print(
+                            f"Invalid expression in Animations.TextProvider.{textprovider}.begin. Expected to find a single number. Found {begin_numeric} instead.")
+                        return False
+                    if 'end' not in tp:
+                        print(f"Warning: no 'end' specified in Animations.TextProvider.{textprovider}. Using 0 instead.")
+                    end_str = self._replace_globals(tp['end']) if 'end' in tp else '0'
+                    end_numeric = self._eval_expr(end_str)
+                    if not isinstance(end_numeric, (int, float)):
+                        print(
+                            f"Invalid expression in Animations.TextProvider.{textprovider}.end. Expected to find a single number. Found {end_numeric} instead.")
+                        return False
+                    tween = tp['tween'] if 'tween' in tp else 'linear'
+                    if not self._check_valid_tween(tween):
+                        print(
+                            f"Invalid tween method in Animations.TextProvider.{textprovider}.tween. Expected one of {self._supported_tween_methods()}")
+                        return False
+                    self.animations['TextProvider'][textprovider] = NumberAnimation(begin_numeric, end_numeric, [tween])
+
+            # then collect all sequential animations
+            for textprovider in self.spec['Animations']['TextProvider']:
+                tp = self.spec['Animations']['TextProvider'][textprovider]
+                the_type = tp['type']
+                if the_type == "SequentialAnimation":
+                    elements_str = self._listel_from_str(tp['elements'])
+                    elements = []
+                    for el in elements_str:
+                        stripped_el = el[len("${Animations.TextProvider."):-1]
+                        if stripped_el not in self.animations['TextProvider']:
+                            print(
+                                f"Error: sequential animation Animations.TextProvider.{textprovider} uses another animation named {el[2:-1]} which is not defined yet.")
+                            return False
+                        elements.append(self.animations['TextProvider'][stripped_el])
+
+                    timeweights_str = self._replace_globals(tp['time_weights']) if 'time_weights' in tp else None
+                    timeweights = self._eval_expr(timeweights_str) if timeweights_str else None
+                    if timeweights is not None and len(timeweights) != len(elements_str):
+                        print(
+                            f"Timeweights must have same length as elements in Animations.TextProvider.{textprovider}.time_weights. Currently len(elements) = {len(elements_str)}, but len(time_weights) = {len(timeweights)}")
+                        return False
+                    repeats = self._replace_globals(tp['repeats']) if 'repeats' in tp else '1'
+                    repeats = self._eval_expr(repeats)
+                    tween = tp['tween'] if 'tween' in tp else 'linear'
+                    if not self._check_valid_tween(tween):
+                        print(
+                            f"Invalid tween method in Animations.TextProvider.{textprovider}.tween. Expected one of {self._supported_tween_methods()}")
+                        return False
+                    self.animations['TextProvider'][textprovider] = SequentialAnimation(
+                        list_of_animations=elements,
+                        timeweight=timeweights,
+                        repeats=repeats,
+                        tween=[tween])
         return True
+
+    def _get_text_per_segment_for_line(self, text_per_line_per_segment, line, animated_value):
+        text_per_segment = text_per_line_per_segment[line]
+        total_text = ""
+        for s in text_per_segment:
+            total_text += text_per_segment[s]
+        len_total_text = len(total_text)
+        text_values = OrderedDict()
+
+        if animated_value is None:
+            for s in text_per_segment:
+                text_values[f"text_{line}_{s}"] = ""
+        else:
+            if animated_value >= 0:
+                reverse = False
+                end_index = Mapping.linlin(animated_value, 0, 100, 0, len_total_text-1, clip=True)
+            else:
+                reverse = True
+                end_index = Mapping.linlin(-animated_value, 0, 100, 0, len_total_text - 1, clip=True)
+
+            if not reverse:
+                cur_index = 0
+                for s in text_per_segment:
+                    partial_s = ""
+                    for character in text_per_segment[s]:
+                        if cur_index <= end_index:
+                            partial_s += character
+                            cur_index += 1
+                        else:
+                            cur_index += 1
+                    text_values[f"text_{line}_{s}"] = partial_s
+            else:
+                cur_index = 0
+                for s in reversed(text_per_segment):
+                    partial_s = ""
+                    for character in reversed(text_per_segment[s]):
+                        if cur_index <= end_index:
+                            partial_s = character + partial_s
+                            cur_index += 1
+                        else:
+                            cur_index += 1
+                    text_values[f"text_{line}_{s}"] = partial_s
+                    text_values.move_to_end(f"text_{line}_{s}")
+        return text_values
 
     def make_svg_string(self) -> bool:
         try:
@@ -362,61 +471,118 @@ class CaptionGenerator(object):
                 return False
 
             # resolve the different positions and position animations
-            for caption in self.spec['Caption']:
-
-                if 'x_offset' not in self.spec['Caption'][caption]:
+            text_per_line_per_segment = defaultdict(lambda: defaultdict(lambda: ""))
+            for line in self.spec['Caption']:
+                if 'x_offset' not in self.spec['Caption'][line]:
                     x_offset = 0
-                elif "${" in self.spec['Caption'][caption]['x_offset']:
+                elif "${" in self.spec['Caption'][line]['x_offset']:
                     x_offset = 0  # todo animated offset
                 else:
-                    x_offset = self._eval_expr(self._replace_globals(self.spec['Caption'][caption]['x_offset']))
+                    x_offset = self._eval_expr(self._replace_globals(self.spec['Caption'][line]['x_offset']))
 
-                if 'y_offset' not in self.spec['Caption'][caption]:
+                if 'y_offset' not in self.spec['Caption'][line]:
                     y_offset = 0
-                elif "${" in self.spec['Caption'][caption]['y_offset']:
+                elif "${" in self.spec['Caption'][line]['y_offset']:
                     y_offset = 0  # todo animated offset
                 else:
-                    y_offset = self._eval_expr(self._replace_globals(self.spec['Caption'][caption]['y_offset']))
+                    y_offset = self._eval_expr(self._replace_globals(self.spec['Caption'][line]['y_offset']))
 
-                if not 'pos' in self.spec['Caption'][caption]:  # no position
-                    print(f"Warning: no position specified i caption Caption.{caption}. Using [0, 0] instead.")
-                    resolved_values = {caption + '_x': current_pos[0] + x_offset,
-                                       caption + "_y": current_pos[1] + y_offset}
+                for segment in self.spec['Caption'][line]['Segments']:
+                    text_per_line_per_segment[line][segment] = self.spec['Caption'][line]['Segments'][segment]['text']
+
+                if 'TextProvider' not in self.spec['Caption'][line]:
+                    begin_pct = end_pct = 100
+                else:
+                    birth_frame = None
+                    start_frame = None
+                    stop_frame = None
+                    death_frame = None
+                    if 'style' not in self.spec['Caption'][line]['TextProvider']:
+                        print(f"Error! In Caption.{line}.TextProvider, no style is defined.")
+                        return False
+                    text_provider_style = self.spec['Caption'][line]['TextProvider']['style']
+                    if "${" not in text_provider_style:
+                        print(f"Error! Caption.{line}.TextProvider.style, must point to a textprovider from Animations.TextProvider");
+                        return False
+                    short_provider_name = text_provider_style[len("${Animations.TextProvider."):-1]
+                    if short_provider_name not in self.animations['TextProvider']:
+                        print(f"Error Caption.{line}.TextProvider.style uses a style {short_provider_name} which is not defined in the Animation.TextProvider section.")
+                        return False
+                    animation = self.animations['TextProvider'][short_provider_name]
+                    if 'TextProviderAnimation' not in self.spec['Caption'][line]:
+                        birth_frame = 0
+                        start_frame = 0
+                        stop_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
+                        death_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
+                    else:
+                        ta = self.spec['Caption'][line]['TextProviderAnimation']
+                        if 'birth_time' in ta:
+                            birth_frame = self._eval_expr(self._replace_globals(ta['birth_time'])) * fps
+                        else:
+                            print(
+                                f"Warning: no birth_time specified in Caption.{line}.PositionAnimation. Using None.")
+                        if 'begin_time' in ta:
+                            start_frame = self._eval_expr(self._replace_globals(ta['begin_time'])) * fps
+                        else:
+                            print(
+                                f"Warning: no start_time specified in Caption.{line}.PositionAnimation. Using None.")
+                        if 'end_time' in ta:
+                            stop_frame = self._eval_expr(self._replace_globals(ta['end_time'])) * fps
+                        else:
+                            print(
+                                f"Warning: no stop_time specified in Caption.{line}.PositionAnimation. Using None.")
+                        if 'death_time' in ta:
+                            death_frame = self._eval_expr(self._replace_globals(ta['death_time'])) * fps
+                        else:
+                            print(
+                                f"Warning: no death_time specified in Caption.{line}.PositionAnimation. Using None.")
+                    animated_value = animation.make_frame(current_frame,
+                                                          birth_frame,
+                                                          start_frame,
+                                                          stop_frame,
+                                                          death_frame)
+                    resolved_text_values = self._get_text_per_segment_for_line(text_per_line_per_segment, line, animated_value)
+                    svg = string.Template(svg).safe_substitute(resolved_text_values)
+
+                if not 'pos' in self.spec['Caption'][line]:  # no position
+                    print(f"Warning: no position specified i caption Caption.{line}. Using [0, 0] instead.")
+                    resolved_values = {line + '_x': current_pos[0] + x_offset,
+                                       line + "_y": current_pos[1] + y_offset}
                     svg = string.Template(svg).safe_substitute(resolved_values)
                 else:
                     birth_frame = None
                     start_frame = None
                     stop_frame = None
                     death_frame = None
-                    cap = self.spec['Caption'][caption]
+                    cap = self.spec['Caption'][line]
                     if '${' in cap['pos']:  # animated position
                         if not 'PositionAnimation' in cap:
                             print(
-                                f"Error: animated position specified, but no PositionAnimation section present in Caption.{caption}.")
+                                f"Error: animated position specified, but no PositionAnimation section present in Caption.{line}.")
                             return False
                         pa = cap['PositionAnimation']
                         if 'birth_time' in pa:
                             birth_frame = self._eval_expr(self._replace_globals(pa['birth_time'])) * fps
                         else:
                             print(
-                                f"Warning: no birth_time specified in Caption.{caption}.PositionAnimation. Using None.")
+                                f"Warning: no birth_time specified in Caption.{line}.PositionAnimation. Using None.")
                         if 'begin_time' in pa:
                             start_frame = self._eval_expr(self._replace_globals(pa['begin_time'])) * fps
                         else:
                             print(
-                                f"Warning: no start_time specified in Caption.{caption}.PositionAnimation. Using None.")
+                                f"Warning: no start_time specified in Caption.{line}.PositionAnimation. Using None.")
                         if 'end_time' in pa:
                             stop_frame = self._eval_expr(self._replace_globals(pa['end_time'])) * fps
                         else:
                             print(
-                                f"Warning: no stop_time specified in Caption.{caption}.PositionAnimation. Using None.")
+                                f"Warning: no stop_time specified in Caption.{line}.PositionAnimation. Using None.")
                         if 'death_time' in pa:
                             death_frame = self._eval_expr(self._replace_globals(pa['death_time'])) * fps
                         else:
                             print(
-                                f"Warning: no death_time specified in Caption.{caption}.PositionAnimation. Using None.")
+                                f"Warning: no death_time specified in Caption.{line}.PositionAnimation. Using None.")
 
-                        the_pos = self.spec['Caption'][caption]['pos']
+                        the_pos = self.spec['Caption'][line]['pos']
                         if "[" in the_pos:
                             the_pos_el = self._listel_from_str(the_pos)
                         else:
@@ -426,7 +592,7 @@ class CaptionGenerator(object):
                             if '${Animations.Position' in animation:
                                 if len(the_pos_el) != 1:
                                     print(
-                                        f"Error! Position animation in Caption.{caption}.pos must be a single animation, or a list of 2 floats.")
+                                        f"Error! Position animation in Caption.{line}.pos must be a single animation, or a list of 2 floats.")
                                     return False
 
                                 animation_short_name = the_pos_el[0][len("${Animations.Position."):-1]
@@ -441,31 +607,31 @@ class CaptionGenerator(object):
                             else:
                                 if len(the_pos_el) != 2:
                                     print(
-                                        f"Error! Position animation in Caption.{caption}.pos must be a single animation, or a list of 2 floats.")
+                                        f"Error! Position animation in Caption.{line}.pos must be a single animation, or a list of 2 floats.")
                                     return False
                                 animation_value = float(animation)
                                 current_pos[index] = animation_value
-                        resolved_values = {caption + '_x': current_pos[0] + x_offset,
-                                           caption + "_y": current_pos[1] + y_offset}
+                        resolved_values = {line + '_x': current_pos[0] + x_offset,
+                                           line + "_y": current_pos[1] + y_offset}
                         svg = string.Template(svg).safe_substitute(resolved_values)
                     else:  # fixed position
-                        current_pos = self._eval_expr(self._replace_globals(self.spec['Caption'][caption]['pos']))
-                        resolved_values = {caption + '_x': current_pos[0] + x_offset,
-                                           caption + "_y": current_pos[1] + y_offset}
+                        current_pos = self._eval_expr(self._replace_globals(self.spec['Caption'][line]['pos']))
+                        resolved_values = {line + '_x': current_pos[0] + x_offset,
+                                           line + "_y": current_pos[1] + y_offset}
                         svg = string.Template(svg).safe_substitute(resolved_values)
 
                 # resolve style animations
-                for segment in self.spec['Caption'][caption]['Segments']:
+                for segment in self.spec['Caption'][line]['Segments']:
                     birth_frame = 0
                     death_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
                     begin_frame = None
                     end_frame = None
-                    if 'style' in self.spec['Caption'][caption]['Segments'][segment]:
-                        style_name = self.spec['Caption'][caption]['Segments'][segment]['style']
+                    if 'style' in self.spec['Caption'][line]['Segments'][segment]:
+                        style_name = self.spec['Caption'][line]['Segments'][segment]['style']
                         style_name_short = style_name[len("${Styles."): -1]
                         if style_name_short not in self.spec['Styles']:
                             print(
-                                f"Error! section Caption.{caption}.Segments.{segment} uses a style name {style_name} which has not been defined in the Styles section.")
+                                f"Error! section Caption.{line}.Segments.{segment} uses a style name {style_name} which has not been defined in the Styles section.")
                             return False
                         style_definition = self.spec['Styles'][style_name_short]
                         for property in style_definition['StyleProperties']:
@@ -497,7 +663,7 @@ class CaptionGenerator(object):
                                 else:
                                     # unknown animated property
                                     print(
-                                        f"section Caption.{caption}.Segments.{segment}.StyleProperties.{property} uses an animation {style_definition['StyleProperties'][property]} that was not defined in the Animation.Styles section.")
+                                        f"section Caption.{line}.Segments.{segment}.StyleProperties.{property} uses an animation {style_definition['StyleProperties'][property]} that was not defined in the Animation.Styles section.")
                                     return False
                             else:
                                 # fixed property -> nothing to resolve
@@ -558,7 +724,7 @@ class CaptionGenerator(object):
 
 
 if __name__ == "__main__":
-    output_file = str(Path(__file__).absolute().parent.joinpath("outputs/debug/thisvideomaycontaintracesofmath"))
+    output_file = str(Path(__file__).absolute().parent.joinpath("outputs/debug/textprovider"))
     c = CaptionGenerator(output_file)
-    input_file = str(Path(__file__).absolute().parent.joinpath("examples/thisvideomaycontaintracesofmath.toml"))
+    input_file = str(Path(__file__).absolute().parent.joinpath("examples/textprovider.toml"))
     c.write_videofile(input=input_file)
