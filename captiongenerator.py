@@ -550,7 +550,7 @@ class CaptionGenerator(object):
             elif vf == 'mp4':
                 if not self.output_file.endswith(".mp4"):
                     self.output_file += ".mp4"
-                video.write_videofile(self.output_file+".mp4", fps=c.fps())
+                video.write_videofile(self.output_file, fps=c.fps())
 
 if __name__ == "__main__":
     output_file = str(Path(__file__).absolute().parent.joinpath("outputs/thisvideomaycontaintracesofmath"))
