@@ -4,9 +4,10 @@ H = "1080"
 duration = "3"
 fps = "30"
 format = "mp4"
+background = "black"
 
 [Animations]
-    [Animations.Style]
+    #[Animations.Style]
         [Animations.Style.grow1]
             type = "NumberAnimation"
             begin = "0"

@@ -513,8 +513,9 @@ class CaptionGenerator(object):
 
             W = self._eval_expr(self._replace_globals('${Global.W}'))
             H = self._eval_expr(self._replace_globals('${Global.H}'))
+            background = self._replace_globals('${Global.background}')
             result = subprocess.run([self.inkscape,
-                                     '--export-background=black',
+                                     f'--export-background={background}',
                                      '--export-type=png',
                                      '--export-filename=-',
                                      f'--export-width={W}',
