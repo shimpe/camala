@@ -8,7 +8,6 @@ from vectortween.NumberAnimation import NumberAnimation
 from vectortween.PointAnimation import PointAnimation
 from vectortween.SequentialAnimation import SequentialAnimation
 import string
-import math
 import ast
 import PIL.Image
 import subprocess
@@ -17,6 +16,7 @@ import numpy as np
 import moviepy
 from moviepy.editor import CompositeVideoClip
 from pathlib import Path
+
 
 def to_numpy(image, width, height):
     '''  Converts a QImage into numpy format  '''
@@ -29,7 +29,7 @@ class CaptionGenerator(object):
         self.template_folder = str(Path(__file__).absolute().parent.joinpath("templates"))
         self.output_file = output_file
         self.output_folder = str(Path(output_file).parent)
-        guess = defaultdict(lambda key : "")
+        guess = defaultdict(lambda key: "")
         guess['Linux'] = '/usr/bin/inkscape'
         guess['Windows'] = r'c:\Program Files\Inkscape\Inkscape.exe'
         guess['Darwin'] = r'/Applications/Inkscape.app/Contents/MacOS/inkscape'  # ???
@@ -44,6 +44,7 @@ class CaptionGenerator(object):
 
     def fps(self):
         return self._eval_expr(self._replace_globals('${Global.fps}'))
+
     def initialize_from_file(self, filename: str) -> bool:
         try:
             with open(filename, "r") as f:
@@ -366,14 +367,14 @@ class CaptionGenerator(object):
                 if 'x_offset' not in self.spec['Caption'][caption]:
                     x_offset = 0
                 elif "${" in self.spec['Caption'][caption]['x_offset']:
-                    x_offset = 0 #  todo animated offset
+                    x_offset = 0  # todo animated offset
                 else:
                     x_offset = self._eval_expr(self._replace_globals(self.spec['Caption'][caption]['x_offset']))
 
                 if 'y_offset' not in self.spec['Caption'][caption]:
                     y_offset = 0
                 elif "${" in self.spec['Caption'][caption]['y_offset']:
-                    y_offset = 0 #  todo animated offset
+                    y_offset = 0  # todo animated offset
                 else:
                     y_offset = self._eval_expr(self._replace_globals(self.spec['Caption'][caption]['y_offset']))
 
@@ -444,11 +445,13 @@ class CaptionGenerator(object):
                                     return False
                                 animation_value = float(animation)
                                 current_pos[index] = animation_value
-                        resolved_values = {caption + '_x': current_pos[0] + x_offset, caption + "_y": current_pos[1] + y_offset}
+                        resolved_values = {caption + '_x': current_pos[0] + x_offset,
+                                           caption + "_y": current_pos[1] + y_offset}
                         svg = string.Template(svg).safe_substitute(resolved_values)
                     else:  # fixed position
                         current_pos = self._eval_expr(self._replace_globals(self.spec['Caption'][caption]['pos']))
-                        resolved_values = {caption + '_x': current_pos[0] + x_offset, caption + "_y": current_pos[1] + y_offset}
+                        resolved_values = {caption + '_x': current_pos[0] + x_offset,
+                                           caption + "_y": current_pos[1] + y_offset}
                         svg = string.Template(svg).safe_substitute(resolved_values)
 
                 # resolve style animations
@@ -470,7 +473,7 @@ class CaptionGenerator(object):
                             if "${" in prop_val:  # animated property
 
                                 property_animation_short = prop_val[len("${Animations.Style."):-1]
-                                if 'StyleAnimation' in style_definition and\
+                                if 'StyleAnimation' in style_definition and \
                                         property_animation_short in style_definition['StyleAnimation']:
                                     style_def_anim = style_definition['StyleAnimation'][property_animation_short]
                                     begin_frame = self._eval_expr(
@@ -515,7 +518,7 @@ class CaptionGenerator(object):
             background = self._replace_globals('${Global.background}')
 
             if self.video_format() == 'svg':
-                frame = f"frame_{int(t*fps):08}.svg"
+                frame = f"frame_{int(t * fps):08}.svg"
                 destination = os.path.join(self.output_folder, frame)
                 with open(destination, "w") as f:
                     f.write(svg)
@@ -553,9 +556,9 @@ class CaptionGenerator(object):
                     self.output_file += ".mp4"
                 video.write_videofile(self.output_file, fps=c.fps())
 
+
 if __name__ == "__main__":
     output_file = str(Path(__file__).absolute().parent.joinpath("outputs/debug/thisvideomaycontaintracesofmath"))
     c = CaptionGenerator(output_file)
     input_file = str(Path(__file__).absolute().parent.joinpath("examples/thisvideomaycontaintracesofmath.toml"))
     c.write_videofile(input=input_file)
-
