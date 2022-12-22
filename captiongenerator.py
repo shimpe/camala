@@ -209,204 +209,103 @@ class CaptionGenerator(object):
     def _listel_from_str(self, string):
         return string.replace(" ", "").replace("\t", "").strip()[1:-1].split(",")
 
-    def build_animations(self):
-        self.animations = {}
-        self.animations['Position'] = {}
-        self.animations['Style'] = {}
-        self.animations['TextProvider'] = {}
-        if 'Position' in self.spec['Animations']:
-            # first collect all point animations
-            for pos_anim in self.spec['Animations']['Position']:
-                pa = self.spec['Animations']['Position'][pos_anim]
-                the_type = pa['type']
-                if the_type == "PointAnimation":
-                    if 'begin' not in pa:
-                        print(f"Warning: no 'begin' specified in Animations.Position.{pos_anim}. Using [0, 0] instead.")
-                    begin_str = self._replace_globals(pa['begin']) if 'begin' in pa else '[0, 0]'
-                    begin_numeric = self._eval_expr(begin_str)
-                    if not isinstance(begin_numeric, list) or len(begin_numeric) != 2:
-                        print(
-                            f"Invalid expression in Animations.Position.{pos_anim}.begin. Expected to find a list of 2 values. Found {begin_numeric} instead.")
-                        return False
-                    if 'end' not in pa:
-                        print(f"Warning: no 'end' specified in Animations.Position.{pos_anim}. Using [0, 0] instead.")
-                    end_str = self._replace_globals(pa['end']) if 'end' in pa else '[0, 0]'
-                    end_numeric = self._eval_expr(end_str)
-                    if not isinstance(end_numeric, list) or len(end_numeric) != 2:
-                        print(
-                            f"Invalid expression in Animations.Position.{pos_anim}.end. Expected to find a list of 2 values. Found {end_numeric} instead.")
-                        return False
-                    tween = pa['tween'] if 'tween' in pa else 'linear'
-                    if not self._check_valid_tween(tween):
-                        print(
-                            f"Invalid tween method in Animations.Position.{pos_anim}.tween. Expected one of {self._supported_tween_methods()}")
-                        return False
-                    ytween = pa['ytween'] if 'ytween' in pa else 'linear'
-                    if not self._check_valid_tween(ytween):
-                        print(
-                            f"Invalid tween method in Animations.Position.{pos_anim}.ytween. Expected one of {self._supported_tween_methods()}")
-                        return False
-                    self.animations['Position'][pos_anim] = PointAnimation(begin_numeric, end_numeric, [tween],
-                                                                           [ytween])
 
-            # then collect all sequential animations
-            for pos_anim in self.spec['Animations']['Position']:
-                pa = self.spec['Animations']['Position'][pos_anim]
-                the_type = pa['type']
-                if the_type == "SequentialAnimation":
-                    elements_str = self._listel_from_str(pa['elements'])
-                    elements = []
-                    for el in elements_str:
-                        stripped_el = el[len("${Animations.Position."):-1]
-                        if stripped_el not in self.animations['Position']:
-                            print(
-                                f"Error: sequential animation Animations.Position.{pos_anim} uses another animation named {el[2:-1]} which is not defined yet.")
-                            return False
-                        elements.append(self.animations['Position'][stripped_el])
-                    timeweights_str = self._replace_globals(pa['time_weights']) if 'time_weights' in pa else None
-                    timeweights = self._eval_expr(timeweights_str) if timeweights_str else None
-                    tween = pa['tween'] if 'tween' in pa else 'linear'
-                    if not self._check_valid_tween(tween):
-                        print(
-                            f"Invalid tween method in Animations.Position.{pos_anim}.tween. Expected one of {self._supported_tween_methods()}")
-                        return False
-                    if timeweights is not None and len(timeweights) != len(elements_str):
-                        print(
-                            f"Timeweights must have same length as elements in Animations.Position.{pos_anim}.time_weights. Currently len(elements) = {len(elements_str)}, but len(time_weights) = {len(timeweights)}")
-                        return False
-                    repeats = self._replace_globals(pa['repeats']) if 'repeats' in pa else '1'
-                    repeats = self._eval_expr(repeats)
-                    self.animations['Position'][pos_anim] = SequentialAnimation(
-                        list_of_animations=elements,
-                        timeweight=timeweights,
-                        repeats=repeats,
-                        tween=[tween])
+    def _collect_animations(self, kind, basic_type_name, basic_type_class):
+        if basic_type_name == "PointAnimation":
+            default_begin_end = [0, 0]
+            allowed_begin_end_types = (list,)
+        else:
+            default_begin_end = 0
+            allowed_begin_end_types = (int, float)
 
-        if 'Style' in self.spec['Animations']:
-            # first collect all point animations
-            for style_anim in self.spec['Animations']['Style']:
-                pa = self.spec['Animations']['Style'][style_anim]
-                the_type = pa['type']
-                if the_type == "NumberAnimation":
-                    if 'begin' not in pa:
-                        print(f"Warning: no 'begin' specified in Animations.Style.{style_anim}. Using 0 instead.")
-                    begin_str = self._replace_globals(pa['begin']) if 'begin' in pa else '0'
-                    begin_numeric = self._eval_expr(begin_str)
-                    if not isinstance(begin_numeric, (int, float)):
-                        print(
-                            f"Invalid expression in Animations.Style.{style_anim}.begin. Expected to find a single number. Found {begin_numeric} instead.")
-                        return False
-                    if 'end' not in pa:
-                        print(f"Warning: no 'end' specified in Animations.Style.{style_anim}. Using 0 instead.")
-                    end_str = self._replace_globals(pa['end']) if 'end' in pa else '0'
-                    end_numeric = self._eval_expr(end_str)
-                    if not isinstance(end_numeric, (int, float)):
-                        print(
-                            f"Invalid expression in Animations.Style.{style_anim}.end. Expected to find a single number. Found {end_numeric} instead.")
-                        return False
-                    tween = pa['tween'] if 'tween' in pa else 'linear'
-                    if not self._check_valid_tween(tween):
-                        print(
-                            f"Invalid tween method in Animations.Style.{style_anim}.tween. Expected one of {self._supported_tween_methods()}")
-                        return False
-                    self.animations['Style'][style_anim] = NumberAnimation(begin_numeric, end_numeric, [tween])
-
-            # then collect all sequential animations
-            for style_anim in self.spec['Animations']['Style']:
-                pa = self.spec['Animations']['Style'][style_anim]
-                the_type = pa['type']
-                if the_type == "SequentialAnimation":
-                    elements_str = self._listel_from_str(pa['elements'])
-                    elements = []
-                    for el in elements_str:
-                        stripped_el = el[len("${Animations.Style."):-1]
-                        if stripped_el not in self.animations['Style']:
-                            print(
-                                f"Error: sequential animation Animations.Style.{style_anim} uses another animation named {el[2:-1]} which is not defined yet.")
-                            return False
-                        elements.append(self.animations['Style'][stripped_el])
-
-                    timeweights_str = self._replace_globals(pa['time_weights']) if 'time_weights' in pa else None
-                    timeweights = self._eval_expr(timeweights_str) if timeweights_str else None
-                    if timeweights is not None and len(timeweights) != len(elements_str):
-                        print(
-                            f"Timeweights must have same length as elements in Animations.Style.{style_anim}.time_weights. Currently len(elements) = {len(elements_str)}, but len(time_weights) = {len(timeweights)}")
-                        return False
-                    repeats = self._replace_globals(pa['repeats']) if 'repeats' in pa else '1'
-                    repeats = self._eval_expr(repeats)
-                    tween = pa['tween'] if 'tween' in pa else 'linear'
-                    if not self._check_valid_tween(tween):
-                        print(
-                            f"Invalid tween method in Animations.Style.{style_anim}.tween. Expected one of {self._supported_tween_methods()}")
-                        return False
-                    self.animations['Style'][style_anim] = SequentialAnimation(
-                        list_of_animations=elements,
-                        timeweight=timeweights,
-                        repeats=repeats,
-                        tween=[tween])
-
-        # collect all textprovider effects
-        if 'TextProvider' in self.spec['Animations']:
-            for textprovider in self.spec['Animations']['TextProvider']:
-                tp = self.spec['Animations']['TextProvider'][textprovider]
+        if kind in self.spec['Animations']:
+            for anim_instance in self.spec['Animations'][kind]:
+                tp = self.spec['Animations'][kind][anim_instance]
                 the_type = tp['type']
-                if the_type == "NumberAnimation":
+                if the_type == basic_type_name:
                     if 'begin' not in tp:
-                        print(f"Warning: no 'begin' specified in Animations.TextProvider.{textprovider}. Using 0 instead.")
-                    begin_str = self._replace_globals(tp['begin']) if 'begin' in tp else '0'
+                        print(f"Warning: no 'begin' specified in Animations.{kind}.{anim_instance}. Using 0 instead.")
+                    begin_str = self._replace_globals(tp['begin']) if 'begin' in tp else default_begin_end
                     begin_numeric = self._eval_expr(begin_str)
-                    if not isinstance(begin_numeric, (int, float)):
+                    if not isinstance(begin_numeric, allowed_begin_end_types):
                         print(
-                            f"Invalid expression in Animations.TextProvider.{textprovider}.begin. Expected to find a single number. Found {begin_numeric} instead.")
+                            f"Invalid expression in Animations.{kind}.{anim_instance}.begin. Expected to find a {type(default_begin_end)}. Found {begin_numeric} instead.")
                         return False
                     if 'end' not in tp:
-                        print(f"Warning: no 'end' specified in Animations.TextProvider.{textprovider}. Using 0 instead.")
-                    end_str = self._replace_globals(tp['end']) if 'end' in tp else '0'
+                        print(f"Warning: no 'end' specified in Animations.{kind}.{anim_instance}. Using {default_begin_end} instead.")
+                    end_str = self._replace_globals(tp['end']) if 'end' in tp else default_begin_end
                     end_numeric = self._eval_expr(end_str)
-                    if not isinstance(end_numeric, (int, float)):
+                    if not isinstance(end_numeric, allowed_begin_end_types):
                         print(
-                            f"Invalid expression in Animations.TextProvider.{textprovider}.end. Expected to find a single number. Found {end_numeric} instead.")
+                            f"Invalid expression in Animations.{kind}.{anim_instance}.end. Expected to find a {type(default_begin_end)}. Found {end_numeric} instead.")
                         return False
                     tween = tp['tween'] if 'tween' in tp else 'linear'
                     if not self._check_valid_tween(tween):
                         print(
-                            f"Invalid tween method in Animations.TextProvider.{textprovider}.tween. Expected one of {self._supported_tween_methods()}")
+                            f"Invalid tween method in Animations.{kind}.{anim_instance}.tween. Expected one of {self._supported_tween_methods()}")
                         return False
-                    self.animations['TextProvider'][textprovider] = NumberAnimation(begin_numeric, end_numeric, [tween])
+                    self.animations[kind][anim_instance] = basic_type_class(begin_numeric, end_numeric, [tween])
 
             # then collect all sequential animations
-            for textprovider in self.spec['Animations']['TextProvider']:
-                tp = self.spec['Animations']['TextProvider'][textprovider]
+            for anim_instance in self.spec['Animations'][kind]:
+                tp = self.spec['Animations'][kind][anim_instance]
                 the_type = tp['type']
                 if the_type == "SequentialAnimation":
                     elements_str = self._listel_from_str(tp['elements'])
                     elements = []
                     for el in elements_str:
-                        stripped_el = el[len("${Animations.TextProvider."):-1]
-                        if stripped_el not in self.animations['TextProvider']:
+                        stripped_el = el[len(f"${{Animations.{kind}."):-1]
+                        if stripped_el not in self.animations[kind]:
                             print(
-                                f"Error: sequential animation Animations.TextProvider.{textprovider} uses another animation named {el[2:-1]} which is not defined yet.")
+                                f"Error: sequential animation Animations.{kind}.{anim_instance} uses another animation named {el[2:-1]} which is not defined yet.")
                             return False
-                        elements.append(self.animations['TextProvider'][stripped_el])
+                        elements.append(self.animations[kind][stripped_el])
 
                     timeweights_str = self._replace_globals(tp['time_weights']) if 'time_weights' in tp else None
                     timeweights = self._eval_expr(timeweights_str) if timeweights_str else None
                     if timeweights is not None and len(timeweights) != len(elements_str):
                         print(
-                            f"Timeweights must have same length as elements in Animations.TextProvider.{textprovider}.time_weights. Currently len(elements) = {len(elements_str)}, but len(time_weights) = {len(timeweights)}")
+                            f"Timeweights must have same length as elements in Animations.{kind}.{anim_instance}.time_weights. Currently len(elements) = {len(elements_str)}, but len(time_weights) = {len(timeweights)}")
                         return False
                     repeats = self._replace_globals(tp['repeats']) if 'repeats' in tp else '1'
                     repeats = self._eval_expr(repeats)
                     tween = tp['tween'] if 'tween' in tp else 'linear'
                     if not self._check_valid_tween(tween):
                         print(
-                            f"Invalid tween method in Animations.TextProvider.{textprovider}.tween. Expected one of {self._supported_tween_methods()}")
+                            f"Invalid tween method in Animations.{kind}.{anim_instance}.tween. Expected one of {self._supported_tween_methods()}")
                         return False
-                    self.animations['TextProvider'][textprovider] = SequentialAnimation(
+                    self.animations[kind][anim_instance] = SequentialAnimation(
                         list_of_animations=elements,
                         timeweight=timeweights,
                         repeats=repeats,
                         tween=[tween])
+        return True
+
+    def _collect_position_animations(self):
+        return self._collect_animations('Position', 'PointAnimation', PointAnimation)
+
+    def _collect_style_animations(self):
+        return self._collect_animations('Style', 'NumberAnimation', NumberAnimation)
+
+    def _collect_textprovider_animations(self):
+        return self._collect_animations('TextProvider', 'NumberAnimation', NumberAnimation)
+
+
+    def build_animations(self):
+        self.animations = {}
+
+        self.animations['Position'] = {}
+        if not self._collect_position_animations():
+            return False
+
+        self.animations['Style'] = {}
+        if not self._collect_style_animations():
+            return False
+
+        self.animations['TextProvider'] = {}
+        if not self._collect_textprovider_animations():
+            return False
+
         return True
 
     def _get_text_per_segment_for_line(self, text_per_line_per_segment, line, animated_value):
@@ -725,7 +624,8 @@ class CaptionGenerator(object):
 
 
 if __name__ == "__main__":
-    output_file = str(Path(__file__).absolute().parent.joinpath("outputs/debug/textprovider"))
+    filename = 'complex'
+    output_file = str(Path(__file__).absolute().parent.joinpath(f"outputs/debug/{filename}"))
     c = CaptionGenerator(output_file)
-    input_file = str(Path(__file__).absolute().parent.joinpath("examples/textprovider.toml"))
+    input_file = str(Path(__file__).absolute().parent.joinpath(f"examples/{filename}.toml"))
     c.write_videofile(input=input_file)
