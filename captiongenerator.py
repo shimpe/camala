@@ -491,7 +491,7 @@ class CaptionGenerator(object):
                     text_per_line_per_segment[line][segment] = self.spec['Caption'][line]['Segments'][segment]['text']
 
                 if 'TextProvider' not in self.spec['Caption'][line]:
-                    begin_pct = end_pct = 100
+                    animated_value = 100
                 else:
                     birth_frame = None
                     start_frame = None
@@ -541,8 +541,9 @@ class CaptionGenerator(object):
                                                           start_frame,
                                                           stop_frame,
                                                           death_frame)
-                    resolved_text_values = self._get_text_per_segment_for_line(text_per_line_per_segment, line, animated_value)
-                    svg = string.Template(svg).safe_substitute(resolved_text_values)
+
+                resolved_text_values = self._get_text_per_segment_for_line(text_per_line_per_segment, line, animated_value)
+                svg = string.Template(svg).safe_substitute(resolved_text_values)
 
                 if not 'pos' in self.spec['Caption'][line]:  # no position
                     print(f"Warning: no position specified i caption Caption.{line}. Using [0, 0] instead.")
@@ -724,7 +725,7 @@ class CaptionGenerator(object):
 
 
 if __name__ == "__main__":
-    output_file = str(Path(__file__).absolute().parent.joinpath("outputs/debug/textprovider"))
+    output_file = str(Path(__file__).absolute().parent.joinpath("outputs/debug/thisvideomaycontaintracesofmath"))
     c = CaptionGenerator(output_file)
-    input_file = str(Path(__file__).absolute().parent.joinpath("examples/textprovider.toml"))
+    input_file = str(Path(__file__).absolute().parent.joinpath("examples/thisvideomaycontaintracesofmath.toml"))
     c.write_videofile(input=input_file)
