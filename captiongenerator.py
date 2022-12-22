@@ -209,7 +209,6 @@ class CaptionGenerator(object):
     def _listel_from_str(self, string):
         return string.replace(" ", "").replace("\t", "").strip()[1:-1].split(",")
 
-
     def _collect_animations(self, kind, basic_type_name, basic_type_class):
         if basic_type_name == "PointAnimation":
             default_begin_end = [0, 0]
@@ -232,7 +231,8 @@ class CaptionGenerator(object):
                             f"Invalid expression in Animations.{kind}.{anim_instance}.begin. Expected to find a {type(default_begin_end)}. Found {begin_numeric} instead.")
                         return False
                     if 'end' not in tp:
-                        print(f"Warning: no 'end' specified in Animations.{kind}.{anim_instance}. Using {default_begin_end} instead.")
+                        print(
+                            f"Warning: no 'end' specified in Animations.{kind}.{anim_instance}. Using {default_begin_end} instead.")
                     end_str = self._replace_globals(tp['end']) if 'end' in tp else default_begin_end
                     end_numeric = self._eval_expr(end_str)
                     if not isinstance(end_numeric, allowed_begin_end_types):
@@ -290,7 +290,6 @@ class CaptionGenerator(object):
     def _collect_textprovider_animations(self):
         return self._collect_animations('TextProvider', 'NumberAnimation', NumberAnimation)
 
-
     def build_animations(self):
         self.animations = {}
 
@@ -322,7 +321,7 @@ class CaptionGenerator(object):
         else:
             if animated_value >= 0:
                 reverse = False
-                end_index = Mapping.linlin(animated_value, 0, 100, 0, len_total_text-1, clip=True)
+                end_index = Mapping.linlin(animated_value, 0, 100, 0, len_total_text - 1, clip=True)
             else:
                 reverse = True
                 end_index = Mapping.linlin(-animated_value, 0, 100, 0, len_total_text - 1, clip=True)
@@ -349,7 +348,8 @@ class CaptionGenerator(object):
                         else:
                             cur_index += 1
                     text_values[f"text_{line}_{s}"] = partial_s
-                    text_values.move_to_end(f"text_{line}_{s}", last=False) # reverse order since we iterated in reverse
+                    text_values.move_to_end(f"text_{line}_{s}",
+                                            last=False)  # reverse order since we iterated in reverse
         return text_values
 
     def make_svg_string(self) -> bool:
@@ -401,11 +401,13 @@ class CaptionGenerator(object):
                         return False
                     text_provider_style = self.spec['Caption'][line]['TextProvider']['style']
                     if "${" not in text_provider_style:
-                        print(f"Error! Caption.{line}.TextProvider.style, must point to a textprovider from Animations.TextProvider");
+                        print(
+                            f"Error! Caption.{line}.TextProvider.style, must point to a textprovider from Animations.TextProvider");
                         return False
                     short_provider_name = text_provider_style[len("${Animations.TextProvider."):-1]
                     if short_provider_name not in self.animations['TextProvider']:
-                        print(f"Error Caption.{line}.TextProvider.style uses a style {short_provider_name} which is not defined in the Animation.TextProvider section.")
+                        print(
+                            f"Error Caption.{line}.TextProvider.style uses a style {short_provider_name} which is not defined in the Animation.TextProvider section.")
                         return False
                     animation = self.animations['TextProvider'][short_provider_name]
                     if 'TextProviderAnimation' not in self.spec['Caption'][line]:
@@ -441,7 +443,8 @@ class CaptionGenerator(object):
                                                           stop_frame,
                                                           death_frame)
 
-                resolved_text_values = self._get_text_per_segment_for_line(text_per_line_per_segment, line, animated_value)
+                resolved_text_values = self._get_text_per_segment_for_line(text_per_line_per_segment, line,
+                                                                           animated_value)
                 svg = string.Template(svg).safe_substitute(resolved_text_values)
 
                 if not 'pos' in self.spec['Caption'][line]:  # no position
