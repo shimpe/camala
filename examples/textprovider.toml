@@ -17,6 +17,11 @@ background = "black"
         begin = "100"
         end = "0"
         tween = "easeOutQuad"
+    [Animations.TextProvider.reverse_appear]
+        type = "NumberAnimation"
+        begin = "0"
+        end = "-100"
+        tween = "easeOutQuad"
     [Animations.TextProvider.flash]
         type = "SequentialAnimation"
         elements = "[${Animations.TextProvider.appear}, ${Animations.TextProvider.disappear}]"
@@ -48,7 +53,7 @@ background = "black"
     [Caption.Line1]
         pos = "[0, 0]"
         [Caption.Line1.TextProvider]
-            style = "${Animations.TextProvider.flash_and_appear}"
+            style = "${Animations.TextProvider.reverse_appear}"
         [Caption.Line1.TextProviderAnimation]
             birth_time = "0"
             begin_time = "0"

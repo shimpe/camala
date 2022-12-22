@@ -450,7 +450,7 @@ class CaptionGenerator(object):
                         else:
                             cur_index += 1
                     text_values[f"text_{line}_{s}"] = partial_s
-                    text_values.move_to_end(f"text_{line}_{s}")
+                    text_values.move_to_end(f"text_{line}_{s}", last=False) # reverse order since we iterated in reverse
         return text_values
 
     def make_svg_string(self) -> bool:
@@ -725,7 +725,7 @@ class CaptionGenerator(object):
 
 
 if __name__ == "__main__":
-    output_file = str(Path(__file__).absolute().parent.joinpath("outputs/debug/thisvideomaycontaintracesofmath"))
+    output_file = str(Path(__file__).absolute().parent.joinpath("outputs/debug/textprovider"))
     c = CaptionGenerator(output_file)
-    input_file = str(Path(__file__).absolute().parent.joinpath("examples/thisvideomaycontaintracesofmath.toml"))
+    input_file = str(Path(__file__).absolute().parent.joinpath("examples/textprovider.toml"))
     c.write_videofile(input=input_file)
