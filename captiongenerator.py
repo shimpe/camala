@@ -607,13 +607,21 @@ class CaptionGenerator(object):
 
         return make_frame
 
-    def write_videofile(self, input, debug=False):
+
+    def make_txt_clip(self, input):
         success = self.initialize_from_file(input)
         if not success:
             print("Fatal error. Giving up.")
-            return False
-        vf = self.video_format()
+            return None
         txt_clip = moviepy.video.VideoClip.VideoClip(make_frame=self.frame_maker, duration=self.duration())
+        return txt_clip
+
+    def write_videofile(self, input):
+        txt_clip = self.make_txt_clip(input)
+        if not txt_clip:
+            return False
+
+        vf = self.video_format()
         if vf in ['gif', 'mp4', 'svg']:
             video = CompositeVideoClip([txt_clip])
             if vf == 'gif':
@@ -624,6 +632,7 @@ class CaptionGenerator(object):
                 if not self.output_file.endswith(".mp4"):
                     self.output_file += ".mp4"
                 video.write_videofile(self.output_file, fps=c.fps())
+        return True
 
 
 if __name__ == "__main__":
