@@ -24,9 +24,9 @@
     <text x="<%text>$</%text>{${line}_x}" y="<%text>$</%text>{${line}_y}">
     % for segment in spec['Caption'][line]['Segments']:
     % if 'style' in spec['Caption'][line]['Segments'][segment]:
-        <tspan class="${spec['Caption'][line]['Segments'][segment]['style'][9:-1]}"><%text>$</%text>{text_${line}_${segment}}</tspan>
+        <tspan xml:space="preserve" class="${spec['Caption'][line]['Segments'][segment]['style'][9:-1]}"><%text>$</%text>{text_${line}_${segment}}</tspan>
     % else:
-        <tspan><%text>$</%text>{text_${line}_${segment}}</tspan>
+        <tspan>xml:space="preserve" <%text>$</%text>{text_${line}_${segment}}</tspan>
     % endif
     % endfor
     </text>
