@@ -361,6 +361,69 @@ class CaptionGenerator(object):
             print(exceptions.text_error_template().render())
         return False, ""
 
+    def _resolve_textprovider_animations(self, fps, current_frame, line, svg):
+        text_per_line_per_segment = defaultdict(lambda: defaultdict(lambda: ""))
+        for segment in self.spec['Caption'][line]['Segments']:
+            text_per_line_per_segment[line][segment] = self.spec['Caption'][line]['Segments'][segment]['text']
+        if 'TextProvider' not in self.spec['Caption'][line]:
+            animated_value = 100
+        else:
+            birth_frame = None
+            start_frame = None
+            stop_frame = None
+            death_frame = None
+            if 'style' not in self.spec['Caption'][line]['TextProvider']:
+                print(f"Error! In Caption.{line}.TextProvider, no style is defined.")
+                return False
+            text_provider_style = self.spec['Caption'][line]['TextProvider']['style']
+            if "${" not in text_provider_style:
+                print(
+                    f"Error! Caption.{line}.TextProvider.style, must point to a textprovider from Animations.TextProvider");
+                return False
+            short_provider_name = text_provider_style[len("${Animations.TextProvider."):-1]
+            if short_provider_name not in self.animations['TextProvider']:
+                print(
+                    f"Error Caption.{line}.TextProvider.style uses a style {short_provider_name} which is not defined in the Animation.TextProvider section.")
+                return False
+            animation = self.animations['TextProvider'][short_provider_name]
+            if 'TextProviderAnimation' not in self.spec['Caption'][line]:
+                birth_frame = 0
+                start_frame = 0
+                stop_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
+                death_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
+            else:
+                ta = self.spec['Caption'][line]['TextProviderAnimation']
+                if 'birth_time' in ta:
+                    birth_frame = self._eval_expr(self._replace_globals(ta['birth_time'])) * fps
+                else:
+                    print(
+                        f"Warning: no birth_time specified in Caption.{line}.PositionAnimation. Using None.")
+                if 'begin_time' in ta:
+                    start_frame = self._eval_expr(self._replace_globals(ta['begin_time'])) * fps
+                else:
+                    print(
+                        f"Warning: no start_time specified in Caption.{line}.PositionAnimation. Using None.")
+                if 'end_time' in ta:
+                    stop_frame = self._eval_expr(self._replace_globals(ta['end_time'])) * fps
+                else:
+                    print(
+                        f"Warning: no stop_time specified in Caption.{line}.PositionAnimation. Using None.")
+                if 'death_time' in ta:
+                    death_frame = self._eval_expr(self._replace_globals(ta['death_time'])) * fps
+                else:
+                    print(
+                        f"Warning: no death_time specified in Caption.{line}.PositionAnimation. Using None.")
+            animated_value = animation.make_frame(current_frame,
+                                                  birth_frame,
+                                                  start_frame,
+                                                  stop_frame,
+                                                  death_frame)
+
+        resolved_text_values = self._get_text_per_segment_for_line(text_per_line_per_segment, line,
+                                                                   animated_value)
+        svg = string.Template(svg).safe_substitute(resolved_text_values)
+        return svg
+
     def build_make_frame(self, fps):
         def make_frame(t):
             current_frame = t * fps
@@ -370,7 +433,6 @@ class CaptionGenerator(object):
                 return False
 
             # resolve the different positions and position animations
-            text_per_line_per_segment = defaultdict(lambda: defaultdict(lambda: ""))
             for line in self.spec['Caption']:
                 if 'x_offset' not in self.spec['Caption'][line]:
                     x_offset = 0
@@ -386,66 +448,9 @@ class CaptionGenerator(object):
                 else:
                     y_offset = self._eval_expr(self._replace_globals(self.spec['Caption'][line]['y_offset']))
 
-                for segment in self.spec['Caption'][line]['Segments']:
-                    text_per_line_per_segment[line][segment] = self.spec['Caption'][line]['Segments'][segment]['text']
-
-                if 'TextProvider' not in self.spec['Caption'][line]:
-                    animated_value = 100
-                else:
-                    birth_frame = None
-                    start_frame = None
-                    stop_frame = None
-                    death_frame = None
-                    if 'style' not in self.spec['Caption'][line]['TextProvider']:
-                        print(f"Error! In Caption.{line}.TextProvider, no style is defined.")
-                        return False
-                    text_provider_style = self.spec['Caption'][line]['TextProvider']['style']
-                    if "${" not in text_provider_style:
-                        print(
-                            f"Error! Caption.{line}.TextProvider.style, must point to a textprovider from Animations.TextProvider");
-                        return False
-                    short_provider_name = text_provider_style[len("${Animations.TextProvider."):-1]
-                    if short_provider_name not in self.animations['TextProvider']:
-                        print(
-                            f"Error Caption.{line}.TextProvider.style uses a style {short_provider_name} which is not defined in the Animation.TextProvider section.")
-                        return False
-                    animation = self.animations['TextProvider'][short_provider_name]
-                    if 'TextProviderAnimation' not in self.spec['Caption'][line]:
-                        birth_frame = 0
-                        start_frame = 0
-                        stop_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
-                        death_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
-                    else:
-                        ta = self.spec['Caption'][line]['TextProviderAnimation']
-                        if 'birth_time' in ta:
-                            birth_frame = self._eval_expr(self._replace_globals(ta['birth_time'])) * fps
-                        else:
-                            print(
-                                f"Warning: no birth_time specified in Caption.{line}.PositionAnimation. Using None.")
-                        if 'begin_time' in ta:
-                            start_frame = self._eval_expr(self._replace_globals(ta['begin_time'])) * fps
-                        else:
-                            print(
-                                f"Warning: no start_time specified in Caption.{line}.PositionAnimation. Using None.")
-                        if 'end_time' in ta:
-                            stop_frame = self._eval_expr(self._replace_globals(ta['end_time'])) * fps
-                        else:
-                            print(
-                                f"Warning: no stop_time specified in Caption.{line}.PositionAnimation. Using None.")
-                        if 'death_time' in ta:
-                            death_frame = self._eval_expr(self._replace_globals(ta['death_time'])) * fps
-                        else:
-                            print(
-                                f"Warning: no death_time specified in Caption.{line}.PositionAnimation. Using None.")
-                    animated_value = animation.make_frame(current_frame,
-                                                          birth_frame,
-                                                          start_frame,
-                                                          stop_frame,
-                                                          death_frame)
-
-                resolved_text_values = self._get_text_per_segment_for_line(text_per_line_per_segment, line,
-                                                                           animated_value)
-                svg = string.Template(svg).safe_substitute(resolved_text_values)
+                svg = self._resolve_textprovider_animations(fps, current_frame, line, svg)
+                if not svg:
+                    return False
 
                 if not 'pos' in self.spec['Caption'][line]:  # no position
                     print(f"Warning: no position specified i caption Caption.{line}. Using [0, 0] instead.")
@@ -636,8 +641,9 @@ class CaptionGenerator(object):
 
 
 if __name__ == "__main__":
-    filename = 'complex'
-    output_file = str(Path(__file__).absolute().parent.joinpath(f"outputs/debug/{filename}"))
-    c = CaptionGenerator(output_file)
-    input_file = str(Path(__file__).absolute().parent.joinpath(f"examples/{filename}.toml"))
-    c.write_videofile(input=input_file)
+    filenames = ['textprovider']
+    for filename in filenames:
+        output_file = str(Path(__file__).absolute().parent.joinpath(f"outputs/debug/{filename}"))
+        c = CaptionGenerator(output_file)
+        input_file = str(Path(__file__).absolute().parent.joinpath(f"examples/{filename}.toml"))
+        c.write_videofile(input=input_file)
