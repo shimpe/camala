@@ -424,6 +424,98 @@ class CaptionGenerator(object):
         svg = string.Template(svg).safe_substitute(resolved_text_values)
         return svg
 
+    def _resolve_position_animations(self, fps, current_frame, line, svg):
+        if 'x_offset' not in self.spec['Caption'][line]:
+            x_offset = 0
+        elif "${" in self.spec['Caption'][line]['x_offset']:
+            x_offset = 0  # todo animated offset
+        else:
+            x_offset = self._eval_expr(self._replace_globals(self.spec['Caption'][line]['x_offset']))
+
+        if 'y_offset' not in self.spec['Caption'][line]:
+            y_offset = 0
+        elif "${" in self.spec['Caption'][line]['y_offset']:
+            y_offset = 0  # todo animated offset
+        else:
+            y_offset = self._eval_expr(self._replace_globals(self.spec['Caption'][line]['y_offset']))
+
+        if not 'pos' in self.spec['Caption'][line]:  # no position
+            print(f"Warning: no position specified i caption Caption.{line}. Using [0, 0] instead.")
+            resolved_values = {line + '_x': current_pos[0] + x_offset,
+                               line + "_y": current_pos[1] + y_offset}
+            svg = string.Template(svg).safe_substitute(resolved_values)
+        else:
+            birth_frame = None
+            start_frame = None
+            stop_frame = None
+            death_frame = None
+            cap = self.spec['Caption'][line]
+            if '${' in cap['pos']:  # animated position
+                if not 'PositionAnimation' in cap:
+                    print(
+                        f"Error: animated position specified, but no PositionAnimation section present in Caption.{line}.")
+                    return False
+                pa = cap['PositionAnimation']
+                if 'birth_time' in pa:
+                    birth_frame = self._eval_expr(self._replace_globals(pa['birth_time'])) * fps
+                else:
+                    print(
+                        f"Warning: no birth_time specified in Caption.{line}.PositionAnimation. Using None.")
+                if 'begin_time' in pa:
+                    start_frame = self._eval_expr(self._replace_globals(pa['begin_time'])) * fps
+                else:
+                    print(
+                        f"Warning: no start_time specified in Caption.{line}.PositionAnimation. Using None.")
+                if 'end_time' in pa:
+                    stop_frame = self._eval_expr(self._replace_globals(pa['end_time'])) * fps
+                else:
+                    print(
+                        f"Warning: no stop_time specified in Caption.{line}.PositionAnimation. Using None.")
+                if 'death_time' in pa:
+                    death_frame = self._eval_expr(self._replace_globals(pa['death_time'])) * fps
+                else:
+                    print(
+                        f"Warning: no death_time specified in Caption.{line}.PositionAnimation. Using None.")
+
+                the_pos = self.spec['Caption'][line]['pos']
+                if "[" in the_pos:
+                    the_pos_el = self._listel_from_str(the_pos)
+                else:
+                    the_pos_el = [the_pos]
+                current_pos = [0, 0]
+                for index, animation in enumerate(the_pos_el):
+                    if '${Animations.Position' in animation:
+                        if len(the_pos_el) != 1:
+                            print(
+                                f"Error! Position animation in Caption.{line}.pos must be a single animation, or a list of 2 floats.")
+                            return False
+
+                        animation_short_name = the_pos_el[0][len("${Animations.Position."):-1]
+                        animation_obj = self.animations['Position'][animation_short_name]
+                        animation_value = animation_obj.make_frame(current_frame, birth_frame, start_frame,
+                                                                   stop_frame, death_frame)
+                        current_pos = list(animation_value)
+                        if current_pos[0] is None:
+                            current_pos[0] = 1e10  # move out of sight
+                        if current_pos[1] is None:
+                            current_pos[1] = 1e10  # move out of sight
+                    else:
+                        if len(the_pos_el) != 2:
+                            print(
+                                f"Error! Position animation in Caption.{line}.pos must be a single animation, or a list of 2 floats.")
+                            return False
+                        animation_value = float(animation)
+                        current_pos[index] = animation_value
+                resolved_values = {line + '_x': current_pos[0] + x_offset,
+                                   line + "_y": current_pos[1] + y_offset}
+                svg = string.Template(svg).safe_substitute(resolved_values)
+            else:  # fixed position
+                current_pos = self._eval_expr(self._replace_globals(self.spec['Caption'][line]['pos']))
+                resolved_values = {line + '_x': current_pos[0] + x_offset,
+                                   line + "_y": current_pos[1] + y_offset}
+                svg = string.Template(svg).safe_substitute(resolved_values)
+        return svg
+
     def build_make_frame(self, fps):
         def make_frame(t):
             current_frame = t * fps
@@ -434,99 +526,13 @@ class CaptionGenerator(object):
 
             # resolve the different positions and position animations
             for line in self.spec['Caption']:
-                if 'x_offset' not in self.spec['Caption'][line]:
-                    x_offset = 0
-                elif "${" in self.spec['Caption'][line]['x_offset']:
-                    x_offset = 0  # todo animated offset
-                else:
-                    x_offset = self._eval_expr(self._replace_globals(self.spec['Caption'][line]['x_offset']))
-
-                if 'y_offset' not in self.spec['Caption'][line]:
-                    y_offset = 0
-                elif "${" in self.spec['Caption'][line]['y_offset']:
-                    y_offset = 0  # todo animated offset
-                else:
-                    y_offset = self._eval_expr(self._replace_globals(self.spec['Caption'][line]['y_offset']))
-
                 svg = self._resolve_textprovider_animations(fps, current_frame, line, svg)
                 if not svg:
                     return False
 
-                if not 'pos' in self.spec['Caption'][line]:  # no position
-                    print(f"Warning: no position specified i caption Caption.{line}. Using [0, 0] instead.")
-                    resolved_values = {line + '_x': current_pos[0] + x_offset,
-                                       line + "_y": current_pos[1] + y_offset}
-                    svg = string.Template(svg).safe_substitute(resolved_values)
-                else:
-                    birth_frame = None
-                    start_frame = None
-                    stop_frame = None
-                    death_frame = None
-                    cap = self.spec['Caption'][line]
-                    if '${' in cap['pos']:  # animated position
-                        if not 'PositionAnimation' in cap:
-                            print(
-                                f"Error: animated position specified, but no PositionAnimation section present in Caption.{line}.")
-                            return False
-                        pa = cap['PositionAnimation']
-                        if 'birth_time' in pa:
-                            birth_frame = self._eval_expr(self._replace_globals(pa['birth_time'])) * fps
-                        else:
-                            print(
-                                f"Warning: no birth_time specified in Caption.{line}.PositionAnimation. Using None.")
-                        if 'begin_time' in pa:
-                            start_frame = self._eval_expr(self._replace_globals(pa['begin_time'])) * fps
-                        else:
-                            print(
-                                f"Warning: no start_time specified in Caption.{line}.PositionAnimation. Using None.")
-                        if 'end_time' in pa:
-                            stop_frame = self._eval_expr(self._replace_globals(pa['end_time'])) * fps
-                        else:
-                            print(
-                                f"Warning: no stop_time specified in Caption.{line}.PositionAnimation. Using None.")
-                        if 'death_time' in pa:
-                            death_frame = self._eval_expr(self._replace_globals(pa['death_time'])) * fps
-                        else:
-                            print(
-                                f"Warning: no death_time specified in Caption.{line}.PositionAnimation. Using None.")
-
-                        the_pos = self.spec['Caption'][line]['pos']
-                        if "[" in the_pos:
-                            the_pos_el = self._listel_from_str(the_pos)
-                        else:
-                            the_pos_el = [the_pos]
-                        current_pos = [0, 0]
-                        for index, animation in enumerate(the_pos_el):
-                            if '${Animations.Position' in animation:
-                                if len(the_pos_el) != 1:
-                                    print(
-                                        f"Error! Position animation in Caption.{line}.pos must be a single animation, or a list of 2 floats.")
-                                    return False
-
-                                animation_short_name = the_pos_el[0][len("${Animations.Position."):-1]
-                                animation_obj = self.animations['Position'][animation_short_name]
-                                animation_value = animation_obj.make_frame(current_frame, birth_frame, start_frame,
-                                                                           stop_frame, death_frame)
-                                current_pos = list(animation_value)
-                                if current_pos[0] is None:
-                                    current_pos[0] = 1e10  # move out of sight
-                                if current_pos[1] is None:
-                                    current_pos[1] = 1e10  # move out of sight
-                            else:
-                                if len(the_pos_el) != 2:
-                                    print(
-                                        f"Error! Position animation in Caption.{line}.pos must be a single animation, or a list of 2 floats.")
-                                    return False
-                                animation_value = float(animation)
-                                current_pos[index] = animation_value
-                        resolved_values = {line + '_x': current_pos[0] + x_offset,
-                                           line + "_y": current_pos[1] + y_offset}
-                        svg = string.Template(svg).safe_substitute(resolved_values)
-                    else:  # fixed position
-                        current_pos = self._eval_expr(self._replace_globals(self.spec['Caption'][line]['pos']))
-                        resolved_values = {line + '_x': current_pos[0] + x_offset,
-                                           line + "_y": current_pos[1] + y_offset}
-                        svg = string.Template(svg).safe_substitute(resolved_values)
+                svg = self._resolve_position_animations(fps, current_frame, line, svg)
+                if not svg:
+                    return False
 
                 # resolve style animations
                 for segment in self.spec['Caption'][line]['Segments']:
@@ -641,7 +647,7 @@ class CaptionGenerator(object):
 
 
 if __name__ == "__main__":
-    filenames = ['textprovider']
+    filenames = ['howtomakeapianosing']
     for filename in filenames:
         output_file = str(Path(__file__).absolute().parent.joinpath(f"outputs/debug/{filename}"))
         c = CaptionGenerator(output_file)
