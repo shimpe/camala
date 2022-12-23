@@ -90,6 +90,11 @@ background = "#ea7ce0"
             begin = "-30"
             end = "30"
             tween = "easeOutBounce"
+        [Animations.CaptionSvgAttribute.rotate.CaptionSvgAttributeAnimation]
+            birth_time = "0"
+            begin_time = "0"
+            end_time = "${Global.duration}/2"
+            death_time = "${Global.duration}"
     [Animations.Segment]
         [Animations.Segment.rotate]
             type = "NumberAnimation"
@@ -160,11 +165,6 @@ background = "#ea7ce0"
         pos = "[0, 0]"
         [Caption.Line1.CaptionSvgAttribute]
             rotate = "${Animations.CaptionSvgAttribute.rotate}"
-        [Caption.Line1.CaptionSvgAttributeAnimation]
-            birth_time = "0"
-            begin_time = "0"
-            end_time = "${Global.duration}/2"
-            death_time = "${Global.duration}"
         [Caption.Line1.TextProvider]
             style = "${Animations.TextProvider.show}"
         [Caption.Line1.Segments]
