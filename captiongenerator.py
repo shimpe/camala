@@ -516,6 +516,61 @@ class CaptionGenerator(object):
                 svg = string.Template(svg).safe_substitute(resolved_values)
         return svg
 
+    def _resolve_style_animations(self, fps, current_frame, line, svg):
+        # resolve style animations
+        for segment in self.spec['Caption'][line]['Segments']:
+            birth_frame = 0
+            death_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
+            begin_frame = None
+            end_frame = None
+            if 'style' in self.spec['Caption'][line]['Segments'][segment]:
+                style_name = self.spec['Caption'][line]['Segments'][segment]['style']
+                style_name_short = style_name[len("${Styles."): -1]
+                if style_name_short not in self.spec['Styles']:
+                    print(
+                        f"Error! section Caption.{line}.Segments.{segment} uses a style name {style_name} which has not been defined in the Styles section.")
+                    return False
+                style_definition = self.spec['Styles'][style_name_short]
+                for property in style_definition['StyleProperties']:
+                    prop_val = style_definition['StyleProperties'][property]
+                    if "${" in prop_val:  # animated property
+
+                        property_animation_short = prop_val[len("${Animations.Style."):-1]
+                        if 'StyleAnimation' in style_definition and \
+                                property_animation_short in style_definition['StyleAnimation']:
+                            style_def_anim = style_definition['StyleAnimation'][property_animation_short]
+                            begin_frame = self._eval_expr(
+                                self._replace_globals(style_def_anim['begin_time'])) * fps
+                            end_frame = self._eval_expr(self._replace_globals(style_def_anim['end_time'])) * fps
+                        else:
+                            begin_frame = 0
+                            end_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
+
+                        if property_animation_short in self.animations['Style']:
+                            # animated style
+                            animation = self.animations['Style'][property_animation_short]
+                            animated_value = animation.make_frame(current_frame,
+                                                                  birth_frame,
+                                                                  begin_frame,
+                                                                  end_frame,
+                                                                  death_frame)
+                            resolved_style_values = {
+                                "${Animations.Style." + property_animation_short + "_for_style_" + style_name_short + "}": animated_value}
+                            svg = self._replace_placeholders(svg, resolved_style_values)
+                        else:
+                            # unknown animated property
+                            print(
+                                f"section Caption.{line}.Segments.{segment}.StyleProperties.{property} uses an animation {style_definition['StyleProperties'][property]} that was not defined in the Animation.Styles section.")
+                            return False
+                    else:
+                        # fixed property -> nothing to resolve
+                        pass
+            else:
+                # todo: use a default style? for now, use no style (which is also a kind of default I guess)
+                begin_frame = 0
+                end_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
+        return svg
+
     def build_make_frame(self, fps):
         def make_frame(t):
             current_frame = t * fps
@@ -534,58 +589,9 @@ class CaptionGenerator(object):
                 if not svg:
                     return False
 
-                # resolve style animations
-                for segment in self.spec['Caption'][line]['Segments']:
-                    birth_frame = 0
-                    death_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
-                    begin_frame = None
-                    end_frame = None
-                    if 'style' in self.spec['Caption'][line]['Segments'][segment]:
-                        style_name = self.spec['Caption'][line]['Segments'][segment]['style']
-                        style_name_short = style_name[len("${Styles."): -1]
-                        if style_name_short not in self.spec['Styles']:
-                            print(
-                                f"Error! section Caption.{line}.Segments.{segment} uses a style name {style_name} which has not been defined in the Styles section.")
-                            return False
-                        style_definition = self.spec['Styles'][style_name_short]
-                        for property in style_definition['StyleProperties']:
-                            prop_val = style_definition['StyleProperties'][property]
-                            if "${" in prop_val:  # animated property
-
-                                property_animation_short = prop_val[len("${Animations.Style."):-1]
-                                if 'StyleAnimation' in style_definition and \
-                                        property_animation_short in style_definition['StyleAnimation']:
-                                    style_def_anim = style_definition['StyleAnimation'][property_animation_short]
-                                    begin_frame = self._eval_expr(
-                                        self._replace_globals(style_def_anim['begin_time'])) * fps
-                                    end_frame = self._eval_expr(self._replace_globals(style_def_anim['end_time'])) * fps
-                                else:
-                                    begin_frame = 0
-                                    end_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
-
-                                if property_animation_short in self.animations['Style']:
-                                    # animated style
-                                    animation = self.animations['Style'][property_animation_short]
-                                    animated_value = animation.make_frame(current_frame,
-                                                                          birth_frame,
-                                                                          begin_frame,
-                                                                          end_frame,
-                                                                          death_frame)
-                                    resolved_style_values = {
-                                        "${Animations.Style." + property_animation_short + "_for_style_" + style_name_short + "}": animated_value}
-                                    svg = self._replace_placeholders(svg, resolved_style_values)
-                                else:
-                                    # unknown animated property
-                                    print(
-                                        f"section Caption.{line}.Segments.{segment}.StyleProperties.{property} uses an animation {style_definition['StyleProperties'][property]} that was not defined in the Animation.Styles section.")
-                                    return False
-                            else:
-                                # fixed property -> nothing to resolve
-                                pass
-                    else:
-                        # todo: use a default style? for now, use no style (which is also a kind of default I guess)
-                        begin_frame = 0
-                        end_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
+                svg = self._resolve_style_animations(fps, current_frame, line, svg)
+                if not svg:
+                    return False
 
             if "${" in svg:
                 print(
@@ -647,7 +653,7 @@ class CaptionGenerator(object):
 
 
 if __name__ == "__main__":
-    filenames = ['howtomakeapianosing']
+    filenames = ['complex']
     for filename in filenames:
         output_file = str(Path(__file__).absolute().parent.joinpath(f"outputs/debug/{filename}"))
         c = CaptionGenerator(output_file)
