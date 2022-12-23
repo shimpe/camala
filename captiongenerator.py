@@ -361,6 +361,35 @@ class CaptionGenerator(object):
             print(exceptions.text_error_template().render())
         return False, ""
 
+    def _parse_animation_times(self, fps, line, kind):
+        birth_frame = 0
+        start_frame = 0
+        stop_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
+        death_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
+        if kind in self.spec['Caption'][line]:
+            ta = self.spec['Caption'][line][kind]
+            if 'birth_time' in ta:
+                birth_frame = self._eval_expr(self._replace_globals(ta['birth_time'])) * fps
+            else:
+                print(
+                    f"Warning: no birth_time specified in Caption.{line}.{kind}. Using {birth_frame}.")
+            if 'begin_time' in ta:
+                start_frame = self._eval_expr(self._replace_globals(ta['begin_time'])) * fps
+            else:
+                print(
+                    f"Warning: no start_time specified in Caption.{line}.{kind}. Using {start_frame}.")
+            if 'end_time' in ta:
+                stop_frame = self._eval_expr(self._replace_globals(ta['end_time'])) * fps
+            else:
+                print(
+                    f"Warning: no stop_time specified in Caption.{line}.{kind}. Using {stop_frame}.")
+            if 'death_time' in ta:
+                death_frame = self._eval_expr(self._replace_globals(ta['death_time'])) * fps
+            else:
+                print(
+                    f"Warning: no death_time specified in Caption.{line}.{kind}. Using {death_frame}.")
+        return birth_frame, start_frame, stop_frame, death_frame
+            
     def _resolve_textprovider_animations(self, fps, current_frame, line, svg):
         text_per_line_per_segment = defaultdict(lambda: defaultdict(lambda: ""))
         for segment in self.spec['Caption'][line]['Segments']:
@@ -368,10 +397,6 @@ class CaptionGenerator(object):
         if 'TextProvider' not in self.spec['Caption'][line]:
             animated_value = 100
         else:
-            birth_frame = None
-            start_frame = None
-            stop_frame = None
-            death_frame = None
             if 'style' not in self.spec['Caption'][line]['TextProvider']:
                 print(f"Error! In Caption.{line}.TextProvider, no style is defined.")
                 return False
@@ -386,33 +411,7 @@ class CaptionGenerator(object):
                     f"Error Caption.{line}.TextProvider.style uses a style {short_provider_name} which is not defined in the Animation.TextProvider section.")
                 return False
             animation = self.animations['TextProvider'][short_provider_name]
-            if 'TextProviderAnimation' not in self.spec['Caption'][line]:
-                birth_frame = 0
-                start_frame = 0
-                stop_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
-                death_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
-            else:
-                ta = self.spec['Caption'][line]['TextProviderAnimation']
-                if 'birth_time' in ta:
-                    birth_frame = self._eval_expr(self._replace_globals(ta['birth_time'])) * fps
-                else:
-                    print(
-                        f"Warning: no birth_time specified in Caption.{line}.PositionAnimation. Using None.")
-                if 'begin_time' in ta:
-                    start_frame = self._eval_expr(self._replace_globals(ta['begin_time'])) * fps
-                else:
-                    print(
-                        f"Warning: no start_time specified in Caption.{line}.PositionAnimation. Using None.")
-                if 'end_time' in ta:
-                    stop_frame = self._eval_expr(self._replace_globals(ta['end_time'])) * fps
-                else:
-                    print(
-                        f"Warning: no stop_time specified in Caption.{line}.PositionAnimation. Using None.")
-                if 'death_time' in ta:
-                    death_frame = self._eval_expr(self._replace_globals(ta['death_time'])) * fps
-                else:
-                    print(
-                        f"Warning: no death_time specified in Caption.{line}.PositionAnimation. Using None.")
+            birth_frame, start_frame, stop_frame, death_frame = self._parse_animation_times(fps, line, 'TextProviderAnimation')
             animated_value = animation.make_frame(current_frame,
                                                   birth_frame,
                                                   start_frame,
@@ -425,6 +424,7 @@ class CaptionGenerator(object):
         return svg
 
     def _resolve_position_animations(self, fps, current_frame, line, svg):
+        current_pos = [0, 0]
         if 'x_offset' not in self.spec['Caption'][line]:
             x_offset = 0
         elif "${" in self.spec['Caption'][line]['x_offset']:
@@ -440,7 +440,7 @@ class CaptionGenerator(object):
             y_offset = self._eval_expr(self._replace_globals(self.spec['Caption'][line]['y_offset']))
 
         if not 'pos' in self.spec['Caption'][line]:  # no position
-            print(f"Warning: no position specified i caption Caption.{line}. Using [0, 0] instead.")
+            print(f"Warning: no position specified i caption Caption.{line}. Using {current_pos} instead.")
             resolved_values = {line + '_x': current_pos[0] + x_offset,
                                line + "_y": current_pos[1] + y_offset}
             svg = string.Template(svg).safe_substitute(resolved_values)
@@ -455,28 +455,7 @@ class CaptionGenerator(object):
                     print(
                         f"Error: animated position specified, but no PositionAnimation section present in Caption.{line}.")
                     return False
-                pa = cap['PositionAnimation']
-                if 'birth_time' in pa:
-                    birth_frame = self._eval_expr(self._replace_globals(pa['birth_time'])) * fps
-                else:
-                    print(
-                        f"Warning: no birth_time specified in Caption.{line}.PositionAnimation. Using None.")
-                if 'begin_time' in pa:
-                    start_frame = self._eval_expr(self._replace_globals(pa['begin_time'])) * fps
-                else:
-                    print(
-                        f"Warning: no start_time specified in Caption.{line}.PositionAnimation. Using None.")
-                if 'end_time' in pa:
-                    stop_frame = self._eval_expr(self._replace_globals(pa['end_time'])) * fps
-                else:
-                    print(
-                        f"Warning: no stop_time specified in Caption.{line}.PositionAnimation. Using None.")
-                if 'death_time' in pa:
-                    death_frame = self._eval_expr(self._replace_globals(pa['death_time'])) * fps
-                else:
-                    print(
-                        f"Warning: no death_time specified in Caption.{line}.PositionAnimation. Using None.")
-
+                birth_frame, start_frame, stop_frame, death_frame = self._parse_animation_times(fps, line, 'PositionAnimation')
                 the_pos = self.spec['Caption'][line]['pos']
                 if "[" in the_pos:
                     the_pos_el = self._listel_from_str(the_pos)
@@ -536,15 +515,7 @@ class CaptionGenerator(object):
                     if "${" in prop_val:  # animated property
 
                         property_animation_short = prop_val[len("${Animations.Style."):-1]
-                        if 'StyleAnimation' in style_definition and \
-                                property_animation_short in style_definition['StyleAnimation']:
-                            style_def_anim = style_definition['StyleAnimation'][property_animation_short]
-                            begin_frame = self._eval_expr(
-                                self._replace_globals(style_def_anim['begin_time'])) * fps
-                            end_frame = self._eval_expr(self._replace_globals(style_def_anim['end_time'])) * fps
-                        else:
-                            begin_frame = 0
-                            end_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
+                        birth_frame, begin_frame, end_frame, death_frame = self._parse_animation_times(fps, line, 'StyleAnimation')
 
                         if property_animation_short in self.animations['Style']:
                             # animated style
@@ -653,7 +624,7 @@ class CaptionGenerator(object):
 
 
 if __name__ == "__main__":
-    filenames = ['complex']
+    filenames = ['complex', 'textprovider']
     for filename in filenames:
         output_file = str(Path(__file__).absolute().parent.joinpath(f"outputs/debug/{filename}"))
         c = CaptionGenerator(output_file)
