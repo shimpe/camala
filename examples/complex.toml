@@ -3,7 +3,7 @@ W = "1000"
 H = "500"
 duration = "10"
 fps = "25"
-format = "gif"
+format = "mp4"
 background = "#ea7ce0"
 
 [Animations]
@@ -146,6 +146,8 @@ background = "#ea7ce0"
 [Caption]
     [Caption.Line1]
         pos = "[0, 0]"
+        [Caption.Line1.CaptionProperties]
+            rotate = "-45"
         [Caption.Line1.TextProvider]
             style = "${Animations.TextProvider.show}"
         [Caption.Line1.Segments]
@@ -155,6 +157,8 @@ background = "#ea7ce0"
             [Caption.Line1.Segments.Segment2]
                 style = "${Styles.h3_grow}"
                 text = "the middle"
+            [Caption.Line1.Segments.Segment2.SegmentProperties]
+                rotate = "30"
             [Caption.Line1.Segments.Segment3]
                 style = "${Styles.normal}"
                 text = " with you!"
