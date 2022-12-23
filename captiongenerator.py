@@ -298,6 +298,9 @@ class CaptionGenerator(object):
     def _collect_position_animations(self):
         return self._collect_animations('Position', 'PointAnimation', PointAnimation)
 
+    def _collect_captionsvgattribute_animations(self):
+        return self._collect_animations('CaptionSvgAttribute', 'NumberAnimation', NumberAnimation)
+
     def _collect_style_animations(self):
         return self._collect_animations('Style', 'NumberAnimation', NumberAnimation)
 
@@ -309,6 +312,10 @@ class CaptionGenerator(object):
 
         self.animations['Position'] = {}
         if not self._collect_position_animations():
+            return False
+
+        self.animations["CaptionSvgAttribute"] = {}
+        if not self._collect_captionsvgattribute_animations():
             return False
 
         self.animations['Style'] = {}
@@ -437,6 +444,28 @@ class CaptionGenerator(object):
         svg = string.Template(svg).safe_substitute(resolved_text_values)
         return svg
 
+    def _resolve_captionsvgattribute_animations(self, fps, current_frame, line, svg):
+        if 'CaptionSvgAttribute' in self.spec['Caption'][line]:
+            for key in self.spec['Caption'][line]['CaptionSvgAttribute']:
+                caption_property_keyval = self.spec['Caption'][line]['CaptionSvgAttribute'][key]
+                if "${" in caption_property_keyval:
+                    short_provider_name = caption_property_keyval[len("${Animations.CaptionSvgAttribute."):-1]
+                    if short_provider_name not in self.animations['CaptionSvgAttribute']:
+                        print(
+                            f"Error Caption.{line}.CaptionSvgAttribute.style uses a style {short_provider_name} which is not defined in the Animation.CaptionSvgAttribute section.")
+                        return False
+                    animation = self.animations['CaptionSvgAttribute'][short_provider_name]
+                    birth_frame, start_frame, stop_frame, death_frame = self._parse_animation_times(fps, line, 'CaptionSvgAttributeAnimation')
+                    animated_value = animation.make_frame(current_frame,
+                                                          birth_frame,
+                                                          start_frame,
+                                                          stop_frame,
+                                                          death_frame)
+                    resolved_style_values = {
+                        "${Animations.CaptionSvgAttribute." + short_provider_name + "_for_line_" + line + "}": animated_value}
+                    svg = self._replace_placeholders(svg, resolved_style_values)
+        return svg
+
     def _resolve_position_animations(self, fps, current_frame, line, svg):
         current_pos = [0, 0]
         if 'offset' not in self.spec['Caption'][line]:
@@ -556,6 +585,10 @@ class CaptionGenerator(object):
             # resolve the different positions and position animations
             for line in self.spec['Caption']:
                 svg = self._resolve_textprovider_animations(fps, current_frame, line, svg)
+                if not svg:
+                    return False
+
+                svg = self._resolve_captionsvgattribute_animations(fps, current_frame, line, svg)
                 if not svg:
                     return False
 

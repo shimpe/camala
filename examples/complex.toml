@@ -84,6 +84,18 @@ background = "#ea7ce0"
             begin = "-50"
             end = "0"
             tween = "linear"
+    [Animations.CaptionSvgAttribute]
+        [Animations.CaptionSvgAttribute.rotate]
+            type = "NumberAnimation"
+            begin = "-30"
+            end = "30"
+            tween = "easeOutBounce"
+    [Animations.Segment]
+        [Animations.Segment.rotate]
+            type = "NumberAnimation"
+            begin = "45"
+            end = "-45"
+            tween = "easeOutBounce"
 [Styles]
     [Styles.normal]
         [Styles.normal.StyleProperties]
@@ -146,8 +158,13 @@ background = "#ea7ce0"
 [Caption]
     [Caption.Line1]
         pos = "[0, 0]"
-        [Caption.Line1.CaptionProperties]
-            rotate = "-45"
+        [Caption.Line1.CaptionSvgAttribute]
+            rotate = "${Animations.CaptionSvgAttribute.rotate}"
+        [Caption.Line1.CaptionSvgAttributeAnimation]
+            birth_time = "0"
+            begin_time = "0"
+            end_time = "${Global.duration}/2"
+            death_time = "${Global.duration}"
         [Caption.Line1.TextProvider]
             style = "${Animations.TextProvider.show}"
         [Caption.Line1.Segments]
@@ -157,8 +174,11 @@ background = "#ea7ce0"
             [Caption.Line1.Segments.Segment2]
                 style = "${Styles.h3_grow}"
                 text = "the middle"
-            [Caption.Line1.Segments.Segment2.SegmentProperties]
-                rotate = "30"
+#            [Caption.Line1.Segments.Segment2.SegmentSvgAttribute]
+#                rotate = "${Animation.Segment.rotate}"
+#            [Caption.Line1.Segments.Segment2.SegmentSvgAttributeAnimation]
+#                begin_time = "0"
+#                end_time = "${Global.duration}/2"
             [Caption.Line1.Segments.Segment3]
                 style = "${Styles.normal}"
                 text = " with you!"

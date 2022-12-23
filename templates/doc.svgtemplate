@@ -22,9 +22,9 @@
 % for line in spec['Caption']:
 % if x is not None and y is not None:
     <text x="<%text>$</%text>{${line}_x}" y="<%text>$</%text>{${line}_y}"\
-% if 'CaptionProperties' in spec['Caption'][line]:
-% for cp in spec['Caption'][line]['CaptionProperties']:
- ${cp}="${spec['Caption'][line]['CaptionProperties'][cp] | x}"\
+% if 'CaptionSvgAttribute' in spec['Caption'][line]:
+% for cp in spec['Caption'][line]['CaptionSvgAttribute']:
+ ${cp}="${spec['Caption'][line]['CaptionSvgAttribute'][cp].replace("}","_for_line_"+line+"}") | x}"\
 % endfor
 % endif
  >
