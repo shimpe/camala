@@ -95,12 +95,17 @@ background = "#ea7ce0"
             begin_time = "0"
             end_time = "${Global.duration}/2"
             death_time = "${Global.duration}"
-    [Animations.Segment]
-        [Animations.Segment.rotate]
+    [Animations.SegmentSvgAttribute]
+        [Animations.SegmentSvgAttribute.rotate]
             type = "NumberAnimation"
             begin = "45"
             end = "-45"
             tween = "easeOutBounce"
+        [Animations.SegmentSvgAttribute.rotate.SegmentSvgAttributeAnimation]
+            birth_time = "0"
+            begin_time = "${Global.duration}/2"
+            end_time = "${Global.duration}"
+            death_time = "${Global.duration}"
 [Styles]
     [Styles.normal]
         [Styles.normal.StyleProperties]
@@ -174,11 +179,8 @@ background = "#ea7ce0"
             [Caption.Line1.Segments.Segment2]
                 style = "${Styles.h3_grow}"
                 text = "the middle"
-#            [Caption.Line1.Segments.Segment2.SegmentSvgAttribute]
-#                rotate = "${Animation.Segment.rotate}"
-#            [Caption.Line1.Segments.Segment2.SegmentSvgAttributeAnimation]
-#                begin_time = "0"
-#                end_time = "${Global.duration}/2"
+            [Caption.Line1.Segments.Segment2.SegmentSvgAttribute]
+                rotate = "${Animations.SegmentSvgAttribute.rotate}"
             [Caption.Line1.Segments.Segment3]
                 style = "${Styles.normal}"
                 text = " with you!"

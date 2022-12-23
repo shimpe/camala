@@ -301,6 +301,9 @@ class CaptionGenerator(object):
     def _collect_captionsvgattribute_animations(self):
         return self._collect_animations('CaptionSvgAttribute', 'NumberAnimation', NumberAnimation)
 
+    def _collect_segmentsvgattribute_animations(self):
+        return self._collect_animations('SegmentSvgAttribute', 'NumberAnimation', NumberAnimation)
+
     def _collect_style_animations(self):
         return self._collect_animations('Style', 'NumberAnimation', NumberAnimation)
 
@@ -316,6 +319,10 @@ class CaptionGenerator(object):
 
         self.animations["CaptionSvgAttribute"] = {}
         if not self._collect_captionsvgattribute_animations():
+            return False
+
+        self.animations['SegmentSvgAttribute'] = {}
+        if not self._collect_segmentsvgattribute_animations():
             return False
 
         self.animations['Style'] = {}
@@ -422,22 +429,22 @@ class CaptionGenerator(object):
                 birth_frame = self._eval_expr(self._replace_globals(time_section['birth_time'])) * fps
             else:
                 print(
-                    f"Warning: no birth_time specified in Caption.{style_name}.{kind}. Using {birth_frame}.")
+                    f"Warning: no birth_time specified in Caption.{style_name}.StyleAnimation.{kind}. Using {birth_frame}.")
             if 'begin_time' in time_section:
                 start_frame = self._eval_expr(self._replace_globals(time_section['begin_time'])) * fps
             else:
                 print(
-                    f"Warning: no start_time specified in Caption.{style_name}.{kind}. Using {start_frame}.")
+                    f"Warning: no start_time specified in Caption.{style_name}.StyleAnimation.{kind}. Using {start_frame}.")
             if 'end_time' in time_section:
                 stop_frame = self._eval_expr(self._replace_globals(time_section['end_time'])) * fps
             else:
                 print(
-                    f"Warning: no stop_time specified in Caption.{style_name}.{kind}. Using {stop_frame}.")
+                    f"Warning: no stop_time specified in Caption.{style_name}.StyleAnimation.{kind}. Using {stop_frame}.")
             if 'death_time' in time_section:
                 death_frame = self._eval_expr(self._replace_globals(time_section['death_time'])) * fps
             else:
                 print(
-                    f"Warning: no death_time specified in Caption.{style_name}.{kind}. Using {death_frame}.")
+                    f"Warning: no death_time specified in Caption.{style_name}.StyleAnimation.{kind}. Using {death_frame}.")
         return birth_frame, start_frame, stop_frame, death_frame
 
     def _parse_captionsvgattribute_animation_times(self, fps, attrib_anim_name):
@@ -446,34 +453,74 @@ class CaptionGenerator(object):
         stop_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
         death_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
         if not attrib_anim_name in self.spec['Animations']['CaptionSvgAttribute']:
-            print(f"Error! didn't find a section Animations.CaptionSvgAttribute.{attrib_anim_name}. Using birth_frame = {birth_frame}, start_frame = {start_frame}, stop_frame = {stop_frame}, death_frame = {death_frame}.")
+            print(
+                f"Error! didn't find a section Animations.CaptionSvgAttribute.{attrib_anim_name}. Using birth_frame = {birth_frame}, start_frame = {start_frame}, stop_frame = {stop_frame}, death_frame = {death_frame}.")
         else:
-            if not 'CaptionSvgAttributeAnimation' in self.spec['Animations']['CaptionSvgAttribute'][attrib_anim_name]:
-                print(f"Warning: no Animations.CaptionSvgAttribute.{attrib_anim_name}.CaptionSvgAttributeAnimation section found. Using birth_frame = {birth_frame}, start_frame = {start_frame}, stop_frame = {stop_frame}, death_frame = {death_frame}.")
+            if 'CaptionSvgAttributeAnimation' not in self.spec['Animations']['CaptionSvgAttribute'][attrib_anim_name]:
+                print(
+                    f"Warning: no Animations.CaptionSvgAttribute.{attrib_anim_name}.CaptionSvgAttributeAnimation section found. Using birth_frame = {birth_frame}, start_frame = {start_frame}, stop_frame = {stop_frame}, death_frame = {death_frame}.")
             else:
-                time_section = self.spec['Animations']['CaptionSvgAttribute'][attrib_anim_name]['CaptionSvgAttributeAnimation']
+                time_section = self.spec['Animations']['CaptionSvgAttribute'][attrib_anim_name][
+                    'CaptionSvgAttributeAnimation']
                 if 'birth_time' in time_section:
                     birth_frame = self._eval_expr(self._replace_globals(time_section['birth_time'])) * fps
                 else:
                     print(
-                        f"Warning: no birth_time specified in Caption.{style_name}.{kind}. Using {birth_frame}.")
+                        f"Warning: no birth_time specified in Animations.CaptionSvgAttribute.{attrib_anim_name}. Using {birth_frame}.")
                 if 'begin_time' in time_section:
                     start_frame = self._eval_expr(self._replace_globals(time_section['begin_time'])) * fps
                 else:
                     print(
-                        f"Warning: no start_time specified in Caption.{style_name}.{kind}. Using {start_frame}.")
+                        f"Warning: no start_time specified in Animations.CaptionSvgAttribute.{attrib_anim_name}. Using {start_frame}.")
                 if 'end_time' in time_section:
                     stop_frame = self._eval_expr(self._replace_globals(time_section['end_time'])) * fps
                 else:
                     print(
-                        f"Warning: no stop_time specified in Caption.{style_name}.{kind}. Using {stop_frame}.")
+                        f"Warning: no stop_time specified in Animations.CaptionSvgAttribute.{attrib_anim_name}. Using {stop_frame}.")
                 if 'death_time' in time_section:
                     death_frame = self._eval_expr(self._replace_globals(time_section['death_time'])) * fps
                 else:
                     print(
-                        f"Warning: no death_time specified in Caption.{style_name}.{kind}. Using {death_frame}.")
+                        f"Warning: no death_time specified in Animations.CaptionSvgAttribute.{attrib_anim_name}. Using {death_frame}.")
         return birth_frame, start_frame, stop_frame, death_frame
-            
+
+    def _parse_segmentsvgattribute_animation_times(self, fps, attrib_anim_name):
+        birth_frame = 0
+        start_frame = 0
+        stop_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
+        death_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
+        if not attrib_anim_name in self.spec['Animations']['SegmentSvgAttribute']:
+            print(
+                f"Error! didn't find a section Animations.SegmentSvgAttribute.{attrib_anim_name}. Using birth_frame = {birth_frame}, start_frame = {start_frame}, stop_frame = {stop_frame}, death_frame = {death_frame}.")
+        else:
+            if 'SegmentSvgAttributeAnimation' not in self.spec['Animations']['SegmentSvgAttribute'][attrib_anim_name]:
+                print(
+                    f"Warning: no Animations.SegmentSvgAttribute.{attrib_anim_name}.SegmentSvgAttributeAnimation section found. Using birth_frame = {birth_frame}, start_frame = {start_frame}, stop_frame = {stop_frame}, death_frame = {death_frame}.")
+            else:
+                time_section = self.spec['Animations']['SegmentSvgAttribute'][attrib_anim_name][
+                    'SegmentSvgAttributeAnimation']
+                if 'birth_time' in time_section:
+                    birth_frame = self._eval_expr(self._replace_globals(time_section['birth_time'])) * fps
+                else:
+                    print(
+                        f"Warning: no birth_time specified in Animations.SegmentSvgAttribute.{attrib_anim_name}. Using {birth_frame}.")
+                if 'begin_time' in time_section:
+                    start_frame = self._eval_expr(self._replace_globals(time_section['begin_time'])) * fps
+                else:
+                    print(
+                        f"Warning: no start_time specified in Animations.SegmentSvgAttribute.{attrib_anim_name}. Using {start_frame}.")
+                if 'end_time' in time_section:
+                    stop_frame = self._eval_expr(self._replace_globals(time_section['end_time'])) * fps
+                else:
+                    print(
+                        f"Warning: no stop_time specified in Animations.SegmentSvgAttribute.{attrib_anim_name}. Using {stop_frame}.")
+                if 'death_time' in time_section:
+                    death_frame = self._eval_expr(self._replace_globals(time_section['death_time'])) * fps
+                else:
+                    print(
+                        f"Warning: no death_time specified in Animations.SegmentSvgAttribute.{attrib_anim_name}. Using {death_frame}.")
+        return birth_frame, start_frame, stop_frame, death_frame
+
     def _resolve_textprovider_animations(self, fps, current_frame, line, svg):
         text_per_line_per_segment = defaultdict(lambda: defaultdict(lambda: ""))
         for segment in self.spec['Caption'][line]['Segments']:
@@ -495,7 +542,8 @@ class CaptionGenerator(object):
                     f"Error Caption.{line}.TextProvider.style uses a style {short_provider_name} which is not defined in the Animation.TextProvider section.")
                 return False
             animation = self.animations['TextProvider'][short_provider_name]
-            birth_frame, start_frame, stop_frame, death_frame = self._parse_animation_times(fps, line, 'TextProviderAnimation')
+            birth_frame, start_frame, stop_frame, death_frame = self._parse_animation_times(fps, line,
+                                                                                            'TextProviderAnimation')
             animated_value = animation.make_frame(current_frame,
                                                   birth_frame,
                                                   start_frame,
@@ -515,10 +563,10 @@ class CaptionGenerator(object):
                     short_provider_name = caption_property_keyval[len("${Animations.CaptionSvgAttribute."):-1]
                     if short_provider_name not in self.animations['CaptionSvgAttribute']:
                         print(
-                            f"Error Caption.{line}.CaptionSvgAttribute.style uses a style {short_provider_name} which is not defined in the Animations.CaptionSvgAttribute section.")
+                            f"Error: Caption.{line}.CaptionSvgAttribute specifies an animation {short_provider_name} which is not defined in the Animations.CaptionSvgAttribute section.")
                         return False
                     animation = self.animations['CaptionSvgAttribute'][short_provider_name]
-                    birth_frame, start_frame, stop_frame, death_frame = self._parse_captionsvgattribute_animation_times(\
+                    birth_frame, start_frame, stop_frame, death_frame = self._parse_captionsvgattribute_animation_times( \
                         fps,
                         short_provider_name)
                     animated_value = animation.make_frame(current_frame,
@@ -529,6 +577,30 @@ class CaptionGenerator(object):
                     resolved_style_values = {
                         "${Animations.CaptionSvgAttribute." + short_provider_name + "_for_line_" + line + "}": animated_value}
                     svg = self._replace_placeholders(svg, resolved_style_values)
+        return svg
+
+    def _resolve_segmentsvgattribute_animations(self, fps, current_frame, line, segment, svg):
+        if 'SegmentSvgAttribute' in self.spec['Caption'][line]['Segments'][segment]:
+            for key in self.spec['Caption'][line]['Segments'][segment]['SegmentSvgAttribute']:
+                segment_property_keyval = self.spec['Caption'][line]['Segments'][segment]['SegmentSvgAttribute'][key]
+                if "${" in segment_property_keyval:
+                    short_provider_name = segment_property_keyval[len("${Animations.SegmentSvgAttribute."):-1]
+                    if short_provider_name not in self.animations['SegmentSvgAttribute']:
+                        print(
+                            f"Error: Caption.{line}.Segments.{segment}.SegmentSvgAttribute specifies an animation which is not defined in the Animations.SegmentSvgAttribute section.")
+                        return False
+                animation = self.animations['SegmentSvgAttribute'][short_provider_name]
+                birth_frame, start_frame, stop_frame, death_frame = self._parse_segmentsvgattribute_animation_times(fps,
+                                                                                                                    short_provider_name)
+                animated_value = animation.make_frame(current_frame,
+                                                      birth_frame,
+                                                      start_frame,
+                                                      stop_frame,
+                                                      death_frame)
+                resolved_style_values = {
+                    "${Animations.SegmentSvgAttribute." + short_provider_name + "_for_line_" + line + "_for_segment_" + segment + "}": animated_value
+                }
+                svg = self._replace_placeholders(svg, resolved_style_values)
         return svg
 
     def _resolve_position_animations(self, fps, current_frame, line, svg):
@@ -552,7 +624,8 @@ class CaptionGenerator(object):
                     print(
                         f"Error: animated position specified, but no PositionAnimation section present in Caption.{line}.")
                     return False
-                birth_frame, start_frame, stop_frame, death_frame = self._parse_animation_times(fps, line, 'PositionAnimation')
+                birth_frame, start_frame, stop_frame, death_frame = self._parse_animation_times(fps, line,
+                                                                                                'PositionAnimation')
                 the_pos = self.spec['Caption'][line]['pos']
                 if "[" in the_pos:
                     the_pos_el = self._listel_from_str(the_pos)
@@ -612,7 +685,9 @@ class CaptionGenerator(object):
                     if "${" in prop_val:  # animated property
 
                         property_animation_short = prop_val[len("${Animations.Style."):-1]
-                        birth_frame, begin_frame, end_frame, death_frame = self._parse_style_animation_times(fps, style_name_short, property_animation_short)
+                        birth_frame, begin_frame, end_frame, death_frame = self._parse_style_animation_times(fps,
+                                                                                                             style_name_short,
+                                                                                                             property_animation_short)
 
                         if property_animation_short in self.animations['Style']:
                             # animated style
@@ -657,6 +732,11 @@ class CaptionGenerator(object):
                 if not svg:
                     return False
 
+                for segment in self.spec['Caption'][line]['Segments']:
+                    svg = self._resolve_segmentsvgattribute_animations(fps, current_frame, line, segment, svg)
+                    if not svg:
+                        return False
+
                 svg = self._resolve_position_animations(fps, current_frame, line, svg)
                 if not svg:
                     return False
@@ -695,7 +775,6 @@ class CaptionGenerator(object):
             return to_numpy(img, W, H)
 
         return make_frame
-
 
     def make_txt_clip(self, input):
         success = self.initialize_from_file(input)

@@ -31,17 +31,17 @@
 % for segment in spec['Caption'][line]['Segments']:
 % if 'style' in spec['Caption'][line]['Segments'][segment]:
         <tspan xml:space="preserve" class="${spec['Caption'][line]['Segments'][segment]['style'][9:-1]}"\
-% if 'SegmentProperties' in spec['Caption'][line]['Segments'][segment]:
-% for cp in spec['Caption'][line]['Segments'][segment]['SegmentProperties']:
- ${cp}="${spec['Caption'][line]['Segments'][segment]['SegmentProperties'][cp] | x}"\
+% if 'SegmentSvgAttribute' in spec['Caption'][line]['Segments'][segment]:
+% for cp in spec['Caption'][line]['Segments'][segment]['SegmentSvgAttribute']:
+ ${cp}="${spec['Caption'][line]['Segments'][segment]['SegmentSvgAttribute'][cp].replace("}", "_for_line_" + line + "_for_segment_" + segment + "}") | x}"\
 % endfor
 % endif
  ><%text>$</%text>{text_${line}_${segment}}</tspan>
 % else:
         <tspan xml:space="preserve" \
-% if 'SegmentProperties' in spec['Caption'][line]['Segments'][segment]:
-% for cp in spec['Caption'][line]['Segments'][segment]['SegmentProperties']:
- ${cp}="${spec['Caption'][line]['Segments'][segment]['SegmentProperties'] | x}"\
+% if 'SegmentSvgAttribute' in spec['Caption'][line]['Segments'][segment]:
+% for cp in spec['Caption'][line]['Segments'][segment]['SegmentSvgAttribute']:
+ ${cp}="${spec['Caption'][line]['Segments'][segment]['SegmentSvgAttribute'][cp] | x}"\
 % endfor
 % endif
  > <%text>$</%text>{text_${line}_${segment}}</tspan>
