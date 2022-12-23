@@ -7,6 +7,7 @@ import os.path
 from vectortween.NumberAnimation import NumberAnimation
 from vectortween.PointAnimation import PointAnimation
 from vectortween.SequentialAnimation import SequentialAnimation
+from vectortween.SumAnimation import SumAnimation
 from vectortween.Mapping import Mapping
 import string
 import ast
@@ -103,9 +104,10 @@ class CaptionGenerator(object):
                     print(f"Error! Animation Animations.Position.{pos_anim} does not specify a type.")
                     return False
                 the_type = spec['Position'][pos_anim]['type']
-                if the_type not in ['PointAnimation', 'SequentialAnimation']:
+                allowed_types = ['PointAnimation', 'SumAnimation', 'SequentialAnimation']
+                if the_type not in allowed_types:
                     print(
-                        f"Error: Position animations must be of type 'PositionAnimation' or 'SequentialAnimation'.\nAnimations.Position.{pos_anim} specifies type '{the_type}' instead.")
+                        f"Error: Position animations must be one of {allowed_types}.\nAnimations.Position.{pos_anim} specifies type '{the_type}' instead.")
                     return False
         if 'Style' in spec:
             for style_anim in spec['Style']:
@@ -114,9 +116,10 @@ class CaptionGenerator(object):
                     print(f"Error! Animation Animations.Style.{style_anim} does not specify a type.")
                     return False
                 the_type = spec['Style'][style_anim]['type']
-                if the_type not in ['NumberAnimation', 'SequentialAnimation']:
+                allowed_animations = ['NumberAnimation', 'SumAnimation', 'SequentialAnimation']
+                if the_type not in allowed_animations:
                     print(
-                        f"Error: Style animations must be of type 'NumberAnimation' or 'SequentialAnimation'.\nAnimations.Style.{style_anim} specifies type '{the_type}' instead.")
+                        f"Error: Style animations must be one of {allowed_animations}.\nAnimations.Style.{style_anim} specifies type '{the_type}' instead.")
                     return False
         return True
 
@@ -246,7 +249,7 @@ class CaptionGenerator(object):
                         return False
                     self.animations[kind][anim_instance] = basic_type_class(begin_numeric, end_numeric, [tween])
 
-            # then collect all sequential animations
+            # then collect all sequential and sum animations
             for anim_instance in self.spec['Animations'][kind]:
                 tp = self.spec['Animations'][kind][anim_instance]
                 the_type = tp['type']
@@ -279,6 +282,17 @@ class CaptionGenerator(object):
                         timeweight=timeweights,
                         repeats=repeats,
                         tween=[tween])
+                elif the_type == 'SumAnimation':
+                    elements_str = self._listel_from_str(tp['elements'])
+                    elements = []
+                    for el in elements_str:
+                        stripped_el = el[len(f"${{Animations.{kind}."):-1]
+                        if stripped_el not in self.animations[kind]:
+                            print(
+                                f"Error: sequential animation Animations.{kind}.{anim_instance} uses another animation named {el[2:-1]} which is not defined yet.")
+                            return False
+                        elements.append(self.animations[kind][stripped_el])
+                    self.animations[kind][anim_instance] = SumAnimation(list_of_animations=elements)
         return True
 
     def _collect_position_animations(self):
@@ -425,30 +439,19 @@ class CaptionGenerator(object):
 
     def _resolve_position_animations(self, fps, current_frame, line, svg):
         current_pos = [0, 0]
-        if 'x_offset' not in self.spec['Caption'][line]:
-            x_offset = 0
+        if 'offset' not in self.spec['Caption'][line]:
+            offset = [0, 0]
         elif "${" in self.spec['Caption'][line]['x_offset']:
-            x_offset = 0  # todo animated offset
+            offset = [0, 0]  # todo animated offset
         else:
-            x_offset = self._eval_expr(self._replace_globals(self.spec['Caption'][line]['x_offset']))
-
-        if 'y_offset' not in self.spec['Caption'][line]:
-            y_offset = 0
-        elif "${" in self.spec['Caption'][line]['y_offset']:
-            y_offset = 0  # todo animated offset
-        else:
-            y_offset = self._eval_expr(self._replace_globals(self.spec['Caption'][line]['y_offset']))
+            offset = self._eval_expr(self._replace_globals(self.spec['Caption'][line]['offset']))
 
         if not 'pos' in self.spec['Caption'][line]:  # no position
             print(f"Warning: no position specified i caption Caption.{line}. Using {current_pos} instead.")
-            resolved_values = {line + '_x': current_pos[0] + x_offset,
-                               line + "_y": current_pos[1] + y_offset}
+            resolved_values = {line + '_x': current_pos[0] + offset[0],
+                               line + "_y": current_pos[1] + offset[1]}
             svg = string.Template(svg).safe_substitute(resolved_values)
         else:
-            birth_frame = None
-            start_frame = None
-            stop_frame = None
-            death_frame = None
             cap = self.spec['Caption'][line]
             if '${' in cap['pos']:  # animated position
                 if not 'PositionAnimation' in cap:
@@ -485,13 +488,13 @@ class CaptionGenerator(object):
                             return False
                         animation_value = float(animation)
                         current_pos[index] = animation_value
-                resolved_values = {line + '_x': current_pos[0] + x_offset,
-                                   line + "_y": current_pos[1] + y_offset}
+                resolved_values = {line + '_x': current_pos[0] + offset[0],
+                                   line + "_y": current_pos[1] + offset[1]}
                 svg = string.Template(svg).safe_substitute(resolved_values)
             else:  # fixed position
                 current_pos = self._eval_expr(self._replace_globals(self.spec['Caption'][line]['pos']))
-                resolved_values = {line + '_x': current_pos[0] + x_offset,
-                                   line + "_y": current_pos[1] + y_offset}
+                resolved_values = {line + '_x': current_pos[0] + offset[0],
+                                   line + "_y": current_pos[1] + offset[1]}
                 svg = string.Template(svg).safe_substitute(resolved_values)
         return svg
 
@@ -624,7 +627,7 @@ class CaptionGenerator(object):
 
 
 if __name__ == "__main__":
-    filenames = ['complex', 'textprovider']
+    filenames = ['complex']
     for filename in filenames:
         output_file = str(Path(__file__).absolute().parent.joinpath(f"outputs/debug/{filename}"))
         c = CaptionGenerator(output_file)

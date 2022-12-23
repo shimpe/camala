@@ -48,6 +48,16 @@ background = "#ea7ce0"
             time_weights = "[1.0, 0.75]"
             repeats = "3"
             tween = "easeOutQuad"
+        [Animations.Position.offset]
+            type = "PointAnimation"
+            begin = "[10, 30]"
+            end = "[10, 30]"
+            tween = "linear"
+            ytween = "linear"
+        [Animations.Position.top_to_bottom_with_offset]
+            type = "SumAnimation"
+            elements = "[${Animations.Position.top_to_bottom}, ${Animations.Position.offset}]"
+
     [Animations.Style]
         [Animations.Style.grow]
             type = "NumberAnimation"
@@ -171,9 +181,7 @@ background = "#ea7ce0"
                 text = "is falling down!"
                 dy = "1.5em"
     [Caption.Line3]
-        pos = "${Animations.Position.top_to_bottom}"
-        x_offset = "10"
-        y_offset = "30"
+        pos = "${Animations.Position.top_to_bottom_with_offset}"
         [Caption.Line3.PositionAnimation]
             birth_time = "${Global.duration}/2"
             begin_time = "${Global.duration}/2"
