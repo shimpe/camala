@@ -367,24 +367,24 @@ class CaptionGenerator(object):
         stop_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
         death_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
         if kind in self.spec['Caption'][line]:
-            ta = self.spec['Caption'][line][kind]
-            if 'birth_time' in ta:
-                birth_frame = self._eval_expr(self._replace_globals(ta['birth_time'])) * fps
+            time_section = self.spec['Caption'][line][kind]
+            if 'birth_time' in time_section:
+                birth_frame = self._eval_expr(self._replace_globals(time_section['birth_time'])) * fps
             else:
                 print(
                     f"Warning: no birth_time specified in Caption.{line}.{kind}. Using {birth_frame}.")
-            if 'begin_time' in ta:
-                start_frame = self._eval_expr(self._replace_globals(ta['begin_time'])) * fps
+            if 'begin_time' in time_section:
+                start_frame = self._eval_expr(self._replace_globals(time_section['begin_time'])) * fps
             else:
                 print(
                     f"Warning: no start_time specified in Caption.{line}.{kind}. Using {start_frame}.")
-            if 'end_time' in ta:
-                stop_frame = self._eval_expr(self._replace_globals(ta['end_time'])) * fps
+            if 'end_time' in time_section:
+                stop_frame = self._eval_expr(self._replace_globals(time_section['end_time'])) * fps
             else:
                 print(
                     f"Warning: no stop_time specified in Caption.{line}.{kind}. Using {stop_frame}.")
-            if 'death_time' in ta:
-                death_frame = self._eval_expr(self._replace_globals(ta['death_time'])) * fps
+            if 'death_time' in time_section:
+                death_frame = self._eval_expr(self._replace_globals(time_section['death_time'])) * fps
             else:
                 print(
                     f"Warning: no death_time specified in Caption.{line}.{kind}. Using {death_frame}.")
