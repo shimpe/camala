@@ -1,0 +1,230 @@
+[Global]
+W = "1000"
+H = "500"
+duration = "10"
+fps = "25"
+format = "gif"
+background = "#ea7ce0"
+
+[Animations]
+    [Animations.TextProvider]
+        [Animations.TextProvider.show]
+            type = "NumberAnimation"
+            begin = "100"
+            end = "100"
+            tween = "linear"
+        [Animations.TextProvider.typewriter]
+            type = "NumberAnimation"
+            begin = "0"
+            end = "100"
+            tween = "easeInQuad"
+        [Animations.TextProvider.typewriter2]
+            type = "NumberAnimation"
+            begin = "0"
+            end = "-100"
+            tween = "easeInQuad"
+    [Animations.Position]
+        [Animations.Position.top_to_bottom]
+            type = "PointAnimation"
+            begin = "[0, -${Global.H}/1.5]"
+            end = "[0, ${Global.H}/3]"
+            tween = "easeOutBounce"
+            ytween = "easeOutBounce"
+        [Animations.Position.right_to_left]
+            type = "PointAnimation"
+            begin = "[${Global.W}/5, -${Global.H}/3]"
+            end =   "[-${Global.W}/5, -${Global.H}/3]"
+            tween = "linear"
+            ytween = "linear"
+        [Animations.Position.left_to_right]
+            type = "PointAnimation"
+            begin = "[-${Global.W}/5, -${Global.H}/3]"
+            end =   "[ ${Global.W}/5, -${Global.H}/3]"
+            tween = "linear"
+            ytween = "linear"
+        [Animations.Position.multi]
+            type = "SequentialAnimation"
+            elements = "[${Animations.Position.left_to_right}, ${Animations.Position.right_to_left}]"
+            time_weights = "[1.0, 0.75]"
+            repeats = "3"
+            tween = "easeOutQuad"
+        [Animations.Position.offset]
+            type = "PointAnimation"
+            begin = "[10, 30]"
+            end = "[10, 30]"
+            tween = "linear"
+            ytween = "linear"
+        [Animations.Position.top_to_bottom_with_offset]
+            type = "SumAnimation"
+            elements = "[${Animations.Position.top_to_bottom}, ${Animations.Position.offset}]"
+
+    [Animations.Style]
+        [Animations.Style.grow]
+            type = "NumberAnimation"
+            begin = "0"
+            end = "100"
+            tween = "easeOutBounce"
+        [Animations.Style.shrink]
+            type = "NumberAnimation"
+            begin = "100"
+            end = "0"
+            tween = "easeOutBounce"
+        [Animations.Style.pulse]
+            type = "SequentialAnimation"
+            elements = "[${Animations.Style.grow}, ${Animations.Style.shrink}]"
+            time_weights = "[1.0, 1.0]"
+            repeats = "3"
+        [Animations.Style.space_shrink]
+            type = "NumberAnimation"
+            begin = "50"
+            end = "0"
+            tween = "linear"
+        [Animations.Style.space_grow]
+            type = "NumberAnimation"
+            begin = "-50"
+            end = "0"
+            tween = "linear"
+    [Animations.CaptionSvgAttribute]
+        [Animations.CaptionSvgAttribute.rotate]
+            type = "NumberAnimation"
+            begin = "-30"
+            end = "30"
+            tween = "easeOutBounce"
+        [Animations.CaptionSvgAttribute.rotate.CaptionSvgAttributeAnimation]
+            birth_time = "0"
+            begin_time = "0"
+            end_time = "${Global.duration}/2"
+            death_time = "${Global.duration}"
+    [Animations.SegmentSvgAttribute]
+        [Animations.SegmentSvgAttribute.rotate]
+            type = "NumberAnimation"
+            begin = "45"
+            end = "-45"
+            tween = "easeOutBounce"
+        [Animations.SegmentSvgAttribute.rotate.SegmentSvgAttributeAnimation]
+            birth_time = "0"
+            begin_time = "${Global.duration}/2"
+            end_time = "${Global.duration}"
+            death_time = "${Global.duration}"
+[Styles]
+    [Styles.normal]
+        [Styles.normal.StyleProperties]
+            text-anchor="middle"
+            fill="white"
+            stroke="black"
+            stroke-width="2px"
+            font-size="55"
+            font-family="sans-serif"
+    [Styles.h1]
+        [Styles.h1.StyleProperties]
+            text-anchor="middle"
+            stroke-width="2px"
+            font-family="serif"
+            fill="blue"
+            stroke="gold"
+            font-size="80"
+    [Styles.h2]
+        [Styles.h2.StyleProperties]
+            text-anchor="middle"
+            stroke-width="2px"
+            font-family="sans-serif"
+            fill="gold"
+            stroke="maroon"
+            font-size="33"
+            font-style="italic"
+    [Styles.h3_grow]
+        [Styles.h3_grow.StyleProperties]
+            text-anchor="middle"
+            font-family="serif"
+            fill="green"
+            stroke="white"
+            stroke-width="3px"
+            font-size="${Animations.Style.grow}"
+        [Styles.h3_grow.StyleAnimation]
+            [Styles.h3_grow.StyleAnimation.grow]
+                begin_time = '${Global.duration}/3'
+                end_time = '2*${Global.duration}/3'
+    [Styles.h3_pulse]
+        [Styles.h3_pulse.StyleProperties]
+            text-anchor="middle"
+            font-family="serif"
+            fill="green"
+            stroke="white"
+            stroke-width="3px"
+            font-size="${Animations.Style.grow}"
+            letter-spacing="${Animations.Style.space_shrink}"
+            word-spacing="${Animations.Style.space_grow}"
+        [Styles.h3_pulse.StyleAnimation]
+            [Styles.h3_pulse.StyleAnimation.grow]
+                begin_time = '0'
+                end_time = '${Global.duration}'
+            [Styles.h3_pulse.StyleAnimation.pulse]
+                begin_time = '0'
+                end_time = '${Global.duration}'
+            [Styles.h3_pulse.StyleAnimation.space_shrink]
+                begin_time = '0'
+                end_time = '${Global.duration}'
+
+[Caption]
+    [Caption.Line1]
+        pos = "[0, 0]"
+        [Caption.Line1.CaptionSvgAttribute]
+            rotate = "${Animations.CaptionSvgAttribute.rotate}"
+        [Caption.Line1.TextProvider]
+            style = "${Animations.TextProvider.show}"
+        [Caption.Line1.Segments]
+            [Caption.Line1.Segments.Segment1]
+                text= "Stuck in "
+                style = "${Styles.normal}"
+            [Caption.Line1.Segments.Segment2]
+                style = "${Styles.h3_grow}"
+                text = "the middle"
+            [Caption.Line1.Segments.Segment2.SegmentSvgAttribute]
+                rotate = "${Animations.SegmentSvgAttribute.rotate}"
+            [Caption.Line1.Segments.Segment3]
+                style = "${Styles.normal}"
+                text = " with you!"
+    [Caption.Line2]
+        pos = "${Animations.Position.top_to_bottom}"
+        [Caption.Line2.PositionAnimation]
+            birth_time = "0"
+            begin_time = "${Global.duration}/4"
+            end_time = "${Global.duration}*2/3"
+            death_time = "${Global.duration}"
+        [Caption.Line2.TextProvider]
+            style = "${Animations.TextProvider.typewriter}"
+        [Caption.Line2.TextProviderAnimation]
+            birth_time = "0"
+            begin_time = "${Global.duration}/4"
+            end_time = "${Global.duration}*2/3"
+            death_time = "${Global.duration}"
+        [Caption.Line2.Segments]
+            [Caption.Line2.Segments.Segment1]
+                style = "${Styles.h3_pulse}"
+                text= "London Bridge "
+            [Caption.Line2.Segments.Segment2]
+                style = "${Styles.h2}"
+                text = "is falling down!"
+                dy = "1.5em"
+    [Caption.Line3]
+        pos = "${Animations.Position.top_to_bottom_with_offset}"
+        [Caption.Line3.PositionAnimation]
+            birth_time = "${Global.duration}/2"
+            begin_time = "${Global.duration}/2"
+            end_time = "${Global.duration}"
+            death_time = "${Global.duration}"
+        [Caption.Line3.TextProvider]
+            style = "${Animations.TextProvider.typewriter2}"
+        [Caption.Line3.TextProviderAnimation]
+            birth_time = "0"
+            begin_time = "${Global.duration}*0.5"
+            end_time = "${Global.duration}*0.8"
+            death_time = "${Global.duration}"
+        [Caption.Line3.Segments]
+            [Caption.Line3.Segments.Segment1]
+                style = "${Styles.h3_pulse}"
+                text= "London Bridge "
+            [Caption.Line3.Segments.Segment2]
+                style = "${Styles.h2}"
+                text = "is falling down!"
+                dy = "1.5em"

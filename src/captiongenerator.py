@@ -1052,9 +1052,12 @@ class CaptionGenerator(object):
 
 
 if __name__ == "__main__":
-    filenames = ['complex']
-    for filename in filenames:
-        output_file = str(Path(__file__).absolute().parent.joinpath(f"../outputs/debug/{filename}"))
+    filenames = ['simple', 'simple-colorchange', 'simple-animatedstyle', 'simple-animatedstyle2',
+                 'sequential-style-animation', 'position-animation', 'position-sumanimation',
+                 'complex', 'howtomakeapianosing', 'thisvideomaycontaintracesofmath']
+    for index, filename in enumerate(filenames):
+        output_file = str(Path(__file__).absolute().parent.joinpath(f"../examples/gettingstarted/outputs/{filename}"))
+        print(f"[{index+1}/{len(filenames)}] Processing {output_file}.")
         c = CaptionGenerator(output_file)
-        input_file = str(Path(__file__).absolute().parent.joinpath(f"../examples/{filename}.toml"))
+        input_file = str(Path(__file__).absolute().parent.joinpath(f"../examples/gettingstarted/{filename}.toml"))
         c.write_videofile(input=input_file)

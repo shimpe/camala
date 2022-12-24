@@ -1,0 +1,58 @@
+[Global]
+W = "1000"
+H = "500"
+duration = "3"
+fps = "25"
+format = "gif"
+background = "black"
+
+[Animations.Style.grow]
+type = "NumberAnimation"
+begin = "0"
+end = "50"
+tween = "easeOutBounce"
+[Animations.Style.shrink]
+type = "NumberAnimation"
+begin = "50"
+end = "0"
+tween = "easeOutQuad"
+[Animations.Style.pulse]
+type = "SequentialAnimation"
+elements = "[${Animations.Style.grow}, ${Animations.Style.shrink}]"
+time_weights = "[1.0, 0.75]"
+repeats = "2"
+tween = "linear"
+
+[Styles.normal.StyleProperties]
+text-anchor="middle"
+fill="white"
+stroke="black"
+stroke-width="0.5px"
+font-size="25"
+font-family="sans-serif"
+
+[Styles.special.StyleProperties]
+text-anchor="middle"
+fill="blue"
+stroke="yellow"
+stroke-width="0.5px"
+font-size="${Animations.Style.pulse}" # refers to Animations.Style.pulse
+font-family="sans-serif"
+[Styles.special.StyleAnimation.pulse]
+birth_time = '0' # birth_time specifies when the animation comes into existence
+begin_time = '0' # begin_time says when the animation starts animating
+                 # before the begin_time, the animation just returns the initial value
+end_time = '7*${Global.duration}/8' # end_time says when the animation has to be fully completed
+death_time = '${Global.duration}' # between end_time and death_time the animation returns the last value
+
+[Caption.Line1]
+pos = "[0, 200]"   # using a higher y value, moves the text down
+[Caption.Line1.Segments.Segment1]
+text= "Simple caption that appears "
+style = "${Styles.normal}"
+[Caption.Line1.Segments.Segment2]
+text = "in the middle"
+style = "${Styles.special}"
+[Caption.Line1.Segments.Segment3]
+text = " of the page."
+style = "${Styles.normal}"

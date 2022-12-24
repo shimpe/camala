@@ -1,0 +1,23 @@
+[Global]
+W = "1000"
+H = "500"
+duration = "1"
+fps = "25"
+format = "gif"
+background = "black"
+
+[Animations]
+
+[Styles.normal.StyleProperties]
+text-anchor="middle"
+fill="white"
+stroke="black"
+stroke-width="0.5px"
+font-size="25"
+font-family="sans-serif"
+
+[Caption.Line1]
+pos = "[0, 0]"
+[Caption.Line1.Segments.Segment1]
+text= "Simple caption that appears in the middle of the page."
+style = "${Styles.normal}"

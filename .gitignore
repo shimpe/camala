@@ -68,9 +68,6 @@ instance/
 # Scrapy stuff:
 .scrapy
 
-# Sphinx documentation
-docs/_build/
-
 # PyBuilder
 target/
 
@@ -131,5 +128,4 @@ dmypy.json
 # Project specific folders to ignore
 sandbox/
 src/templates/modules/
-outputs/
 

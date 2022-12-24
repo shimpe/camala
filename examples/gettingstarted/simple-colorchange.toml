@@ -1,0 +1,37 @@
+[Global]
+W = "1000"
+H = "500"
+duration = "1"
+fps = "25"
+format = "gif"
+background = "black"
+
+[Animations]
+
+[Styles.normal.StyleProperties]
+text-anchor="middle"
+fill="white"
+stroke="black"
+stroke-width="0.5px"
+font-size="25"
+font-family="sans-serif"
+
+[Styles.special.StyleProperties]
+text-anchor="middle"
+fill="blue"
+stroke="yellow"
+stroke-width="0.5px"
+font-size="50"
+font-family="sans-serif"
+
+[Caption.Line1]
+pos = "[0, 200]"   # using a higher y value, moves the text down
+[Caption.Line1.Segments.Segment1]
+text= "Simple caption that appears "
+style = "${Styles.normal}"
+[Caption.Line1.Segments.Segment2]
+text = "in the middle"
+style = "${Styles.special}"
+[Caption.Line1.Segments.Segment3]
+text = " of the page."
+style = "${Styles.normal}"

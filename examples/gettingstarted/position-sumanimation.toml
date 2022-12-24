@@ -1,0 +1,52 @@
+[Global]
+W = "1000"
+H = "500"
+duration = "1"
+fps = "25"
+format = "gif"
+background = "black"
+
+[Animations.Position.top_to_bottom]
+type = "PointAnimation"
+begin = "[0, -${Global.H}/3]"
+end = "[0, ${Global.H}/3]"
+tween = "linear"
+ytween = "easeOutBounce"
+[Animations.Position.constant_offset]
+type = "PointAnimation"
+begin = "[0, 40]"
+end = "[0, 40]"
+tween = "linear"
+ytween = "linear"
+[Animations.Position.top_to_bottom_shifted]
+type = "SumAnimation"
+elements = "[${Animations.Position.top_to_bottom}, ${Animations.Position.constant_offset}]"
+
+[Styles.normal.StyleProperties]
+text-anchor="middle"
+fill="white"
+stroke="black"
+stroke-width="0.5px"
+font-size="25"
+font-family="sans-serif"
+
+[Caption.Line1]
+pos = "${Animations.Position.top_to_bottom}"
+[Caption.Line1.PositionAnimation]
+birth_time = "0"
+begin_time = "${Global.duration}/4"
+end_time = "${Global.duration}*2/3"
+death_time = "${Global.duration}"
+[Caption.Line1.Segments.Segment1]
+text= "Simple caption that appears in the middle of the page."
+style = "${Styles.normal}"
+[Caption.Line2]
+pos = "${Animations.Position.top_to_bottom_shifted}"
+[Caption.Line2.PositionAnimation]
+birth_time = "0"
+begin_time = "${Global.duration}/4"
+end_time = "${Global.duration}*2/3"
+death_time = "${Global.duration}"
+[Caption.Line2.Segments.Segment1]
+text= "Second line with constant offset to first line."
+style = "${Styles.normal}"

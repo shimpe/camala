@@ -1,0 +1,75 @@
+[Global]
+W = "1920"
+H = "1080"
+duration = "3"
+fps = "30"
+format = "mp4"
+background = "black"
+
+[Animations]
+    #[Animations.Style]
+        [Animations.Style.grow]
+            type = "NumberAnimation"
+            begin = "0"
+            end = "100"
+            tween = "easeOutBounce"
+[Styles]
+    [Styles.h3_grow1]
+        [Styles.h3_grow1.StyleProperties]
+            text-anchor="middle"
+            fill="white"
+            stroke="black"
+            stroke-width="1px"
+            font-family="Bitstream Vera Sans"
+            font-size="${Animations.Style.grow}"
+        [Styles.h3_grow1.StyleAnimation]
+            [Styles.h3_grow1.StyleAnimation.grow]
+                begin_time = '0'
+                end_time = '${Global.duration}-1.2'
+    [Styles.h3_grow2]
+        [Styles.h3_grow2.StyleProperties]
+            text-anchor="middle"
+            fill="white"
+            stroke="black"
+            stroke-width="1px"
+            font-family="Bitstream Vera Sans"
+            font-size="${Animations.Style.grow}"
+        [Styles.h3_grow2.StyleAnimation]
+            [Styles.h3_grow2.StyleAnimation.grow]
+                begin_time = '0.1'
+                end_time = '${Global.duration}-1.1'
+    [Styles.h3_grow3]
+        [Styles.h3_grow3.StyleProperties]
+            text-anchor="middle"
+            fill="#ff7c84"
+            stroke="black"
+            stroke-width="1px"
+            font-family="Bitstream Vera Sans"
+            font-style="oblique"
+            font-size="${Animations.Style.grow}"
+        [Styles.h3_grow3.StyleAnimation]
+            [Styles.h3_grow3.StyleAnimation.grow]
+                begin_time = '0.2'
+                end_time = '${Global.duration}-1'
+[Caption]
+    [Caption.Line1]
+        pos = "[0, -120]"
+        [Caption.Line1.Segments]
+            [Caption.Line1.Segments.Segment1]
+                style = "${Styles.h3_grow1}"
+                text = "Warning: this video may"
+    [Caption.Line2]
+        pos = "[0, 0]"
+        [Caption.Line2.Segments]
+            [Caption.Line2.Segments.Segment1]
+                style = "${Styles.h3_grow2}"
+                text = "contain tiny traces of math."
+    [Caption.Line3]
+        pos = "[0, 140]"
+        [Caption.Line3.Segments]
+            [Caption.Line3.Segments.Segment1]
+                style = "${Styles.h3_grow3}"
+                text = "Math intolerant, beware!"
+
+
+
