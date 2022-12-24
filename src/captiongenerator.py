@@ -35,7 +35,7 @@ class CaptionGenerator(object):
 
         :param output_file: (full) path to where the resulting movie should be written
         """
-        self.template_folder = str(Path(__file__).absolute().parent.joinpath("../templates"))
+        self.template_folder = str(Path(__file__).absolute().parent.joinpath("templates"))
         self.output_file = output_file
         self.output_folder = str(Path(output_file).parent)
         guess = defaultdict(lambda key: "")
