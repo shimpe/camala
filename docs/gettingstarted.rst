@@ -47,8 +47,7 @@ Animating style parameters
 --------------------------
 Suppose you want the text "in the middle" to change size over time. This can be done by specifying an animation in the Animations section,
 and referring to it from the Styles section.
- .. literalinclude:: ../examples/gettingstarted/simple-animatedstyle.toml
-    :language: toml
+.. literalinclude:: ../examples/gettingstarted/simple-animatedstyle.toml
 
 The result of this toml specification is
 
