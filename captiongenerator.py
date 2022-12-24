@@ -21,13 +21,20 @@ from pathlib import Path
 
 
 def to_numpy(image, width, height):
-    '''  Converts a QImage into numpy format  '''
+    '''  Converts an RGBA image into numpy RGB format  '''
     arr = np.array(image).reshape(height, width, 4)  # Copies the data
     return arr[:, :, :3]  # remove alpha channel
 
 
 class CaptionGenerator(object):
+    """
+    The main class in this project. This class interprets .toml specifications and turns them into animated caption movies.
+    """
     def __init__(self, output_file):
+        """
+
+        :param output_file: (full) path to where the resulting movie should be written
+        """
         self.template_folder = str(Path(__file__).absolute().parent.joinpath("templates"))
         self.output_file = output_file
         self.output_folder = str(Path(output_file).parent)
@@ -39,15 +46,32 @@ class CaptionGenerator(object):
         self.frame_maker = None
 
     def duration(self):
+        """
+
+        :return: value of the duration in seconds declared in the [Global] section of the .toml specification
+        """
         return self._eval_expr(self._replace_globals('${Global.duration}'))
 
     def video_format(self):
+        """
+
+        :return: value of the output format declared in the [Global] section of the .toml specification (can be gif, mp4 or svg)
+        """
         return self.spec['Global']['format'].lower()
 
     def fps(self):
+        """
+
+        :return: value of the fps (frame per second) declared in the [Global] section
+        """
         return self._eval_expr(self._replace_globals('${Global.fps}'))
 
     def initialize_from_file(self, filename: str) -> bool:
+        """
+
+        :param filename: full path to a .toml specification
+        :return: True if the initialization succeeded; False if it failed (e.g. because of syntax errors in the .toml file)
+        """
         try:
             with open(filename, "r") as f:
                 contents = f.read()
@@ -57,8 +81,13 @@ class CaptionGenerator(object):
             return False
 
     def initialize_from_string(self, contents: str) -> bool:
+        """
+
+        :param contents: a string containing the .toml specification
+        :return: True if the initialization succeeded; False if it failed (e.g. because of syntax errors in the .toml file)
+        """
         self.spec = toml.loads(contents)
-        if not self.validate_spec():
+        if not self._validate_spec():
             print("Errors in specification found.")
             return False
         if not self._build_animations():
@@ -68,24 +97,50 @@ class CaptionGenerator(object):
         return True
 
     def _check_section_present(self, section: str, subspec: dict) -> bool:
+        """
+        helper function to see if a certain section is present in the .toml spec  (used during validation of the .toml spec)
+        :param section: name of a section
+        :param subspec: a dict
+        :return: True if ok, False if nok
+        """
         if not section in subspec:
             print(f"Error in specification: must have a [{section}] section.")
             return False
         return True
 
     def _check_key_present(self, key: str, sectionname: str, subspec: dict) -> bool:
+        """
+        helper function to see if a key is present in sectionname in subspec  (used during validation of the .toml spec)
+        :param key: a string denoting the name of the key (e.g. font-size)
+        :param sectionname: a string denoting the name of the section
+        :param subspec: a dictionary containing part of the .toml spec
+        :return: True if ok, False if nok
+        """
         if not key in subspec:
             print(f"Error in specification: must have a key {key} in [{sectionname}]")
             return False
         return True
 
     def _check_all_keys_present(self, keys: list[str], sectionname: str, subspec: dict) -> bool:
+        """
+        helper function to see if all keys in a list of keys are present in sectionname in subspec  (used during validation of the .toml spec)
+        :param keys: a list of string indicating which keys to check for
+        :param sectionname: a string denoting the name of the section
+        :param subspec: a dictionary containing part of the .toml spec
+        :return:
+        """
         all_ok = True
         for key in keys:
             all_ok = self._check_key_present(key, sectionname, subspec) and all_ok
         return all_ok
 
     def _check_all_leaves_are_strings(self, sectionname, spec) -> bool:
+        """
+        helper function to check syntax of the .toml spec (used during validation of the .toml spec)
+        :param sectionname: a string denoting the section name
+        :param spec: a dictionary containing the .toml spec
+        :return: True if all values are defined as strings; False if not
+        """
         for key in spec:
             if type(spec[key]) is dict:
                 new_sectionname = sectionname + "." + key if sectionname else key
@@ -97,6 +152,11 @@ class CaptionGenerator(object):
         return True
 
     def _check_animation_types(self, spec):
+        """
+        helper function to check if valid animations have been specified (used during validation of the .toml spec)
+        :param spec: a dictionary containing the .toml spec
+        :return: True if ok, False if nok
+        """
         if 'Position' in spec:
             for pos_anim in spec['Position']:
                 anim_spec = spec['Position'][pos_anim]
@@ -124,6 +184,11 @@ class CaptionGenerator(object):
         return True
 
     def _check_styles_properties(self, stylesspec):
+        """
+        helper function to check if StyleProperties are associated to a Style definition (used during validation of the .toml spec)
+        :param stylesspec: part of the dictionary with the the .toml spec that contains a style definition
+        :return: True if ok; False if nok
+        """
         for key in stylesspec:
             if "StyleProperties" not in stylesspec[key]:
                 print(f"Error! In section Styles.{key} no StyleProperties section is found.")
@@ -131,6 +196,10 @@ class CaptionGenerator(object):
         return True
 
     def _supported_tween_methods(self):
+        """
+        helper function that returns a list of supported tweening options (a large subset of what vectortween supports)
+        :return: a list of strings containning valid tweening options
+        """
         return ['linear',
                 'easeInQuad', 'easeOutQuad', 'easeInOutQuad',
                 'easeInCubic', 'easeOutCubic', 'easeInOutCubic',
@@ -142,12 +211,23 @@ class CaptionGenerator(object):
                 'easeInBounce', 'easeOutBounce', 'easeInOutBounce']
 
     def _check_valid_tween(self, tween):
+        """
+        helper function to check if a valid tweening option is selected (for now only a subset of what vectortween supports is used)
+        :param tween: string with the name of a tweening option
+        :return: True of ok; False if nok
+
+        """
         supported_tweens = self._supported_tween_methods()
         if tween not in supported_tweens:
             return False
         return True
 
     def _check_styles(self, spec):
+        """
+        helper function for validation of the .toml spec (note that many validations happen during generation as well)
+        :param spec: dictionary containing the .toml specification
+        :return: True if ok; False if nok
+        """
         if 'Caption' in self.spec:
             for caption in self.spec['Caption']:
                 if not 'Segments' in self.spec['Caption'][caption]:
@@ -167,7 +247,11 @@ class CaptionGenerator(object):
                         return False
         return True
 
-    def validate_spec(self) -> bool:
+    def _validate_spec(self) -> bool:
+        """
+        helper function to do a initial validation of the .toml spec (but most validations happen during generation)
+        :return: True if ok; False if nok
+        """
         if not type(self.spec) is dict:
             print("Error in specification: expected a valid toml file.")
             return False
@@ -186,17 +270,39 @@ class CaptionGenerator(object):
         return all_ok
 
     def _replace_placeholders(self, the_string, placeholders):
+        """
+        helper function to replace things named ${something.else.goes} with values defined in a dictionary
+        this helper function is introduced because python string Templates do not support using points
+
+        patterns that are in the_string, but not in the placeholders dict are preserved (similar to the
+        safe_substitute function of python's string Template)
+        :param the_string: (svg) string with patterns
+        :param placeholders: dictionary containing the values for these patters
+        :return: a new (svg) string in which the patterns have been replaced with the placeholders
+        """
         for p in placeholders:
             the_string = the_string.replace(str(p), str(placeholders[p]))
         return the_string
 
     def _replace_globals(self, the_string):
+        """
+        takes a string and replaces occurrences of the pattern ${Global.xxxx} with the value of xxxx in the [Global] section
+        in the .toml specification (this enables referencing entries in the .toml spec [Global] section while specifying animation parameters e.g.)
+        :param the_string:
+        :return:
+        """
         placeholders = {}
         for key in self.spec['Global']:
             placeholders[f"${{Global.{key}}}"] = self.spec['Global'][key]
         return self._replace_placeholders(the_string, placeholders)
 
     def _eval_expr(self, expr):
+        """
+        takes a string and evaluates it to something numerical (i.e. number or list of numbers or a simple formula involving numbers)
+        written to be safer than using bare "eval"
+        :param expr: a string containing something numerical
+        :return: the numerical result
+        """
         try:
             tree = ast.parse(expr, mode='eval')
         except SyntaxError:
@@ -210,9 +316,24 @@ class CaptionGenerator(object):
         return result
 
     def _listel_from_str(self, string):
+        """
+        helper function to extract from a list like [${ablah.blahbal}, ${otherblah.moreblah] a list of constituents
+        ${ablah.blahbal} and ${otherblah.moreblah}.
+        :param string: a string containing a list
+        :return: the elements in that list (as a list of strings)
+        """
         return string.replace(" ", "").replace("\t", "").strip()[1:-1].split(",")
 
     def _collect_animations(self, kind, basic_type_name, basic_type_class):
+        """
+        helper function to build a lookup table self.animations of animation objects from the .toml spec
+        in addition to NumberAnimations and PointAnimations, this function also collects SumAnimations and SequentialAnimations
+        this function may print some warnings if specifications are incomplete and values need to be guessed
+        :param kind: the type of animation (things like 'Position', 'TextProvider', 'Style', 'CaptionSvgAttribute', 'SegmentSvgAttribute'
+        :param basic_type_name: do we expect a 1-D (NumberAnimation) or a 2-D (PointAnimation, e.g. for positions) animation
+        :param basic_type_class: which vectortween animation class corresponds to this type of 1-D/2-D animation
+        :return: True if ok; False if nok
+        """
         if basic_type_name == "PointAnimation":
             default_begin_end = [0, 0]
             allowed_begin_end_types = (list,)
@@ -296,21 +417,41 @@ class CaptionGenerator(object):
         return True
 
     def _collect_position_animations(self):
+        """
+        helper function to collect animations in the Animations.Position section
+        :return: True if ok; False if nok
+        """
         return self._collect_animations('Position', 'PointAnimation', PointAnimation)
 
     def _collect_captionsvgattribute_animations(self):
+        """
+        helper function to collect animations in the Animations.CaptionSvgAttribute section
+        :return: True if ok; False if nok
+        """
         return self._collect_animations('CaptionSvgAttribute', 'NumberAnimation', NumberAnimation)
 
     def _collect_segmentsvgattribute_animations(self):
+        """
+        helper function to collect animations in the Animations.SegmentSvgAttribute section
+        :return:  True if ok; False if nok
+        """
         return self._collect_animations('SegmentSvgAttribute', 'NumberAnimation', NumberAnimation)
 
     def _collect_style_animations(self):
+        """
+        helper function to collect animations in the Animations.Style section
+        :return:  True if ok; False if nok
+        """
         return self._collect_animations('Style', 'NumberAnimation', NumberAnimation)
 
     def _collect_textprovider_animations(self):
         return self._collect_animations('TextProvider', 'NumberAnimation', NumberAnimation)
 
     def _build_animations(self):
+        """
+        function to search the .toml spec for animation specifications and build up an internal lookup table of animation objects
+        :return:
+        """
         self.animations = {}
 
         self.animations['Position'] = {}
@@ -336,6 +477,17 @@ class CaptionGenerator(object):
         return True
 
     def _get_text_per_segment_for_line(self, text_per_line_per_segment, line, animated_value):
+        """
+        helper function to return part of a larger text based on the value of animated_value
+        for value 0 only 1 character is returned, for value 100 (think percentage) all characters are returned
+        (note: negative animated_value returns characters from the back to the front instead of from front to back)
+        extra difficulty is that the complete text may be spread over different segments, so this function needs to
+        preserve these boundaries
+        :param text_per_line_per_segment: datastructure containing text split in different segments per line
+        :param line: current line being examined
+        :param animated_value: value between -100-100 to indicate how much of the text is to be returned
+        :return:
+        """
         text_per_segment = text_per_line_per_segment[line]
         total_text = ""
         for s in text_per_segment:
@@ -381,6 +533,10 @@ class CaptionGenerator(object):
         return text_values
 
     def _make_svg_string(self) -> bool:
+        """
+        renders the mako svg template to get a string that still contains placeholders for animated values
+        :return: a tuple of status, and svg string with placeholders for animations. Status is True if ok; False if nok.
+        """
         try:
             svg_text_template = Template(filename=os.path.join(self.template_folder, "doc.svgtemplate"),
                                          module_directory=os.path.join(self.template_folder, "modules"))
@@ -390,6 +546,14 @@ class CaptionGenerator(object):
         return False, ""
 
     def _parse_animation_times(self, fps, line, kind):
+        """
+        helper function to parse birth_time, begin_time, end_time and death_time from the .toml spec
+        this variant is used in PositionAnimation and TextProviderAnimation in the Caption section of the .toml spec
+        :param fps: frames per second (to convert between seconds and frames)
+        :param line: which Caption.Line is being processed
+        :param kind: one of 'PositionAnimation' or 'TextProviderAnimation'
+        :return: tuple birth_time, begin_time, end_time and death_time
+        """
         birth_frame = 0
         start_frame = 0
         stop_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
@@ -419,6 +583,14 @@ class CaptionGenerator(object):
         return birth_frame, start_frame, stop_frame, death_frame
 
     def _parse_style_animation_times(self, fps, style_name, kind):
+        """
+        helper function to parse birth_time, begin_time, end_time and death_time from the .toml spec
+        this variant is used in StyleAnimation in the Styles section of the .toml spec
+        :param fps: frames per second (to convert between seconds and frames)
+        :param line: which Style.name is being processed
+        :param kind: animation name being processed
+        :return: tuple birth_time, begin_time, end_time and death_time
+        """
         birth_frame = 0
         start_frame = 0
         stop_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
@@ -448,6 +620,13 @@ class CaptionGenerator(object):
         return birth_frame, start_frame, stop_frame, death_frame
 
     def _parse_captionsvgattribute_animation_times(self, fps, attrib_anim_name):
+        """
+        helper function to parse birth_time, begin_time, end_time and death_time from the .toml spec
+        this variant is used in Animations.CaptionSvgAttribute.attrib_anim_name.CaptionSvgAttributeAnimation of the .toml spec
+        :param fps: frames per second (to convert between seconds and frames)
+        :param attrib_anim_name: which attribute_anim_name is being processed
+        :return: tuple birth_time, begin_time, end_time and death_time
+        """
         birth_frame = 0
         start_frame = 0
         stop_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
@@ -485,6 +664,13 @@ class CaptionGenerator(object):
         return birth_frame, start_frame, stop_frame, death_frame
 
     def _parse_segmentsvgattribute_animation_times(self, fps, attrib_anim_name):
+        """
+        helper function to parse birth_time, begin_time, end_time and death_time from the .toml spec
+        this variant is used in Animations.SegmentSvgAttribute.attrib_anim_name.SegmentSvgAttributeAnimation of the .toml spec
+        :param fps: frames per second (to convert between seconds and frames)
+        :param attrib_anim_name: which attribute_anim_name is being processed
+        :return: tuple birth_time, begin_time, end_time and death_time
+        """
         birth_frame = 0
         start_frame = 0
         stop_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
@@ -522,6 +708,14 @@ class CaptionGenerator(object):
         return birth_frame, start_frame, stop_frame, death_frame
 
     def _resolve_textprovider_animations(self, fps, current_frame, line, svg):
+        """
+        helper function to iterate over all Caption.Line.Segments and fill in the value of the animated properties for the value of current_frame
+        :param fps: frames per second
+        :param current_frame: current frame in the animation
+        :param line: which caption.Line we are processing
+        :param svg: svg string with placeholders
+        :return: new svg string with (potentially) some placeholders replaced by values
+        """
         text_per_line_per_segment = defaultdict(lambda: defaultdict(lambda: ""))
         for segment in self.spec['Caption'][line]['Segments']:
             text_per_line_per_segment[line][segment] = self.spec['Caption'][line]['Segments'][segment]['text']
@@ -556,6 +750,14 @@ class CaptionGenerator(object):
         return svg
 
     def _resolve_captionsvgattribute_animations(self, fps, current_frame, line, svg):
+        """
+        helper function to replace animation placeholders in Caption.line.CaptionSvgAttribute with animated values for current_frame
+        :param fps: frames per second
+        :param current_frame: current frame in the animation
+        :param line: which caption.Line we are processing
+        :param svg: svg string with placeholders
+        :return: new svg string with (potentially) some placeholders replaced by values
+        """
         if 'CaptionSvgAttribute' in self.spec['Caption'][line]:
             for key in self.spec['Caption'][line]['CaptionSvgAttribute']:
                 caption_property_keyval = self.spec['Caption'][line]['CaptionSvgAttribute'][key]
@@ -580,6 +782,15 @@ class CaptionGenerator(object):
         return svg
 
     def _resolve_segmentsvgattribute_animations(self, fps, current_frame, line, segment, svg):
+        """
+        helper function to replace animation placeholders in Caption.line.SegmentSvgAttribute with animated values for current_frame
+        :param fps: frames per second
+        :param current_frame: current frame in the animation
+        :param line: which caption.Line we are processing
+        :param segment: which segment we are processing within the line
+        :param svg: svg string with placeholders
+        :return: new svg string with (potentially) some placeholders replaced by values
+        """
         if 'SegmentSvgAttribute' in self.spec['Caption'][line]['Segments'][segment]:
             for key in self.spec['Caption'][line]['Segments'][segment]['SegmentSvgAttribute']:
                 segment_property_keyval = self.spec['Caption'][line]['Segments'][segment]['SegmentSvgAttribute'][key]
@@ -604,18 +815,19 @@ class CaptionGenerator(object):
         return svg
 
     def _resolve_position_animations(self, fps, current_frame, line, svg):
+        """
+        helper function to replace animation placeholders in Caption.line.PositionAnimation with animated values for current_frame
+        :param fps: frames per second
+        :param current_frame: current frame in the animation
+        :param line: which caption.Line we are processing
+        :param svg: svg string with placeholders
+        :return: new svg string with (potentially) some placeholders replaced by values
+        """
         current_pos = [0, 0]
-        if 'offset' not in self.spec['Caption'][line]:
-            offset = [0, 0]
-        elif "${" in self.spec['Caption'][line]['x_offset']:
-            offset = [0, 0]  # todo animated offset
-        else:
-            offset = self._eval_expr(self._replace_globals(self.spec['Caption'][line]['offset']))
-
         if not 'pos' in self.spec['Caption'][line]:  # no position
             print(f"Warning: no position specified i caption Caption.{line}. Using {current_pos} instead.")
-            resolved_values = {line + '_x': current_pos[0] + offset[0],
-                               line + "_y": current_pos[1] + offset[1]}
+            resolved_values = {line + '_x': current_pos[0],
+                               line + "_y": current_pos[1]}
             svg = string.Template(svg).safe_substitute(resolved_values)
         else:
             cap = self.spec['Caption'][line]
@@ -666,6 +878,14 @@ class CaptionGenerator(object):
         return svg
 
     def _resolve_style_animations(self, fps, current_frame, line, svg):
+        """
+        helper function to replace animation placeholders in Caption.line.Segments.segment.style with animated values for current_frame
+        :param fps: frames per second
+        :param current_frame: current frame in the animation
+        :param line: which caption.Line we are processing
+        :param svg: svg string with placeholders
+        :return: new svg string with (potentially) some placeholders replaced by values
+        """
         # resolve style animations
         for segment in self.spec['Caption'][line]['Segments']:
             birth_frame = 0
@@ -715,6 +935,11 @@ class CaptionGenerator(object):
         return svg
 
     def _build_make_frame(self, fps):
+        """
+        helper function to generate a make_frame function that can be used by moviepy
+        :param fps: frames per second
+        :return: a function that is suitable as make_frame function in moviepy
+        """
         def make_frame(t):
             current_frame = t * fps
             success, svg = self._make_svg_string()
@@ -776,8 +1001,26 @@ class CaptionGenerator(object):
 
         return make_frame
 
-    def make_txt_clip(self, input):
-        success = self.initialize_from_file(input)
+    def make_txt_clip(self, path_to_input_file):
+        """
+        function to generate a moviepy VideoClip with animated text from a .toml spec
+        :param path_to_input_file: full path to .toml file
+        :return: a moviepy.video.VideoClip.VideoClip
+        """
+        success = self.initialize_from_file(path_to_input_file)
+        if not success:
+            print("Fatal error. Giving up.")
+            return None
+        txt_clip = moviepy.video.VideoClip.VideoClip(make_frame=self.frame_maker, duration=self.duration())
+        return txt_clip
+
+    def make_txt_clip_from_string(self, input):
+        """
+        function to generate a moviepy VideoClip with animated text from a .toml spec
+        :param input: string with contents of .toml file
+        :return: a moviepy.video.VideoClip.VideoClip
+        """
+        success = self.initialize_from_string(input)
         if not success:
             print("Fatal error. Giving up.")
             return None
@@ -785,6 +1028,11 @@ class CaptionGenerator(object):
         return txt_clip
 
     def write_videofile(self, input):
+        """
+        generates video file containing the animated text (output file was specified in CaptionGenerator constructor already)
+        :param input: full path to .toml spec
+        :return: True if ok; False if nok
+        """
         txt_clip = self.make_txt_clip(input)
         if not txt_clip:
             return False
