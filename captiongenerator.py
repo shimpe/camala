@@ -61,10 +61,10 @@ class CaptionGenerator(object):
         if not self.validate_spec():
             print("Errors in specification found.")
             return False
-        if not self.build_animations():
+        if not self._build_animations():
             print("Errors in animation specification found.")
             return False
-        self.frame_maker = self.build_make_frame(25)
+        self.frame_maker = self._build_make_frame(25)
         return True
 
     def _check_section_present(self, section: str, subspec: dict) -> bool:
@@ -310,7 +310,7 @@ class CaptionGenerator(object):
     def _collect_textprovider_animations(self):
         return self._collect_animations('TextProvider', 'NumberAnimation', NumberAnimation)
 
-    def build_animations(self):
+    def _build_animations(self):
         self.animations = {}
 
         self.animations['Position'] = {}
@@ -380,7 +380,7 @@ class CaptionGenerator(object):
                                             last=False)  # reverse order since we iterated in reverse
         return text_values
 
-    def make_svg_string(self) -> bool:
+    def _make_svg_string(self) -> bool:
         try:
             svg_text_template = Template(filename=os.path.join(self.template_folder, "doc.svgtemplate"),
                                          module_directory=os.path.join(self.template_folder, "modules"))
@@ -714,10 +714,10 @@ class CaptionGenerator(object):
                 end_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
         return svg
 
-    def build_make_frame(self, fps):
+    def _build_make_frame(self, fps):
         def make_frame(t):
             current_frame = t * fps
-            success, svg = self.make_svg_string()
+            success, svg = self._make_svg_string()
             if not success:
                 print(f"Error rendering svg template.")
                 return False
