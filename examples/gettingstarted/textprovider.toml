@@ -3,7 +3,7 @@ W = "1000"
 H = "500"
 duration = "10"
 fps = "25"
-format = "mp4"
+format = "gif"
 background = "black"
 
 [Animations]
