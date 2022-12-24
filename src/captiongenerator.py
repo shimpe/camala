@@ -35,7 +35,7 @@ class CaptionGenerator(object):
 
         :param output_file: (full) path to where the resulting movie should be written
         """
-        self.template_folder = str(Path(__file__).absolute().parent.joinpath("templates"))
+        self.template_folder = str(Path(__file__).absolute().parent.joinpath("../templates"))
         self.output_file = output_file
         self.output_folder = str(Path(output_file).parent)
         guess = defaultdict(lambda key: "")
@@ -867,13 +867,13 @@ class CaptionGenerator(object):
                             return False
                         animation_value = float(animation)
                         current_pos[index] = animation_value
-                resolved_values = {line + '_x': current_pos[0] + offset[0],
-                                   line + "_y": current_pos[1] + offset[1]}
+                resolved_values = {line + '_x': current_pos[0],
+                                   line + "_y": current_pos[1]}
                 svg = string.Template(svg).safe_substitute(resolved_values)
             else:  # fixed position
                 current_pos = self._eval_expr(self._replace_globals(self.spec['Caption'][line]['pos']))
-                resolved_values = {line + '_x': current_pos[0] + offset[0],
-                                   line + "_y": current_pos[1] + offset[1]}
+                resolved_values = {line + '_x': current_pos[0],
+                                   line + "_y": current_pos[1]}
                 svg = string.Template(svg).safe_substitute(resolved_values)
         return svg
 
@@ -1054,7 +1054,7 @@ class CaptionGenerator(object):
 if __name__ == "__main__":
     filenames = ['complex']
     for filename in filenames:
-        output_file = str(Path(__file__).absolute().parent.joinpath(f"outputs/debug/{filename}"))
+        output_file = str(Path(__file__).absolute().parent.joinpath(f"../outputs/debug/{filename}"))
         c = CaptionGenerator(output_file)
-        input_file = str(Path(__file__).absolute().parent.joinpath(f"examples/{filename}.toml"))
+        input_file = str(Path(__file__).absolute().parent.joinpath(f"../examples/{filename}.toml"))
         c.write_videofile(input=input_file)
