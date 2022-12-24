@@ -130,6 +130,6 @@ dmypy.json
 
 # Project specific folders to ignore
 sandbox/
-templates/modules/
+src/templates/modules/
 outputs/
 
