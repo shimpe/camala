@@ -1,12 +1,37 @@
-name: Sphinx Build
-  # You may pin to the exact commit or the version.
-  # uses: ammaraskar/sphinx-action@8b4f60114d7fd1faeba1a712269168508d4750d2
-  uses: ammaraskar/sphinx-action@0.4
-  with:
-    # The folder containing your sphinx docs.
-    docs-folder: # default is docs/
-    # The command used to build your documentation.
-    build-command: # optional, default is make html
-    # Run before the build command, you can use this to install system level dependencies, for example with "apt-get update -y && apt-get install -y perl"
-    pre-build-command: # optional
-    
+name: Sphinx docs to gh-pages
+
+on:
+  push:
+    branches:
+      - main
+
+# workflow_dispatch:        # Un comment line if you also want to trigger action manually
+
+jobs:
+  sphinx_docs_to_gh-pages:
+    runs-on: ubuntu-latest
+    name: Sphinx docs to gh-pages
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Make conda environment
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          python-version: 3.10    # Python version to build the html sphinx documentation
+          environment-file: devtools/conda-envs/docs_env.yaml    # Path to the documentation conda environment
+          auto-update-conda: false
+          auto-activate-base: false
+          show-channel-urls: true
+      - name: Installing the library
+        shell: bash -l {0}
+        run: |
+          python setup.py install
+      - name: Running the Sphinx to gh-pages Action
+        uses: uibcdf/action-sphinx-docs-to-gh-pages@v1.0.0
+        with:
+          branch: main
+          dir_docs: docs
+          sphinxapiopts: '--separate -o . ../'
+          sphinxapiexclude: '../*setup* ../*.ipynb'
+          sphinxopts: ''
