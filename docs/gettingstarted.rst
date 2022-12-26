@@ -1,6 +1,60 @@
 .. role:: toml(code)
    :language: toml
 
+Installation
+============
+- First, clone the code from github:
+    .. code-block::
+
+        git clone <https://github.com/shimpe/camala>
+
+
+- Second, on the command line create a virtual environment
+    .. code-block::
+
+        cd camala
+        python3 -m venv venv
+
+
+- Third, on the command line activate the virtual environment
+    .. code-block::
+
+        [for windows] venv\Scripts\activate.bat
+        [for linux/MacOS] source venv/bin/activate
+
+
+- Fourth, on the command line install the requirements
+    .. code-block::
+
+        python -m pip install -r requirements.txt
+
+
+- Fifth, on the command line you can now run the simple ui with
+    .. code-block::
+
+        python src/main.py
+
+
+  Alternatively, you can regenerate all the examples described in the documentation with
+
+    .. code-block::
+
+        python src/captiongenerator.py
+
+
+- Sixth, if you want to regenerate the html documentation you will need to install sphinx and run make html in the docs folder. Luckily the documentation is readable online at <https://shimpe.github.io/camala>
+    .. code-block::
+
+        pip install sphinx
+        cd docs
+        make html
+
+
+- Finally, when finished, you can deactivate the virtual environment with
+    .. code-block::
+
+        deactivate
+
 Getting Started
 ===============
 
@@ -12,7 +66,7 @@ First caption
 -------------
 
 The Camala language consists of a number of sections with caption generation instruction, some of which are optional.
-The smallest possible camala specification looks as follows:
+A small camala specification looks as follows:
 
 .. literalinclude:: ../examples/gettingstarted/simple.toml
   :language: toml
@@ -22,6 +76,7 @@ The result of this first toml specification is
 .. image:: ../examples/gettingstarted/outputs/simple.gif
 
 1. there's a :toml:`[Global]` section. In this section some properties of the generated movie clip are setup. These properties include:
+
    - W for width [pixels]
    - H for height [pixels]
    - duration [seconds]
@@ -32,8 +87,8 @@ The result of this first toml specification is
 #. there's a :toml:`Styles.name.StyleProperties` section. In the Styles section, we define how captions look. Here you can specify anything you could also specify in CSS (inkscape will do the final interpretation). Typical keys you define here are `fill` for letter color, `stroke` for outline color, `stroke-width` for outline thickness, `font-size` for font size, `font-family` for font name, `font-style` for normal/oblique, and many others.
 #. there's a :toml:`Caption` section which describes the text that must appear. In this case, the text consists of a single line with position [0, 0] and it uses the normal style defined in the Styles section. In general, captions can consist of multiple lines (each with their own position), and every line can consist of multiple segments, each with their own style.
 
-Changing font color
--------------------
+Changing font properties mid-way
+--------------------------------
 Suppose you want to change the color of the text mid-way the sentence. This can be accomplished by defining an extra style and dividing the line in different segments as shown below:
 
 .. literalinclude:: ../examples/gettingstarted/simple-colorchange.toml
@@ -68,7 +123,7 @@ You can animate multiple style parameters independently. E.g. here I also change
 
 Sequencing style animations
 ---------------------------
-You can sequence different animations together to get a new animation by using SequentialAnimation instead of NumberAnimation.
+You can sequence different animations one after the other into a new animation by using SequentialAnimation instead of NumberAnimation.
 E.g. here's an example of sequencing a grow and shrink animation to get a pulsing animation.
 
 .. literalinclude:: ../examples/gettingstarted/sequential-style-animation.toml
