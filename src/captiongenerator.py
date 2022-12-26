@@ -1043,11 +1043,11 @@ class CaptionGenerator(object):
             if vf == 'gif':
                 if not self.output_file.endswith(".gif"):
                     self.output_file += ".gif"
-                video.write_gif(self.output_file, fps=c.fps())
+                video.write_gif(self.output_file, fps=self.fps())
             elif vf == 'mp4' or vf == "svg":  # if we don't write a video file/gif the system stops after a single frame
                 if not self.output_file.endswith(".mp4"):
                     self.output_file += ".mp4"
-                video.write_videofile(self.output_file, fps=c.fps())
+                video.write_videofile(self.output_file, fps=self.fps())
         return True
 
 
