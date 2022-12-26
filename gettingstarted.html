@@ -199,8 +199,56 @@ A small camala specification looks as follows:</p>
 <section id="animating-style-parameters">
 <h2>Animating style parameters<a class="headerlink" href="#animating-style-parameters" title="Permalink to this heading">¶</a></h2>
 <p>Suppose you want the text “in the middle” to change size over time. This can be done by specifying an animation in the Animations section,
-and referring to it from the Styles section.
-.. literalinclude:: ../examples/gettingstarted/simple-animatedstyle.toml</p>
+and referring to it from the Styles section.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Global</span><span class="p">]</span>
+<span class="n">W</span> <span class="o">=</span> <span class="s2">&quot;1000&quot;</span>
+<span class="n">H</span> <span class="o">=</span> <span class="s2">&quot;500&quot;</span>
+<span class="n">duration</span> <span class="o">=</span> <span class="s2">&quot;3&quot;</span>
+<span class="n">fps</span> <span class="o">=</span> <span class="s2">&quot;25&quot;</span>
+<span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;gif&quot;</span>
+<span class="n">background</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span>
+
+<span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Style</span><span class="o">.</span><span class="n">grow</span><span class="p">]</span>
+<span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;NumberAnimation&quot;</span>
+<span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+<span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;50&quot;</span>
+<span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;easeOutBounce&quot;</span>
+
+<span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">StyleProperties</span><span class="p">]</span>
+<span class="n">text</span><span class="o">-</span><span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span>
+<span class="n">fill</span><span class="o">=</span><span class="s2">&quot;white&quot;</span>
+<span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;black&quot;</span>
+<span class="n">stroke</span><span class="o">-</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;0.5px&quot;</span>
+<span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="o">=</span><span class="s2">&quot;25&quot;</span>
+<span class="n">font</span><span class="o">-</span><span class="n">family</span><span class="o">=</span><span class="s2">&quot;sans-serif&quot;</span>
+
+<span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">StyleProperties</span><span class="p">]</span>
+<span class="n">text</span><span class="o">-</span><span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span>
+<span class="n">fill</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span>
+<span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;yellow&quot;</span>
+<span class="n">stroke</span><span class="o">-</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;0.5px&quot;</span>
+<span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{Animations.Style.grow}</span><span class="s2">&quot;</span> <span class="c1"># refers to Animations.Style.grow</span>
+<span class="n">font</span><span class="o">-</span><span class="n">family</span><span class="o">=</span><span class="s2">&quot;sans-serif&quot;</span>
+<span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">StyleAnimation</span><span class="o">.</span><span class="n">grow</span><span class="p">]</span>
+<span class="n">birth_time</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span> <span class="c1"># birth_time specifies when the animation comes into existence</span>
+<span class="n">begin_time</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span> <span class="c1"># begin_time says when the animation starts animating</span>
+                 <span class="c1"># before the begin_time, the animation just returns the initial value</span>
+<span class="n">end_time</span> <span class="o">=</span> <span class="s1">&#39;2*$</span><span class="si">{Global.duration}</span><span class="s1">/3&#39;</span> <span class="c1"># end_time says when the animation has to be fully completed</span>
+<span class="n">death_time</span> <span class="o">=</span> <span class="s1">&#39;$</span><span class="si">{Global.duration}</span><span class="s1">&#39;</span> <span class="c1"># between end_time and death_time the animation returns the last value</span>
+
+<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="p">]</span>
+<span class="n">pos</span> <span class="o">=</span> <span class="s2">&quot;[0, 200]&quot;</span>   <span class="c1"># using a higher y value, moves the text down</span>
+<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment1</span><span class="p">]</span>
+<span class="n">text</span><span class="o">=</span> <span class="s2">&quot;Simple caption that appears &quot;</span>
+<span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.normal}</span><span class="s2">&quot;</span>
+<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment2</span><span class="p">]</span>
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;in the middle&quot;</span>
+<span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.special}</span><span class="s2">&quot;</span>
+<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment3</span><span class="p">]</span>
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot; of the page.&quot;</span>
+<span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.normal}</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
 <p>The result of this toml specification is</p>
 <img alt="_images/simple-animatedstyle.gif" src="_images/simple-animatedstyle.gif" />
 <p>Notice how the <code class="code highlight toml docutils literal highlight-toml"><span class="n">font-size</span><span class="w"></span></code> now has a value of <code class="code highlight toml docutils literal highlight-toml"><span class="s">&quot;${Animations.Style.grow}&quot;</span><span class="w"></span></code>, and the <code class="code highlight toml docutils literal highlight-toml"><span class="n">Animations</span><span class="p">.</span><span class="n">Style</span><span class="p">.</span><span class="n">grow</span><span class="w"></span></code> section
