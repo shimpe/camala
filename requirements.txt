@@ -4,3 +4,5 @@ toml~=0.10.2
 Pillow~=9.3.0
 numpy~=1.23.5
 vectortween~=0.0.4
+ttkbootstrap~=1.10.0
+git gui
