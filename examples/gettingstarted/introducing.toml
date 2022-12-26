@@ -1,0 +1,118 @@
+[Global]
+W = "1000"
+H = "500"
+duration = "5"
+fps = "25"
+format = "gif"
+background = "black"
+
+[Animations.Position.lower]
+type = "PointAnimation"
+begin = "[0, -300]"
+end = "[0, -100]"
+tween = "linear"
+ytween = "easeOutBounce"
+[Animations.Position.offset]
+type = "PointAnimation"
+begin = "[0, 0]"
+end = "[0, 60]"
+tween = "linear"
+ytween = "linear"
+[Animations.Position.offsetted_lower]
+type = "SumAnimation"
+elements = "[${Animations.Position.lower}, ${Animations.Position.offset}]"
+[Animations.Position.bottom_up]
+type = "PointAnimation"
+begin = "[0, 500]"
+end = "[0, 120]"
+tween = "easeOutBounce"
+ytween = "easeOutQuad"
+[Animations.Style.growing]
+type = "NumberAnimation"
+begin = "0"
+end = "50"
+tween = "easeOutBounce"
+[Animations.Style.shrink]
+type = "NumberAnimation"
+begin = "500"
+end = "0"
+tween = "easeOutQuad"
+[Styles.normal.StyleProperties]
+text-anchor="middle"
+fill="white"
+stroke="black"
+stroke-width="0.5px"
+font-size="25"
+font-family="sans-serif"
+[Styles.inverted.StyleProperties]
+text-anchor="middle"
+fill="black"
+stroke="white"
+stroke-width="1px"
+font-size="35"
+font-family="sans-serif"
+font-style="oblique"
+letter-spacing="${Animations.Style.shrink}"
+[Styles.inverted.StyleAnimation]
+birth_time = "0"
+begin_time  ="${Global.duration}*2/5"
+end_time = "${Global.duration}*47/50"
+death_time = "${Global.duration}"
+[Styles.growing.StyleProperties]
+text-anchor="middle"
+fill="red"
+stroke="white"
+stroke-width="0.5px"
+font-size="${Animations.Style.growing}"
+font-family="sans-serif"
+[Styles.growing.StyleAnimation]
+birth_time = "0"
+begin_time = "${Global.duration}/2"
+end_time = "${Global.duration}*4/5"
+death_time = "${Global.duration}"
+
+[Caption.Line1]
+pos = "${Animations.Position.lower}"
+[Caption.Line1.PositionAnimation]
+birth_time = "0"
+begin_time = "0"
+end_time = "${Global.duration}*4/5"
+death_time = "${Global.duration}"
+[Caption.Line1.Segments.Segment1]
+text= "Introducing"
+style = "${Styles.normal}"
+[Caption.Line2]
+pos = "${Animations.Position.offsetted_lower}"
+[Caption.Line2.PositionAnimation]
+birth_time = "0"
+begin_time = "0"
+end_time = "${Global.duration}*4/5"
+death_time = "${Global.duration}"
+[Caption.Line2.Segments.Segment1]
+text = "ca"
+style = "${Styles.growing}"
+[Caption.Line2.Segments.Segment2]
+text = "ption "
+style = "${Styles.normal}"
+[Caption.Line2.Segments.Segment3]
+text = "ma"
+style = "${Styles.growing}"
+[Caption.Line2.Segments.Segment4]
+text = "rkup "
+style = "${Styles.normal}"
+[Caption.Line2.Segments.Segment5]
+text = "la"
+style = "${Styles.growing}"
+[Caption.Line2.Segments.Segment6]
+text = "nguage"
+style = "${Styles.normal}"
+[Caption.Line3]
+pos = "${Animations.Position.bottom_up}"
+[Caption.Line3.PositionAnimation]
+birth_time = "0"
+begin_time  ="${Global.duration}*3/5"
+end_time = "${Global.duration}*47/50"
+death_time = "${Global.duration}"
+[Caption.Line3.Segments.Segment1]
+text = "text animation language"
+style = "${Styles.inverted}"

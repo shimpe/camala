@@ -6,6 +6,8 @@
 Welcome to camala's documentation!
 ==================================
 
+.. image:: ../examples/gettingstarted/outputs/introducing.gif
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
