@@ -3,10 +3,12 @@
 
 Installation
 ============
-- First, clone the code from github:
+Before you do anything else, make sure to install inkscape, e.g. from https://inkscape.org or using your favourite package manager.
+
+- Then, clone the camala code from github:
     .. code-block::
 
-        git clone <https://github.com/shimpe/camala>
+        git clone https://github.com/shimpe/camala
 
 
 - Second, on the command line create a virtual environment
@@ -42,7 +44,7 @@ Installation
         python src/captiongenerator.py
 
 
-- Sixth, if you want to regenerate the html documentation you will need to install sphinx and run make html in the docs folder. Luckily the documentation is readable online at <https://shimpe.github.io/camala>
+- Sixth, if you want to regenerate the html documentation you will need to install sphinx and run make html in the docs folder. Luckily the documentation is readable online at https://shimpe.github.io/camala
     .. code-block::
 
         pip install sphinx
