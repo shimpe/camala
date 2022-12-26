@@ -12,7 +12,7 @@ First caption
 -------------
 
 The Camala language consists of a number of sections with caption generation instruction, some of which are optional.
-The smalles possible camala specification looks as follows:
+The smallest possible camala specification looks as follows:
 
 .. literalinclude:: ../examples/gettingstarted/simple.toml
   :language: toml
