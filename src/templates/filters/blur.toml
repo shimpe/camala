@@ -1,0 +1,4 @@
+[defaults]
+stdDeviationx = 3
+stdDeviationy = 3
+colorInterpolationFilters = "sRGB" # or linearRGB

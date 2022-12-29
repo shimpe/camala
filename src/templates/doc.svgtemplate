@@ -2,6 +2,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
      width="${spec['Global']['W']}" height="${spec['Global']['H']}"
      viewBox="${-int(spec['Global']['W'])//2} ${-int(spec['Global']['H'])//2} ${spec['Global']['W']} ${spec['Global']['H']}">
+% if thefilters:
+<defs>
+% for line in spec['Caption']:
+% for filter in thefilters:
+${thefilters[filter].svg_template.replace("${line}", line)}
+% endfor
+% endfor
+</defs>
+% endif
 % if spec['Styles']:
 <style type="text/css">
 <![CDATA[
@@ -26,6 +35,9 @@
 % for cp in spec['Caption'][line]['CaptionSvgAttribute']:
  ${cp}="${spec['Caption'][line]['CaptionSvgAttribute'][cp].replace("}","_for_line_"+line+"}") | x}"\
 % endfor
+% endif
+% if 'Filter' in spec['Caption'][line] and 'filter' in spec['Caption'][line]['Filter']:
+ filter="url(#${spec['Caption'][line]['Filter']['filter'][len('${Filters.'):-1]}_${line})"\
 % endif
  >
 % for segment in spec['Caption'][line]['Segments']:

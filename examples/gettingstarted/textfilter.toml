@@ -1,0 +1,68 @@
+[Global]
+W = "1000"
+H = "500"
+duration = "5"
+fps = "25"
+format = "gif"
+background = "black"
+
+[Animations.Filter.seedchange]
+type = "NumberAnimation"
+begin = "0"
+end = "${Global.fps}*${Global.duration}/2.5"
+tween = "linear"
+[Animations.Filter.seedchange.FilterAnimation]
+birth_time = "0"
+begin_time = "0"
+end_time = "${Global.duration}"
+death_time = "${Global.duration}"
+[Animations.Filter.scalereduction]
+type = "NumberAnimation"
+begin = "25"
+end = "0"
+tween = "linear"
+[Animations.Filter.scalereduction.FilterAnimation]
+birth_time = "0"
+begin_time = "0"
+end_time = "${Global.duration}"
+death_time = "${Global.duration}"
+[Animations.Filter.sharpen]
+type = "NumberAnimation"
+begin = "60"
+end = "0"
+tween = "easeOutQuad"
+[Animations.Filter.sharpen.FilterAnimation]
+birth_time = "0"
+begin_time = "0"
+end_time = "${Global.duration}*0.75"
+death_time = "${Global.duration}"
+
+[Styles.normal.StyleProperties]
+text-anchor="middle"
+fill="white"
+stroke="black"
+stroke-width="0.5px"
+font-size="100"
+font-family="sans-serif"
+
+[Caption.Line1]
+pos = "[0, -75]"
+[Caption.Line1.Filter]
+filter = "${Filters.displacement}" # points to displacement.svgtemplate in the templates/filter folder
+[Caption.Line1.Filter.Overrides]
+numOctaves = "1" # overrides default values specified in displacment.toml in the templates/filter folder
+scale = "${Animations.Filter.scalereduction}"
+seed = "${Animations.Filter.seedchange}"
+[Caption.Line1.Segments.Segment1]
+text= "Distortion"
+style = "${Styles.normal}"
+[Caption.Line2]
+pos = "[0, 75]"
+[Caption.Line2.Filter]
+filter = "${Filters.blur}"
+[Caption.Line2.Filter.Overrides]
+stdDeviationx = "${Animations.Filter.sharpen}"
+stdDeviationy = "${Animations.Filter.sharpen}"
+[Caption.Line2.Segments.Segment1]
+text = "Blur blur blur"
+style = "${Styles.normal}"

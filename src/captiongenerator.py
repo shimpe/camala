@@ -18,7 +18,12 @@ import numpy as np
 import moviepy
 from moviepy.editor import CompositeVideoClip
 from pathlib import Path
+from dataclasses import dataclass
 
+@dataclass
+class FilterTemplate:
+    svg_template: str
+    defaults: dict
 
 def to_numpy(image, width, height):
     '''  Converts an RGBA image into numpy RGB format  '''
@@ -44,6 +49,9 @@ class CaptionGenerator(object):
         guess['Darwin'] = r'/Applications/Inkscape.app/Contents/MacOS/inkscape'  # ???
         self.inkscape = guess[platform.system()]
         self.frame_maker = None
+        self.animations = {}
+        self.filters = {}
+        self.spec = None
 
     def duration(self):
         """
@@ -93,6 +101,10 @@ class CaptionGenerator(object):
         if not self._build_animations():
             print("Errors in animation specification found.")
             return False
+        if not self._build_filters():
+            print("Errors in filter specification found.")
+            return False
+
         self.frame_maker = self._build_make_frame(25)
         return True
 
@@ -445,7 +457,18 @@ class CaptionGenerator(object):
         return self._collect_animations('Style', 'NumberAnimation', NumberAnimation)
 
     def _collect_textprovider_animations(self):
+        """
+        helper function to collect animations in the Animations.TextProvider section
+        :return: True if ok; False if nok
+        """
         return self._collect_animations('TextProvider', 'NumberAnimation', NumberAnimation)
+
+    def _collect_filter_animations(self):
+        """
+        helper function to collect animations in the Animations.Filter section
+        :return: True if ok; False if nok
+        """
+        return self._collect_animations('Filter', 'NumberAnimation', NumberAnimation)
 
     def _build_animations(self):
         """
@@ -474,6 +497,41 @@ class CaptionGenerator(object):
         if not self._collect_textprovider_animations():
             return False
 
+        self.animations['Filter'] = {}
+        if not self._collect_filter_animations():
+            return False
+
+        return True
+
+    def _build_filters(self):
+        """
+        function to load filter svg templates
+        :return: True if ok; False if nok
+        """
+        self.filters = {}
+        for line in self.spec['Caption']:
+            if 'Filter' in self.spec['Caption'][line]:
+                if not 'filter' in self.spec['Caption'][line]['Filter']:
+                    print(f"Error! Caption.{line}.Filter does not contain a filter field.")
+                    return False
+                filter_name = self.spec['Caption'][line]['Filter']['filter'][len("${Filters."):-1]
+                if filter_name not in self.filters:
+                    filter_template_file = Path(self.template_folder).joinpath('filters', filter_name+".svgtemplate")
+                    if not filter_template_file.is_file():
+                        print(f"Error! Caption.{line}.Filter.filter does not point to an existing file {filter_template_file}.")
+                        return False
+                    filter_template = filter_template_file.read_text("utf-8")
+                    filter_defaults_file = Path(self.template_folder).joinpath('filters', filter_name+".toml")
+                    if not filter_defaults_file.is_file():
+                        print(f"Error! Caption.{line}.Filter.filter does not point to an existing file {filter_defaults_file}.")
+                        return False
+                    try:
+                        filter_defaults = toml.load(filter_defaults_file)
+                    except Exception:
+                        print(f"Error! Couldn't parse {filter_defaults_file}. Check for syntax errors.")
+                        return False
+
+                    self.filters[filter_name] = FilterTemplate(svg_template=filter_template, defaults=filter_defaults)
         return True
 
     def _get_text_per_segment_for_line(self, text_per_line_per_segment, line, animated_value):
@@ -540,7 +598,7 @@ class CaptionGenerator(object):
         try:
             svg_text_template = Template(filename=os.path.join(self.template_folder, "doc.svgtemplate"),
                                          module_directory=os.path.join(self.template_folder, "modules"))
-            return True, svg_text_template.render(spec=self.spec)
+            return True, svg_text_template.render(spec=self.spec, thefilters=self.filters)
         except:
             print(exceptions.text_error_template().render())
         return False, ""
@@ -617,6 +675,9 @@ class CaptionGenerator(object):
             else:
                 print(
                     f"Warning: no death_time specified in Caption.{style_name}.StyleAnimation.{kind}. Using {death_frame}.")
+        else:
+            print(f"Warning: no Caption.{style_name}.StyleAnimation.{kind} section present. Using defaults.")
+
         return birth_frame, start_frame, stop_frame, death_frame
 
     def _parse_captionsvgattribute_animation_times(self, fps, attrib_anim_name):
@@ -661,6 +722,49 @@ class CaptionGenerator(object):
                 else:
                     print(
                         f"Warning: no death_time specified in Animations.CaptionSvgAttribute.{attrib_anim_name}. Using {death_frame}.")
+        return birth_frame, start_frame, stop_frame, death_frame
+
+    def _parse_filter_animation_times(self, fps, animation_name):
+        """
+        helper function to parse birth_time, begin_time, end_time and death_time from the .toml spec
+        this variant is used in Animations.Filter.animation_name.FilterAnimation of the .toml spec
+        :param fps: frames per second (to convert between seconds and frames)
+        :param animation_name: which animation_name is being processed
+        :return: tuple birth_time, begin_time, end_time and death_time
+        """
+        birth_frame = 0
+        start_frame = 0
+        stop_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
+        death_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
+        if not animation_name in self.spec['Animations']['Filter']:
+            print(
+                f"Error! didn't find a section Animations.Filter.{animation_name}. Using birth_frame = {birth_frame}, start_frame = {start_frame}, stop_frame = {stop_frame}, death_frame = {death_frame}.")
+        else:
+            if 'FilterAnimation' not in self.spec['Animations']['Filter'][animation_name]:
+                print(
+                    f"Warning: no Animations.Filter.{animation_name}.FilterAnimation section found. Using birth_frame = {birth_frame}, start_frame = {start_frame}, stop_frame = {stop_frame}, death_frame = {death_frame}.")
+            else:
+                time_section = self.spec['Animations']['Filter'][animation_name]['FilterAnimation']
+                if 'birth_time' in time_section:
+                    birth_frame = self._eval_expr(self._replace_globals(time_section['birth_time'])) * fps
+                else:
+                    print(
+                        f"Warning: no birth_time specified in Animations.Filter.{animation_name}. Using {birth_frame}.")
+                if 'begin_time' in time_section:
+                    start_frame = self._eval_expr(self._replace_globals(time_section['begin_time'])) * fps
+                else:
+                    print(
+                        f"Warning: no start_time specified in Animations.Filter.{animation_name}. Using {start_frame}.")
+                if 'end_time' in time_section:
+                    stop_frame = self._eval_expr(self._replace_globals(time_section['end_time'])) * fps
+                else:
+                    print(
+                        f"Warning: no stop_time specified in Animations.Filter.{animation_name}. Using {stop_frame}.")
+                if 'death_time' in time_section:
+                    death_frame = self._eval_expr(self._replace_globals(time_section['death_time'])) * fps
+                else:
+                    print(
+                        f"Warning: no death_time specified in Animations.Filter.{animation_name}. Using {death_frame}.")
         return birth_frame, start_frame, stop_frame, death_frame
 
     def _parse_segmentsvgattribute_animation_times(self, fps, attrib_anim_name):
@@ -934,6 +1038,45 @@ class CaptionGenerator(object):
                 end_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
         return svg
 
+    def _resolve_filter_animations(self, fps, current_frame, line, svg):
+        resolved_filter_values = {}
+        if 'Filter' in self.spec['Caption'][line]:
+            filter_name = self.spec['Caption'][line]['Filter']['filter'][len("${Filters."):-1]
+            if 'Overrides' in self.spec['Caption'][line]['Filter']:
+                for override in self.spec['Caption'][line]['Filter']['Overrides']:
+                    override_value = self.spec['Caption'][line]['Filter']['Overrides'][override]
+                    if "${" in override_value: # animated filter value
+                        animation_name = override_value[len("${Animations.Filter."):-1]
+                        if animation_name not in self.animations['Filter']:
+                            print(f"Error! Caption.{line}.Filter.Overrides.{override} specifies an animation {animation_name} which was not defined in the Animations.Filter section.")
+                            return False
+                        animation = self.animations['Filter'][animation_name]
+                        birth_frame, begin_frame, end_frame, death_frame = self._parse_filter_animation_times(fps,
+                                                                                                              animation_name)
+                        current_value = animation.make_frame(current_frame, birth_frame, begin_frame,
+                                                             end_frame, death_frame)
+                        resolved_filter_values["${Animations.Filter." + f"{override}_{line}" + "}"] = current_value
+                    else: # fixed filter value
+                        resolved_filter_values["${Animations.Filter." + f"{override}_{line}" + "}"] = override_value
+            # now replace everything that was not overridden with default values
+            for parameter in self.filters[filter_name].defaults['defaults']:
+                key = "${Animations.Filter." + f"{parameter}_{line}" + "}"
+                if key not in resolved_filter_values:
+                    resolved_filter_values[key] = self.filters[filter_name].defaults['defaults'][parameter]
+            svg = self._replace_placeholders(svg, resolved_filter_values)
+        return svg
+
+    def _resolve_uninstantiated_filter_animations(self, svg):
+        resolved_filter_values = {}
+        for line in self.spec['Caption']:
+            for filter_name in self.filters:
+                for parameter in self.filters[filter_name].defaults['defaults']:
+                    key = "${Animations.Filter." + f"{parameter}_{line}" + "}"
+                    if key not in resolved_filter_values:
+                        resolved_filter_values[key] = self.filters[filter_name].defaults['defaults'][parameter]
+        svg = self._replace_placeholders(svg, resolved_filter_values)
+        return svg
+
     def _build_make_frame(self, fps):
         """
         helper function to generate a make_frame function that can be used by moviepy
@@ -969,6 +1112,14 @@ class CaptionGenerator(object):
                 svg = self._resolve_style_animations(fps, current_frame, line, svg)
                 if not svg:
                     return False
+
+                svg = self._resolve_filter_animations(fps, current_frame, line, svg)
+                if not svg:
+                    return False
+
+            svg = self._resolve_uninstantiated_filter_animations(svg)
+            if not svg:
+                return False
 
             if "${" in svg:
                 print(
@@ -1052,9 +1203,11 @@ class CaptionGenerator(object):
 
 
 if __name__ == "__main__":
-    filenames = ['simple', 'simple-colorchange', 'simple-animatedstyle', 'simple-animatedstyle2',
-                 'sequential-style-animation', 'position-animation', 'position-sumanimation',
-                 'complex', 'textprovider', 'howtomakeapianosing', 'thisvideomaycontaintracesofmath', 'introducing']
+    #filenames = ['simple', 'simple-colorchange', 'simple-animatedstyle', 'simple-animatedstyle2',
+    #             'sequential-style-animation', 'position-animation', 'position-sumanimation',
+    #             'complex', 'textprovider', 'howtomakeapianosing', 'thisvideomaycontaintracesofmath', 'introducing',
+    #             'textfilter']
+    filenames = ['introducing']
     for index, filename in enumerate(filenames):
         output_file = str(Path(__file__).absolute().parent.joinpath(f"../examples/gettingstarted/outputs/{filename}"))
         print(f"[{index+1}/{len(filenames)}] Processing {output_file}.")

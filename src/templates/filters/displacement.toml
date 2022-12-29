@@ -1,0 +1,9 @@
+[defaults]
+numOctaves = "2"          # higher number adds more detailed noise
+seed = "0"                # random seed for perlin noise generation
+scale = "7"
+xChannelSelector = "R"    # one of R,G,B
+yChannelSelector = "B"    # one of R,G,B
+xBaseFrequency = "0.015"
+yBaseFrequency = "0.1"
+colorInterpolationFilters = "sRGB" # or linearRGB
