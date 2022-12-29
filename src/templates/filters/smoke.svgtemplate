@@ -1,0 +1,6 @@
+<filter id="smoke_${line}" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="${Animations.Filter.colorInterpolationFilters_${line}}">
+	<feTurbulence type="turbulence" baseFrequency="${Animations.Filter.turbulenceBaseFreqx_${line}} ${Animations.Filter.turbulenceBaseFreqy_${line}}" numOctaves="${Animations.Filter.turbulenceNumOctaves_${line}}" seed="${Animations.Filter.turbulenceSeed_${line}}" stitchTiles="stitch" result="turbulence"/>
+	<feFlood flood-color="${Animations.Filter.floodcolor_${line}}" flood-opacity="${Animations.Filter.floodopacity_${line}}" result="flood"/>
+	<feComposite in="flood" in2="turbulence" operator="in" result="composite1"/>
+	<feComposite in="composite1" in2="SourceAlpha" operator="in" result="composite2"/>
+</filter>

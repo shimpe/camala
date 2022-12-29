@@ -1,0 +1,13 @@
+[defaults]
+colorInterpolationFilters = "linearRGB"
+dilateRadiusx = "4"
+dilateRadiusy = "4"
+floodcolor = "#30597E"
+floodopacity = "1"
+fractalNoiseFreqx = "0.01"
+fractalNoiseFreqy = "0.02"
+fractalNoiseNumOctaves = "1"
+fractalNoiseSeed = "0"
+turbulenceScale = "17"
+xChannelSelector = "A"
+yChannelSelector = "A"

@@ -1,0 +1,8 @@
+[defaults]
+colorInterpolationFilters = "linearRGB"
+innerfloodcolor = "#000000"
+innerfloodopacity = "1"
+shadowoffsetx = "4"
+shadowoffsety = "4"
+stdDeviationx = "4"
+stdDeviationy = "4"

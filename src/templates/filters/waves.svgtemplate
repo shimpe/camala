@@ -1,0 +1,4 @@
+<filter id="waves_${line}" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="${Animations.Filter.colorInterpolationFilters_${line}}">
+	<feTurbulence type="turbulence" baseFrequency="${Animations.Filter.turbulenceBaseFreqx_${line}} ${Animations.Filter.turbulenceBaseFreqy_${line}}" numOctaves="${Animations.Filter.turbulenceNumOctaves_${line}}" seed="${Animations.Filter.turbulenceSeed_${line}}" stitchTiles="noStitch" result="turbulence"/>
+	<feDisplacementMap in="SourceGraphic" in2="turbulence" scale="${Animations.Filter.displacementMapScale_${line}}" xChannelSelector="${Animations.Filter.xChannelSelector_${line}}" yChannelSelector="${Animations.Filter.yChannelSelector_${line}}" result="displacementMap"/>
+</filter>

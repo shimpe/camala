@@ -1,0 +1,58 @@
+[Global]
+W = "1000"
+H = "500"
+duration = "7"
+fps = "1"
+format = "gif"
+background = "black"
+
+[Animations]
+
+[Styles.normal.StyleProperties]
+text-anchor="middle"
+fill="white"
+stroke="black"
+stroke-width="0.5px"
+font-size="50"
+font-family="sans-serif"
+[Styles.big.StyleProperties]
+text-anchor="middle"
+fill="white"
+stroke="black"
+stroke-width="5px"
+font-size="100"
+font-family="sans-serif"
+
+[Caption.Line1]
+pos = "[0, 0]"
+[Caption.Line1.Filter]
+filter = "${Filters.innershadow}"
+[Caption.Line1.Segments.Segment1]
+text = "inner shadow"
+style = "${Styles.normal}"
+[Caption.Line2]
+pos = "[0, 110]"
+[Caption.Line2.Filter]
+filter = "${Filters.dancingstroke}"
+[Caption.Line2.Segments.Segment1]
+text = "dancing stroke"
+style = "${Styles.big}"
+[Caption.Line3]
+pos = "[0, -110]"
+[Caption.Line3.Filter]
+filter = "${Filters.smoke}"
+[Caption.Line3.Filter.Overrides]
+floodcolor = "#8ebed4"
+[Caption.Line3.Segments.Segment1]
+text = "smokey"
+style = "${Styles.normal}"
+[Caption.Line4]
+pos = "[200, -110]"
+[Caption.Line4.Filter]
+filter = "${Filters.waves}"
+[Caption.Line4.Filter.Overrides]
+floodcolor = "#8ebed4"
+[Caption.Line4.Segments.Segment1]
+text = "waves"
+style = "${Styles.normal}"
+

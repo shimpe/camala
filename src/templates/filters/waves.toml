@@ -1,0 +1,9 @@
+[defaults]
+colorInterpolationFilters = "linearRGB"
+turbulenceBaseFreqx = "0.01"
+turbulenceBaseFreqy = "0.05"
+turbulenceNumOctaves = "2"
+turbulenceSeed = "0"
+displacementMapScale = "20"
+xChannelSelector = "G"
+yChannelSelector = "A"

@@ -1,0 +1,11 @@
+<filter id="innershadow_${line}" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="${Animations.Filter.colorInterpolationFilters_${line}}">
+	<feFlood flood-color="${Animations.Filter.innerfloodcolor_${line}}" flood-opacity="${Animations.Filter.innerfloodopacity_${line}}" result="flood"/>
+	<feComposite in="flood" in2="SourceAlpha" operator="out" result="composite1"/>
+	<feOffset dx="${Animations.Filter.shadowoffsetx_${line}}" dy="${Animations.Filter.shadowoffsety_${line}}" in="composite1" result="offset"/>
+	<feGaussianBlur stdDeviation="${Animations.Filter.stdDeviationx_${line}} ${Animations.Filter.stdDeviationy_${line}}" in="offset" edgeMode="none" result="blur"/>
+	<feComposite in="blur" in2="SourceAlpha" operator="in" result="composite2"/>
+	<feMerge result="merge">
+    		<feMergeNode in="SourceGraphic"/>
+		<feMergeNode in="composite2"/>
+  	</feMerge>
+</filter>

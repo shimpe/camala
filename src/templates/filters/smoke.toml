@@ -1,0 +1,8 @@
+[defaults]
+colorInterpolationFilters = "linearRGB"
+turbulenceBaseFreqx = "0.013"
+turbulenceBaseFreqy = "0.01"
+turbulenceNumOctaves = "2"
+turbulenceSeed = "0"
+floodcolor = "#38252f"
+floodopacity = "1"

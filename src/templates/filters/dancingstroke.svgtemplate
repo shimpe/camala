@@ -1,0 +1,12 @@
+<filter id="dancingstroke_${line}" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="${Animations.Filter.colorInterpolationFilters_${line}}">
+	<feMorphology operator="dilate" radius="${Animations.Filter.dilateRadiusx_${line}} ${Animations.Filter.dilateRadiusy_${line}}" in="SourceAlpha" result="morphology"/>
+	<feFlood flood-color="${Animations.Filter.floodcolor_${line}}" flood-opacity="${Animations.Filter.floodopacity_${line}}" result="flood"/>
+	<feComposite in="flood" in2="morphology" operator="in" result="composite"/>
+	<feComposite in="composite" in2="SourceAlpha" operator="out" result="composite1"/>
+	<feTurbulence type="fractalNoise" baseFrequency="${Animations.Filter.fractalNoiseFreqx_${line}} ${Animations.Filter.fractalNoiseFreqy_${line}}" numOctaves="${Animations.Filter.fractalNoiseNumOctaves_${line}}" seed="${Animations.Filter.fractalNoiseSeed_${line}}" stitchTiles="stitch" result="turbulence"/>
+	<feDisplacementMap in="composite1" in2="turbulence" scale="${Animations.Filter.turbulenceScale_${line}}" xChannelSelector="${Animations.Filter.xChannelSelector_${line}}" yChannelSelector="${Animations.Filter.yChannelSelector_${line}}" result="displacementMap"/>
+	<feMerge result="merge">
+    		<feMergeNode in="SourceGraphic" result="mergeNode"/>
+		<feMergeNode in="displacementMap" result="mergeNode1"/>
+  	</feMerge>
+</filter>
