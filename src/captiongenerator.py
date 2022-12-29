@@ -724,7 +724,7 @@ class CaptionGenerator(object):
                         f"Warning: no death_time specified in Animations.CaptionSvgAttribute.{attrib_anim_name}. Using {death_frame}.")
         return birth_frame, start_frame, stop_frame, death_frame
 
-    def _parse_filter_animation_times(self, fps, animation_name):
+    def _parse_filter_animation_times(self, fps, animation_name, parameter_name):
         """
         helper function to parse birth_time, begin_time, end_time and death_time from the .toml spec
         this variant is used in Animations.Filter.animation_name.FilterAnimation of the .toml spec
@@ -744,27 +744,30 @@ class CaptionGenerator(object):
                 print(
                     f"Warning: no Animations.Filter.{animation_name}.FilterAnimation section found. Using birth_frame = {birth_frame}, start_frame = {start_frame}, stop_frame = {stop_frame}, death_frame = {death_frame}.")
             else:
-                time_section = self.spec['Animations']['Filter'][animation_name]['FilterAnimation']
-                if 'birth_time' in time_section:
-                    birth_frame = self._eval_expr(self._replace_globals(time_section['birth_time'])) * fps
+                if parameter_name not in self.spec['Animations']['Filter'][animation_name]['FilterAnimation']:
+                    print(f"Warning: no Animations.Filter.{animation_name}.FilterAnimation.{parameter_name} section present. Using birth_frame = {birth_frame}, start_frame = {start_frame}, stop_frame = {stop_frame}, death_frame = {death_frame}.")
                 else:
-                    print(
-                        f"Warning: no birth_time specified in Animations.Filter.{animation_name}. Using {birth_frame}.")
-                if 'begin_time' in time_section:
-                    start_frame = self._eval_expr(self._replace_globals(time_section['begin_time'])) * fps
-                else:
-                    print(
-                        f"Warning: no start_time specified in Animations.Filter.{animation_name}. Using {start_frame}.")
-                if 'end_time' in time_section:
-                    stop_frame = self._eval_expr(self._replace_globals(time_section['end_time'])) * fps
-                else:
-                    print(
-                        f"Warning: no stop_time specified in Animations.Filter.{animation_name}. Using {stop_frame}.")
-                if 'death_time' in time_section:
-                    death_frame = self._eval_expr(self._replace_globals(time_section['death_time'])) * fps
-                else:
-                    print(
-                        f"Warning: no death_time specified in Animations.Filter.{animation_name}. Using {death_frame}.")
+                    time_section = self.spec['Animations']['Filter'][animation_name]['FilterAnimation'][parameter_name]
+                    if 'birth_time' in time_section:
+                        birth_frame = self._eval_expr(self._replace_globals(time_section['birth_time'])) * fps
+                    else:
+                        print(
+                            f"Warning: no birth_time specified in Animations.Filter.{animation_name}. Using {birth_frame}.")
+                    if 'begin_time' in time_section:
+                        start_frame = self._eval_expr(self._replace_globals(time_section['begin_time'])) * fps
+                    else:
+                        print(
+                            f"Warning: no start_time specified in Animations.Filter.{animation_name}. Using {start_frame}.")
+                    if 'end_time' in time_section:
+                        stop_frame = self._eval_expr(self._replace_globals(time_section['end_time'])) * fps
+                    else:
+                        print(
+                            f"Warning: no stop_time specified in Animations.Filter.{animation_name}. Using {stop_frame}.")
+                    if 'death_time' in time_section:
+                        death_frame = self._eval_expr(self._replace_globals(time_section['death_time'])) * fps
+                    else:
+                        print(
+                            f"Warning: no death_time specified in Animations.Filter.{animation_name}. Using {death_frame}.")
         return birth_frame, start_frame, stop_frame, death_frame
 
     def _parse_segmentsvgattribute_animation_times(self, fps, attrib_anim_name):
@@ -1052,7 +1055,8 @@ class CaptionGenerator(object):
                             return False
                         animation = self.animations['Filter'][animation_name]
                         birth_frame, begin_frame, end_frame, death_frame = self._parse_filter_animation_times(fps,
-                                                                                                              animation_name)
+                                                                                                              animation_name,
+                                                                                                              override)
                         current_value = animation.make_frame(current_frame, birth_frame, begin_frame,
                                                              end_frame, death_frame)
                         resolved_filter_values["${Animations.Filter." + f"{override}_{line}" + "}"] = current_value
@@ -1207,7 +1211,7 @@ if __name__ == "__main__":
     #             'sequential-style-animation', 'position-animation', 'position-sumanimation',
     #             'complex', 'textprovider', 'howtomakeapianosing', 'thisvideomaycontaintracesofmath', 'introducing',
     #             'textfilter']
-    filenames = ['introducing']
+    filenames = ['textfilter']
     for index, filename in enumerate(filenames):
         output_file = str(Path(__file__).absolute().parent.joinpath(f"../examples/gettingstarted/outputs/{filename}"))
         print(f"[{index+1}/{len(filenames)}] Processing {output_file}.")

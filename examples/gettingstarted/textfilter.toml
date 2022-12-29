@@ -11,7 +11,7 @@ type = "NumberAnimation"
 begin = "0"
 end = "${Global.fps}*${Global.duration}/2.5"
 tween = "linear"
-[Animations.Filter.seedchange.FilterAnimation]
+[Animations.Filter.seedchange.FilterAnimation.seed]
 birth_time = "0"
 begin_time = "0"
 end_time = "${Global.duration}"
@@ -21,7 +21,7 @@ type = "NumberAnimation"
 begin = "25"
 end = "0"
 tween = "linear"
-[Animations.Filter.scalereduction.FilterAnimation]
+[Animations.Filter.scalereduction.FilterAnimation.scale]
 birth_time = "0"
 begin_time = "0"
 end_time = "${Global.duration}"
@@ -31,10 +31,15 @@ type = "NumberAnimation"
 begin = "60"
 end = "0"
 tween = "easeOutQuad"
-[Animations.Filter.sharpen.FilterAnimation]
+[Animations.Filter.sharpen.FilterAnimation.stdDeviationx]
 birth_time = "0"
 begin_time = "0"
-end_time = "${Global.duration}*0.75"
+end_time = "${Global.duration}*0.8"
+death_time = "${Global.duration}"
+[Animations.Filter.sharpen.FilterAnimation.stdDeviationy]
+birth_time = "0"
+begin_time = "0"
+end_time = "${Global.duration}*0.5"
 death_time = "${Global.duration}"
 
 [Styles.normal.StyleProperties]
