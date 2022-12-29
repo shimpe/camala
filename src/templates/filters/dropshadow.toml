@@ -1,0 +1,8 @@
+[defaults]
+colorInterpolationFilters = "sRGB"
+stdDeviationx = "5"
+stdDeviationy = "5"
+dx = "10"
+dy = "10"
+floodcolor = "#1F3646"
+floodopacity = "1"

@@ -1,0 +1,8 @@
+[defaults]
+dx_red = -2
+dy_red = 0
+dx_green = 0
+dy_green = 0
+dx_blue = 2
+dy_blue = 0
+colorInterpolationFilter = "sRGB"

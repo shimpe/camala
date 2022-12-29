@@ -41,6 +41,66 @@ birth_time = "0"
 begin_time = "0"
 end_time = "${Global.duration}*0.5"
 death_time = "${Global.duration}"
+[Animations.Filter.dxred]
+type="NumberAnimation"
+begin="5"
+end = "0"
+tween="easeOutBounce"
+[Animations.Filter.dxred.FilterAnimation.dx_red]
+birth_time = "0"
+begin_time = "1.3"
+end_time = "${Global.duration}*0.5"
+death_time = "${Global.duration}"
+[Animations.Filter.dyred]
+type="NumberAnimation"
+begin="-6"
+end = "0"
+tween="easeOutBounce"
+[Animations.Filter.dyred.FilterAnimation.dy_red]
+birth_time = "0"
+begin_time = "0.6"
+end_time = "${Global.duration}*0.5"
+death_time = "${Global.duration}"
+[Animations.Filter.dxgreen]
+type="NumberAnimation"
+begin="4"
+end = "0"
+tween="easeOutBounce"
+[Animations.Filter.dxgreen.FilterAnimation.dx_green]
+birth_time = "0"
+begin_time = "0.5"
+end_time = "${Global.duration}*0.5"
+death_time = "${Global.duration}"
+[Animations.Filter.dygreen]
+type="NumberAnimation"
+begin="-3"
+end = "0"
+tween="easeOutBounce"
+[Animations.Filter.dygreen.FilterAnimation.dy_green]
+birth_time = "0"
+begin_time = "0.6"
+end_time = "${Global.duration}*0.5"
+death_time = "${Global.duration}"
+[Animations.Filter.dxblue]
+type="NumberAnimation"
+begin="7"
+end = "0"
+tween="easeOutBounce"
+[Animations.Filter.dxblue.FilterAnimation.dx_blue]
+birth_time = "0"
+begin_time = "0.7"
+end_time = "${Global.duration}*0.5"
+death_time = "${Global.duration}"
+[Animations.Filter.dyblue]
+type="NumberAnimation"
+begin="-5"
+end = "0"
+tween="easeOutBounce"
+[Animations.Filter.dyblue.FilterAnimation.dy_blue]
+birth_time = "0"
+begin_time = "1"
+end_time = "${Global.duration}*0.5"
+death_time = "${Global.duration}"
 
 [Styles.normal.StyleProperties]
 text-anchor="middle"
@@ -49,9 +109,16 @@ stroke="black"
 stroke-width="0.5px"
 font-size="100"
 font-family="sans-serif"
+[Styles.small.StyleProperties]
+text-anchor="middle"
+fill="white"
+stroke="black"
+stroke-width="0.5px"
+font-size="50"
+font-family="sans-serif"
 
 [Caption.Line1]
-pos = "[0, -75]"
+pos = "[0, 0]"
 [Caption.Line1.Filter]
 filter = "${Filters.displacement}" # points to displacement.svgtemplate in the templates/filter folder
 [Caption.Line1.Filter.Overrides]
@@ -71,3 +138,27 @@ stdDeviationy = "${Animations.Filter.sharpen}"
 [Caption.Line2.Segments.Segment1]
 text = "Blur blur blur"
 style = "${Styles.normal}"
+[Caption.Line3]
+pos = "[0, 175]"
+[Caption.Line3.Filter]
+filter = "${Filters.rgbsplit}"
+[Caption.Line3.Filter.Overrides]
+dx_red = "${Animations.Filter.dxred}"
+dy_red = "${Animations.Filter.dyred}"
+dx_green = "${Animations.Filter.dxgreen}"
+dy_green = "${Animations.Filter.dygreen}"
+dx_blue = "${Animations.Filter.dxblue}"
+dy_blue = "${Animations.Filter.dyblue}"
+[Caption.Line3.Segments.Segment1]
+text = "RGB split?"
+style= "${Styles.small}"
+[Caption.Line4]
+pos = "[0, -75]"
+[Caption.Line4.Filter]
+filter = "${Filters.dropshadow}"
+[Caption.Line4.Filter.Overrides]
+floodcolor = "#8f8b19"
+[Caption.Line4.Segments.Segment1]
+text = "yellow drop shadow !"
+style= "${Styles.small}"
+

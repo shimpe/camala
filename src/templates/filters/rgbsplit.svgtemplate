@@ -1,0 +1,21 @@
+<filter id="rgbsplit_${line}" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="${Animations.Filter.colorInterpolationFilter_${line}}">
+	<feColorMatrix type="matrix" values="1 0 0 0 0
+                                         0 0 0 0 0
+                                         0 0 0 0 0
+                                         0 0 0 1 0"
+                                         x="0%" y="0%" width="100%" height="100%" in="SourceGraphic" result="colormatrix"/>
+	<feOffset dx="${Animations.Filter.dx_red_${line}}" dy="${Animations.Filter.dy_red_${line}}"  x="0%" y="0%" width="100%" height="100%" in="colormatrix" result="offset"/>
+	<feColorMatrix type="matrix" values="0 0 0 0 0
+                                         0 1 0 0 0
+                                         0 0 0 0 0
+                                         0 0 0 1 0"
+                                         x="0%" y="0%" width="100%" height="100%" in="SourceGraphic" result="colormatrix1"/>
+	<feOffset dx="${Animations.Filter.dx_green_${line}}" dy="${Animations.Filter.dy_green_${line}}" x="0%" y="0%" width="100%" height="100%" in="colormatrix1" result="offset1"/>
+	<feColorMatrix type="matrix" values="0 0 0 0 0
+                                         0 0 0 0 0
+                                         0 0 1 0 0
+                                         0 0 0 1 0" x="0%" y="0%" width="100%" height="100%" in="SourceGraphic" result="colormatrix2"/>
+	<feOffset dx="${Animations.Filter.dx_blue_${line}}" dy="${Animations.Filter.dy_blue_${line}}" x="0%" y="0%" width="100%" height="100%" in="colormatrix2" result="offset2"/>
+	<feComposite in="offset" in2="offset1" operator="lighter" x="0%" y="0%" width="100%" height="100%" result="composite"/>
+	<feComposite in="composite" in2="offset2" operator="lighter" x="0%" y="0%" width="100%" height="100%" result="composite1"/>
+</filter>

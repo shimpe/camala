@@ -1,0 +1,10 @@
+<filter id="dropshadow_${line}" x="0" y="0" width="200%" height="200%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="${Animations.Filter.stdDeviationx_${line}} ${Animations.Filter.stdDeviationy_${line}}"/>
+  <feOffset dx="${Animations.Filter.dx_${line}}" dy="${Animations.Filter.dy_${line}}" result="offsetblur"/>
+  <feFlood flood-color="${Animations.Filter.floodcolor_${line}}" flood-opacity="${Animations.Filter.floodopacity_${line}}"/>
+  <feComposite in2="offsetblur" operator="in"/>
+  <feMerge>
+    <feMergeNode/>
+    <feMergeNode in="SourceGraphic"/>
+  </feMerge>
+</filter>
