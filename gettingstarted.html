@@ -853,7 +853,7 @@ Here’s an example of using filters to introduce distortion and blurring:</p>
 <span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
 <span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.fps}*${Global.duration}/2.5&quot;</span><span class="w"></span>
 <span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
-<span class="k">[Animations.Filter.seedchange.FilterAnimation]</span><span class="w"></span>
+<span class="k">[Animations.Filter.seedchange.FilterAnimation.seed]</span><span class="w"></span>
 <span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
 <span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
 <span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}&quot;</span><span class="w"></span>
@@ -863,7 +863,7 @@ Here’s an example of using filters to introduce distortion and blurring:</p>
 <span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;25&quot;</span><span class="w"></span>
 <span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
 <span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
-<span class="k">[Animations.Filter.scalereduction.FilterAnimation]</span><span class="w"></span>
+<span class="k">[Animations.Filter.scalereduction.FilterAnimation.scale]</span><span class="w"></span>
 <span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
 <span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
 <span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}&quot;</span><span class="w"></span>
@@ -873,10 +873,15 @@ Here’s an example of using filters to introduce distortion and blurring:</p>
 <span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;60&quot;</span><span class="w"></span>
 <span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
 <span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;easeOutQuad&quot;</span><span class="w"></span>
-<span class="k">[Animations.Filter.sharpen.FilterAnimation]</span><span class="w"></span>
+<span class="k">[Animations.Filter.sharpen.FilterAnimation.stdDeviationx]</span><span class="w"></span>
 <span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
 <span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
-<span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}*0.75&quot;</span><span class="w"></span>
+<span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}*0.8&quot;</span><span class="w"></span>
+<span class="n">death_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}&quot;</span><span class="w"></span>
+<span class="k">[Animations.Filter.sharpen.FilterAnimation.stdDeviationy]</span><span class="w"></span>
+<span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}*0.5&quot;</span><span class="w"></span>
 <span class="n">death_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}&quot;</span><span class="w"></span>
 
 <span class="k">[Styles.normal.StyleProperties]</span><span class="w"></span>
@@ -914,7 +919,7 @@ Here’s an example of using filters to introduce distortion and blurring:</p>
 <p>SVG filters are supported in camala in the form of filter plugins.</p>
 </section>
 <section id="using-an-svg-filter-plugin">
-<h2>using an SVG filter plugin<a class="headerlink" href="#using-an-svg-filter-plugin" title="Permalink to this heading">¶</a></h2>
+<h2>Using an SVG filter plugin<a class="headerlink" href="#using-an-svg-filter-plugin" title="Permalink to this heading">¶</a></h2>
 <p>An SVG filter plugin consists of two files located in the templates/filters subfolder.
 Suppose you want to add a blur effect onto your text. In the templates/filters subfolder there’s a blur.svgtemplate and a blur.toml file.
 In the blur.toml file, you find a list of all parameters the plugin takes, and their default values.
@@ -944,14 +949,14 @@ If you don’t override their value in your camala specification, those default 
 </div>
 </dd>
 </dl>
-<p>Similar to how it’s done for style values, birth_time, begin_time, end_time and death_time are specified in the Animations.Filter.scalereduce.FilterAnimation section.</p>
+<p>Similar to how it’s done for style values, birth_time, begin_time, end_time and death_time are specified in the Animations.Filter.scalereduce.FilterAnimation.scale section.</p>
 <blockquote>
 <div><div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Animations.Filter.scalereduce]</span><span class="w"></span>
 <span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
 <span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;10&quot;</span><span class="w"></span>
 <span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
 <span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
-<span class="k">[Animations.Filter.scalereduce.FilterAnimation]</span><span class="w"></span>
+<span class="p">[</span><span class="n">Animations</span><span class="p">.</span><span class="n">Filter</span><span class="p">.</span><span class="n">scalereduce</span><span class="p">.</span><span class="n">FilterAnimation</span><span class="p">.</span><span class="n">scale</span><span class="p">]</span><span class="w"> </span><span class="c1"># animation times for scale parameter animated with scalereduce animation</span><span class="w"></span>
 <span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
 <span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
 <span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}*0.75&quot;</span><span class="w"></span>
@@ -1226,7 +1231,7 @@ An interesting web tool to help you develop your own SVG filters, is <a class="r
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#modifying-appearance-with-svg-filters">Modifying appearance with SVG filters</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#using-an-svg-filter-plugin">using an SVG filter plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-an-svg-filter-plugin">Using an SVG filter plugin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#adding-your-own-svg-filters">Adding your own SVG filters</a></li>
 </ul>
 </li>

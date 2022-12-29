@@ -206,7 +206,7 @@ Here's an example of using filters to introduce distortion and blurring:
 
 SVG filters are supported in camala in the form of filter plugins.
 
-using an SVG filter plugin
+Using an SVG filter plugin
 --------------------------
 
 An SVG filter plugin consists of two files located in the templates/filters subfolder.
@@ -243,7 +243,7 @@ As with other parameters, the filter parameters can be animated. To animate filt
         scale = "${Animations.Filter.scalereduce}"
 
 
-Similar to how it's done for style values, birth_time, begin_time, end_time and death_time are specified in the Animations.Filter.scalereduce.FilterAnimation section.
+Similar to how it's done for style values, birth_time, begin_time, end_time and death_time are specified in the Animations.Filter.scalereduce.FilterAnimation.scale section.
 
     .. code-block:: toml
 
@@ -252,7 +252,7 @@ Similar to how it's done for style values, birth_time, begin_time, end_time and 
         begin = "10"
         end = "0"
         tween = "linear"
-        [Animations.Filter.scalereduce.FilterAnimation]
+        [Animations.Filter.scalereduce.FilterAnimation.scale] # animation times for scale parameter animated with scalereduce animation
         birth_time = "0"
         begin_time = "0"
         end_time = "${Global.duration}*0.75"
