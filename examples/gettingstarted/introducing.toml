@@ -1,7 +1,7 @@
 [Global]
 W = "1000"
 H = "500"
-duration = "5"
+duration = "7"
 fps = "25"
 format = "gif"
 background = "black"
@@ -24,7 +24,7 @@ elements = "[${Animations.Position.lower}, ${Animations.Position.offset}]"
 [Animations.Position.bottom_up]
 type = "PointAnimation"
 begin = "[0, 500]"
-end = "[0, 120]"
+end = "[0, 20]"
 tween = "easeOutBounce"
 ytween = "easeOutQuad"
 [Animations.Style.growing]
@@ -53,10 +53,10 @@ font-size="35"
 font-family="sans-serif"
 font-style="oblique"
 letter-spacing="${Animations.Style.shrink}"
-[Styles.inverted.StyleAnimation]
+[Styles.inverted.StyleAnimation.shrink]
 birth_time = "0"
-begin_time  ="${Global.duration}*2/5"
-end_time = "${Global.duration}*47/50"
+begin_time  ="2"
+end_time = "${Global.duration}-1"
 death_time = "${Global.duration}"
 [Styles.growing.StyleProperties]
 text-anchor="middle"
@@ -65,9 +65,9 @@ stroke="white"
 stroke-width="0.5px"
 font-size="${Animations.Style.growing}"
 font-family="sans-serif"
-[Styles.growing.StyleAnimation]
+[Styles.growing.StyleAnimation.growing]
 birth_time = "0"
-begin_time = "${Global.duration}/2"
+begin_time = "1"
 end_time = "${Global.duration}*4/5"
 death_time = "${Global.duration}"
 
@@ -110,8 +110,8 @@ style = "${Styles.normal}"
 pos = "${Animations.Position.bottom_up}"
 [Caption.Line3.PositionAnimation]
 birth_time = "0"
-begin_time  ="${Global.duration}*3/5"
-end_time = "${Global.duration}*47/50"
+begin_time  ="2"
+end_time = "${Global.duration}-2"
 death_time = "${Global.duration}"
 [Caption.Line3.Segments.Segment1]
 text = "text animation language"
