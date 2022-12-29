@@ -1,0 +1,5 @@
+[defaults]
+innerfloodcolor = "#9673FF"
+innerfloodopacity = "0.4"
+outerfloodcolor = "#73DCFF"
+outerfloodopacity = "0.75"

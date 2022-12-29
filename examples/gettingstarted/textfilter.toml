@@ -159,6 +159,14 @@ filter = "${Filters.dropshadow}"
 [Caption.Line4.Filter.Overrides]
 floodcolor = "#8f8b19"
 [Caption.Line4.Segments.Segment1]
-text = "yellow drop shadow !"
+text = "drop it!"
 style= "${Styles.small}"
-
+[Caption.Line5]
+pos = "[50, -175]"
+[Caption.Line5.Filter]
+filter = "${Filters.sketchy}"
+[Caption.Line5.Filter.Overrides]
+floodcolor = "#8f8b19"
+[Caption.Line5.Segments.Segment1]
+text = "sketchy?!"
+style= "${Styles.normal}"
