@@ -200,53 +200,53 @@ A small camala specification looks as follows:</p>
 <h2>Animating style parameters<a class="headerlink" href="#animating-style-parameters" title="Permalink to this heading">¶</a></h2>
 <p>Suppose you want the text “in the middle” to change size over time. This can be done by specifying an animation in the Animations section,
 and referring to it from the Styles section.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Global</span><span class="p">]</span>
-<span class="n">W</span> <span class="o">=</span> <span class="s2">&quot;1000&quot;</span>
-<span class="n">H</span> <span class="o">=</span> <span class="s2">&quot;500&quot;</span>
-<span class="n">duration</span> <span class="o">=</span> <span class="s2">&quot;3&quot;</span>
-<span class="n">fps</span> <span class="o">=</span> <span class="s2">&quot;25&quot;</span>
-<span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;gif&quot;</span>
-<span class="n">background</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Global]</span><span class="w"></span>
+<span class="n">W</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1000&quot;</span><span class="w"></span>
+<span class="n">H</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;500&quot;</span><span class="w"></span>
+<span class="n">duration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;3&quot;</span><span class="w"></span>
+<span class="n">fps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;25&quot;</span><span class="w"></span>
+<span class="n">format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;gif&quot;</span><span class="w"></span>
+<span class="n">background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="w"></span>
 
-<span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Style</span><span class="o">.</span><span class="n">grow</span><span class="p">]</span>
-<span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;NumberAnimation&quot;</span>
-<span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-<span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;50&quot;</span>
-<span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;easeOutBounce&quot;</span>
+<span class="k">[Animations.Style.grow]</span><span class="w"></span>
+<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
+<span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;50&quot;</span><span class="w"></span>
+<span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;easeOutBounce&quot;</span><span class="w"></span>
 
-<span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">StyleProperties</span><span class="p">]</span>
-<span class="n">text</span><span class="o">-</span><span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span>
-<span class="n">fill</span><span class="o">=</span><span class="s2">&quot;white&quot;</span>
-<span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;black&quot;</span>
-<span class="n">stroke</span><span class="o">-</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;0.5px&quot;</span>
-<span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="o">=</span><span class="s2">&quot;25&quot;</span>
-<span class="n">font</span><span class="o">-</span><span class="n">family</span><span class="o">=</span><span class="s2">&quot;sans-serif&quot;</span>
+<span class="k">[Styles.normal.StyleProperties]</span><span class="w"></span>
+<span class="n">text-anchor</span><span class="o">=</span><span class="s">&quot;middle&quot;</span><span class="w"></span>
+<span class="n">fill</span><span class="o">=</span><span class="s">&quot;white&quot;</span><span class="w"></span>
+<span class="n">stroke</span><span class="o">=</span><span class="s">&quot;black&quot;</span><span class="w"></span>
+<span class="n">stroke-width</span><span class="o">=</span><span class="s">&quot;0.5px&quot;</span><span class="w"></span>
+<span class="n">font-size</span><span class="o">=</span><span class="s">&quot;25&quot;</span><span class="w"></span>
+<span class="n">font-family</span><span class="o">=</span><span class="s">&quot;sans-serif&quot;</span><span class="w"></span>
 
-<span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">StyleProperties</span><span class="p">]</span>
-<span class="n">text</span><span class="o">-</span><span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span>
-<span class="n">fill</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span>
-<span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;yellow&quot;</span>
-<span class="n">stroke</span><span class="o">-</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;0.5px&quot;</span>
-<span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{Animations.Style.grow}</span><span class="s2">&quot;</span> <span class="c1"># refers to Animations.Style.grow</span>
-<span class="n">font</span><span class="o">-</span><span class="n">family</span><span class="o">=</span><span class="s2">&quot;sans-serif&quot;</span>
-<span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">StyleAnimation</span><span class="o">.</span><span class="n">grow</span><span class="p">]</span>
-<span class="n">birth_time</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span> <span class="c1"># birth_time specifies when the animation comes into existence</span>
-<span class="n">begin_time</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span> <span class="c1"># begin_time says when the animation starts animating</span>
-                 <span class="c1"># before the begin_time, the animation just returns the initial value</span>
-<span class="n">end_time</span> <span class="o">=</span> <span class="s1">&#39;2*$</span><span class="si">{Global.duration}</span><span class="s1">/3&#39;</span> <span class="c1"># end_time says when the animation has to be fully completed</span>
-<span class="n">death_time</span> <span class="o">=</span> <span class="s1">&#39;$</span><span class="si">{Global.duration}</span><span class="s1">&#39;</span> <span class="c1"># between end_time and death_time the animation returns the last value</span>
+<span class="k">[Styles.special.StyleProperties]</span><span class="w"></span>
+<span class="n">text-anchor</span><span class="o">=</span><span class="s">&quot;middle&quot;</span><span class="w"></span>
+<span class="n">fill</span><span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="w"></span>
+<span class="n">stroke</span><span class="o">=</span><span class="s">&quot;yellow&quot;</span><span class="w"></span>
+<span class="n">stroke-width</span><span class="o">=</span><span class="s">&quot;0.5px&quot;</span><span class="w"></span>
+<span class="n">font-size</span><span class="o">=</span><span class="s">&quot;${Animations.Style.grow}&quot;</span><span class="w"> </span><span class="c1"># refers to Animations.Style.grow</span><span class="w"></span>
+<span class="n">font-family</span><span class="o">=</span><span class="s">&quot;sans-serif&quot;</span><span class="w"></span>
+<span class="k">[Styles.special.StyleAnimation.grow]</span><span class="w"></span>
+<span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;0&#39;</span><span class="w"> </span><span class="c1"># birth_time specifies when the animation comes into existence</span><span class="w"></span>
+<span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;0&#39;</span><span class="w"> </span><span class="c1"># begin_time says when the animation starts animating</span><span class="w"></span>
+<span class="w">                 </span><span class="c1"># before the begin_time, the animation just returns the initial value</span><span class="w"></span>
+<span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;2*${Global.duration}/3&#39;</span><span class="w"> </span><span class="c1"># end_time says when the animation has to be fully completed</span><span class="w"></span>
+<span class="n">death_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;${Global.duration}&#39;</span><span class="w"> </span><span class="c1"># between end_time and death_time the animation returns the last value</span><span class="w"></span>
 
-<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="p">]</span>
-<span class="n">pos</span> <span class="o">=</span> <span class="s2">&quot;[0, 200]&quot;</span>   <span class="c1"># using a higher y value, moves the text down</span>
-<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment1</span><span class="p">]</span>
-<span class="n">text</span><span class="o">=</span> <span class="s2">&quot;Simple caption that appears &quot;</span>
-<span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.normal}</span><span class="s2">&quot;</span>
-<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment2</span><span class="p">]</span>
-<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;in the middle&quot;</span>
-<span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.special}</span><span class="s2">&quot;</span>
-<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment3</span><span class="p">]</span>
-<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot; of the page.&quot;</span>
-<span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.normal}</span><span class="s2">&quot;</span>
+<span class="k">[Caption.Line1]</span><span class="w"></span>
+<span class="n">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[0, 200]&quot;</span><span class="w">   </span><span class="c1"># using a higher y value, moves the text down</span><span class="w"></span>
+<span class="k">[Caption.Line1.Segments.Segment1]</span><span class="w"></span>
+<span class="n">text</span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Simple caption that appears &quot;</span><span class="w"></span>
+<span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.normal}&quot;</span><span class="w"></span>
+<span class="k">[Caption.Line1.Segments.Segment2]</span><span class="w"></span>
+<span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;in the middle&quot;</span><span class="w"></span>
+<span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.special}&quot;</span><span class="w"></span>
+<span class="k">[Caption.Line1.Segments.Segment3]</span><span class="w"></span>
+<span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot; of the page.&quot;</span><span class="w"></span>
+<span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.normal}&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The result of this toml specification is</p>
@@ -259,74 +259,73 @@ animation starts animating, and when it stops animating.</p>
 <section id="animating-multiple-style-parameters">
 <h2>Animating multiple style parameters<a class="headerlink" href="#animating-multiple-style-parameters" title="Permalink to this heading">¶</a></h2>
 <p>You can animate multiple style parameters independently. E.g. here I also change the letter-spacing of the first line segment.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Global</span><span class="p">]</span>
-<span class="n">W</span> <span class="o">=</span> <span class="s2">&quot;1000&quot;</span>
-<span class="n">H</span> <span class="o">=</span> <span class="s2">&quot;500&quot;</span>
-<span class="n">duration</span> <span class="o">=</span> <span class="s2">&quot;3&quot;</span>
-<span class="n">fps</span> <span class="o">=</span> <span class="s2">&quot;25&quot;</span>
-<span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;gif&quot;</span>
-<span class="n">background</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Global]</span><span class="w"></span>
+<span class="n">W</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1000&quot;</span><span class="w"></span>
+<span class="n">H</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;500&quot;</span><span class="w"></span>
+<span class="n">duration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;3&quot;</span><span class="w"></span>
+<span class="n">fps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;25&quot;</span><span class="w"></span>
+<span class="n">format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;gif&quot;</span><span class="w"></span>
+<span class="n">background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="w"></span>
 
-<span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Style</span><span class="o">.</span><span class="n">grow</span><span class="p">]</span>
-<span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;NumberAnimation&quot;</span>
-<span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-<span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;50&quot;</span>
-<span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;easeOutBounce&quot;</span>
-<span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Style</span><span class="o">.</span><span class="n">shrink</span><span class="p">]</span>
-<span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;NumberAnimation&quot;</span>
-<span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;10&quot;</span>
-<span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-<span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
+<span class="k">[Animations.Style.grow]</span><span class="w"></span>
+<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
+<span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;50&quot;</span><span class="w"></span>
+<span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;easeOutBounce&quot;</span><span class="w"></span>
+<span class="k">[Animations.Style.shrink]</span><span class="w"></span>
+<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
+<span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;10&quot;</span><span class="w"></span>
+<span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
 
-<span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">StyleProperties</span><span class="p">]</span>
-<span class="n">text</span><span class="o">-</span><span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span>
-<span class="n">fill</span><span class="o">=</span><span class="s2">&quot;white&quot;</span>
-<span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;black&quot;</span>
-<span class="n">stroke</span><span class="o">-</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;0.5px&quot;</span>
-<span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="o">=</span><span class="s2">&quot;25&quot;</span>
-<span class="n">font</span><span class="o">-</span><span class="n">family</span><span class="o">=</span><span class="s2">&quot;sans-serif&quot;</span>
+<span class="k">[Styles.normal.StyleProperties]</span><span class="w"></span>
+<span class="n">text-anchor</span><span class="o">=</span><span class="s">&quot;middle&quot;</span><span class="w"></span>
+<span class="n">fill</span><span class="o">=</span><span class="s">&quot;white&quot;</span><span class="w"></span>
+<span class="n">stroke</span><span class="o">=</span><span class="s">&quot;black&quot;</span><span class="w"></span>
+<span class="n">stroke-width</span><span class="o">=</span><span class="s">&quot;0.5px&quot;</span><span class="w"></span>
+<span class="n">font-size</span><span class="o">=</span><span class="s">&quot;25&quot;</span><span class="w"></span>
+<span class="n">font-family</span><span class="o">=</span><span class="s">&quot;sans-serif&quot;</span><span class="w"></span>
 
-<span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">StyleProperties</span><span class="p">]</span>
-<span class="n">text</span><span class="o">-</span><span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span>
-<span class="n">fill</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span>
-<span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;yellow&quot;</span>
-<span class="n">stroke</span><span class="o">-</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;0.5px&quot;</span>
-<span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{Animations.Style.grow}</span><span class="s2">&quot;</span> <span class="c1"># refers to Animations.Style.grow</span>
-<span class="n">font</span><span class="o">-</span><span class="n">family</span><span class="o">=</span><span class="s2">&quot;sans-serif&quot;</span>
-<span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">StyleAnimation</span><span class="o">.</span><span class="n">grow</span><span class="p">]</span>
-<span class="n">birth_time</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span> <span class="c1"># birth_time specifies when the animation comes into existence</span>
-<span class="n">begin_time</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span> <span class="c1"># begin_time says when the animation starts animating</span>
-                 <span class="c1"># before the begin_time, the animation just returns the initial value</span>
-<span class="n">end_time</span> <span class="o">=</span> <span class="s1">&#39;2*$</span><span class="si">{Global.duration}</span><span class="s1">/3&#39;</span> <span class="c1"># end_time says when the animation has to be fully completed</span>
-<span class="n">death_time</span> <span class="o">=</span> <span class="s1">&#39;$</span><span class="si">{Global.duration}</span><span class="s1">&#39;</span> <span class="c1"># between end_time and death_time the animation returns the last value</span>
+<span class="k">[Styles.special.StyleProperties]</span><span class="w"></span>
+<span class="n">text-anchor</span><span class="o">=</span><span class="s">&quot;middle&quot;</span><span class="w"></span>
+<span class="n">fill</span><span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="w"></span>
+<span class="n">stroke</span><span class="o">=</span><span class="s">&quot;yellow&quot;</span><span class="w"></span>
+<span class="n">stroke-width</span><span class="o">=</span><span class="s">&quot;0.5px&quot;</span><span class="w"></span>
+<span class="n">font-size</span><span class="o">=</span><span class="s">&quot;${Animations.Style.grow}&quot;</span><span class="w"> </span><span class="c1"># refers to Animations.Style.grow</span><span class="w"></span>
+<span class="n">font-family</span><span class="o">=</span><span class="s">&quot;sans-serif&quot;</span><span class="w"></span>
+<span class="k">[Styles.special.StyleAnimation.grow]</span><span class="w"></span>
+<span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;0&#39;</span><span class="w"> </span><span class="c1"># birth_time specifies when the animation comes into existence</span><span class="w"></span>
+<span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;0&#39;</span><span class="w"> </span><span class="c1"># begin_time says when the animation starts animating</span><span class="w"></span>
+<span class="w">                 </span><span class="c1"># before the begin_time, the animation just returns the initial value</span><span class="w"></span>
+<span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;2*${Global.duration}/3&#39;</span><span class="w"> </span><span class="c1"># end_time says when the animation has to be fully completed</span><span class="w"></span>
+<span class="n">death_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;${Global.duration}&#39;</span><span class="w"> </span><span class="c1"># between end_time and death_time the animation returns the last value</span><span class="w"></span>
 
-<span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">firstseg</span><span class="o">.</span><span class="n">StyleProperties</span><span class="p">]</span>
-<span class="n">text</span><span class="o">-</span><span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span>
-<span class="n">fill</span><span class="o">=</span><span class="s2">&quot;white&quot;</span>
-<span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;black&quot;</span>
-<span class="n">stroke</span><span class="o">-</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;0.5px&quot;</span>
-<span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="o">=</span><span class="s2">&quot;25&quot;</span>
-<span class="n">font</span><span class="o">-</span><span class="n">family</span><span class="o">=</span><span class="s2">&quot;sans-serif&quot;</span>
-<span class="n">letter</span><span class="o">-</span><span class="n">spacing</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{Animations.Style.shrink}</span><span class="s2">&quot;</span>
-<span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">firstseg</span><span class="o">.</span><span class="n">StyleAnimation</span><span class="o">.</span><span class="n">shrink</span><span class="p">]</span>
-<span class="n">birth_time</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span> <span class="c1"># birth_time specifies when the animation comes into existence</span>
-<span class="n">begin_time</span> <span class="o">=</span> <span class="s1">&#39;$</span><span class="si">{Global.duration}</span><span class="s1">/3&#39;</span> <span class="c1"># begin_time says when the animation starts animating</span>
-                 <span class="c1"># before the begin_time, the animation just returns the initial value</span>
-<span class="n">end_time</span> <span class="o">=</span> <span class="s1">&#39;$</span><span class="si">{Global.duration}</span><span class="s1">&#39;</span> <span class="c1"># end_time says when the animation has to be fully completed</span>
-<span class="n">death_time</span> <span class="o">=</span> <span class="s1">&#39;$</span><span class="si">{Global.duration}</span><span class="s1">&#39;</span> <span class="c1"># between end_time and death_time the animation returns the last value</span>
+<span class="k">[Styles.firstseg.StyleProperties]</span><span class="w"></span>
+<span class="n">text-anchor</span><span class="o">=</span><span class="s">&quot;middle&quot;</span><span class="w"></span>
+<span class="n">fill</span><span class="o">=</span><span class="s">&quot;white&quot;</span><span class="w"></span>
+<span class="n">stroke</span><span class="o">=</span><span class="s">&quot;black&quot;</span><span class="w"></span>
+<span class="n">stroke-width</span><span class="o">=</span><span class="s">&quot;0.5px&quot;</span><span class="w"></span>
+<span class="n">font-size</span><span class="o">=</span><span class="s">&quot;25&quot;</span><span class="w"></span>
+<span class="n">font-family</span><span class="o">=</span><span class="s">&quot;sans-serif&quot;</span><span class="w"></span>
+<span class="n">letter-spacing</span><span class="o">=</span><span class="s">&quot;${Animations.Style.shrink}&quot;</span><span class="w"></span>
+<span class="k">[Styles.firstseg.StyleAnimation.shrink]</span><span class="w"></span>
+<span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;0&#39;</span><span class="w"> </span><span class="c1"># birth_time specifies when the animation comes into existence</span><span class="w"></span>
+<span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;${Global.duration}/3&#39;</span><span class="w"> </span><span class="c1"># begin_time says when the animation starts animating</span><span class="w"></span>
+<span class="w">                 </span><span class="c1"># before the begin_time, the animation just returns the initial value</span><span class="w"></span>
+<span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;${Global.duration}&#39;</span><span class="w"> </span><span class="c1"># end_time says when the animation has to be fully completed</span><span class="w"></span>
+<span class="n">death_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;${Global.duration}&#39;</span><span class="w"> </span><span class="c1"># between end_time and death_time the animation returns the last value</span><span class="w"></span>
 
-<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="p">]</span>
-<span class="n">pos</span> <span class="o">=</span> <span class="s2">&quot;[0, 200]&quot;</span>   <span class="c1"># using a higher y value, moves the text down</span>
-<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment1</span><span class="p">]</span>
-<span class="n">text</span><span class="o">=</span> <span class="s2">&quot;Simple caption that appears &quot;</span>
-<span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.firstseg}</span><span class="s2">&quot;</span>
-<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment2</span><span class="p">]</span>
-<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;in the middle&quot;</span>
-<span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.special}</span><span class="s2">&quot;</span>
-<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment3</span><span class="p">]</span>
-<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot; of the page.&quot;</span>
-<span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.normal}</span><span class="s2">&quot;</span>
-
+<span class="k">[Caption.Line1]</span><span class="w"></span>
+<span class="n">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[0, 200]&quot;</span><span class="w">   </span><span class="c1"># using a higher y value, moves the text down</span><span class="w"></span>
+<span class="k">[Caption.Line1.Segments.Segment1]</span><span class="w"></span>
+<span class="n">text</span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Simple caption that appears &quot;</span><span class="w"></span>
+<span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.firstseg}&quot;</span><span class="w"></span>
+<span class="k">[Caption.Line1.Segments.Segment2]</span><span class="w"></span>
+<span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;in the middle&quot;</span><span class="w"></span>
+<span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.special}&quot;</span><span class="w"></span>
+<span class="k">[Caption.Line1.Segments.Segment3]</span><span class="w"></span>
+<span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot; of the page.&quot;</span><span class="w"></span>
+<span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.normal}&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 <img alt="_images/simple-animatedstyle2.gif" src="_images/simple-animatedstyle2.gif" />
@@ -335,64 +334,64 @@ animation starts animating, and when it stops animating.</p>
 <h2>Sequencing style animations<a class="headerlink" href="#sequencing-style-animations" title="Permalink to this heading">¶</a></h2>
 <p>You can sequence different animations one after the other into a new animation by using SequentialAnimation instead of NumberAnimation.
 E.g. here’s an example of sequencing a grow and shrink animation to get a pulsing animation.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Global</span><span class="p">]</span>
-<span class="n">W</span> <span class="o">=</span> <span class="s2">&quot;1000&quot;</span>
-<span class="n">H</span> <span class="o">=</span> <span class="s2">&quot;500&quot;</span>
-<span class="n">duration</span> <span class="o">=</span> <span class="s2">&quot;3&quot;</span>
-<span class="n">fps</span> <span class="o">=</span> <span class="s2">&quot;25&quot;</span>
-<span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;gif&quot;</span>
-<span class="n">background</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Global]</span><span class="w"></span>
+<span class="n">W</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1000&quot;</span><span class="w"></span>
+<span class="n">H</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;500&quot;</span><span class="w"></span>
+<span class="n">duration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;3&quot;</span><span class="w"></span>
+<span class="n">fps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;25&quot;</span><span class="w"></span>
+<span class="n">format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;gif&quot;</span><span class="w"></span>
+<span class="n">background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="w"></span>
 
-<span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Style</span><span class="o">.</span><span class="n">grow</span><span class="p">]</span>
-<span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;NumberAnimation&quot;</span>
-<span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-<span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;50&quot;</span>
-<span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;easeOutBounce&quot;</span>
-<span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Style</span><span class="o">.</span><span class="n">shrink</span><span class="p">]</span>
-<span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;NumberAnimation&quot;</span>
-<span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;50&quot;</span>
-<span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-<span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;easeOutQuad&quot;</span>
-<span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Style</span><span class="o">.</span><span class="n">pulse</span><span class="p">]</span>
-<span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;SequentialAnimation&quot;</span>
-<span class="n">elements</span> <span class="o">=</span> <span class="s2">&quot;[$</span><span class="si">{Animations.Style.grow}</span><span class="s2">, $</span><span class="si">{Animations.Style.shrink}</span><span class="s2">]&quot;</span>
-<span class="n">time_weights</span> <span class="o">=</span> <span class="s2">&quot;[1.0, 0.75]&quot;</span>
-<span class="n">repeats</span> <span class="o">=</span> <span class="s2">&quot;2&quot;</span>
-<span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
+<span class="k">[Animations.Style.grow]</span><span class="w"></span>
+<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
+<span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;50&quot;</span><span class="w"></span>
+<span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;easeOutBounce&quot;</span><span class="w"></span>
+<span class="k">[Animations.Style.shrink]</span><span class="w"></span>
+<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
+<span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;50&quot;</span><span class="w"></span>
+<span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;easeOutQuad&quot;</span><span class="w"></span>
+<span class="k">[Animations.Style.pulse]</span><span class="w"></span>
+<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;SequentialAnimation&quot;</span><span class="w"></span>
+<span class="n">elements</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[${Animations.Style.grow}, ${Animations.Style.shrink}]&quot;</span><span class="w"></span>
+<span class="n">time_weights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[1.0, 0.75]&quot;</span><span class="w"></span>
+<span class="n">repeats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;2&quot;</span><span class="w"></span>
+<span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
 
-<span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">StyleProperties</span><span class="p">]</span>
-<span class="n">text</span><span class="o">-</span><span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span>
-<span class="n">fill</span><span class="o">=</span><span class="s2">&quot;white&quot;</span>
-<span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;black&quot;</span>
-<span class="n">stroke</span><span class="o">-</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;0.5px&quot;</span>
-<span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="o">=</span><span class="s2">&quot;25&quot;</span>
-<span class="n">font</span><span class="o">-</span><span class="n">family</span><span class="o">=</span><span class="s2">&quot;sans-serif&quot;</span>
+<span class="k">[Styles.normal.StyleProperties]</span><span class="w"></span>
+<span class="n">text-anchor</span><span class="o">=</span><span class="s">&quot;middle&quot;</span><span class="w"></span>
+<span class="n">fill</span><span class="o">=</span><span class="s">&quot;white&quot;</span><span class="w"></span>
+<span class="n">stroke</span><span class="o">=</span><span class="s">&quot;black&quot;</span><span class="w"></span>
+<span class="n">stroke-width</span><span class="o">=</span><span class="s">&quot;0.5px&quot;</span><span class="w"></span>
+<span class="n">font-size</span><span class="o">=</span><span class="s">&quot;25&quot;</span><span class="w"></span>
+<span class="n">font-family</span><span class="o">=</span><span class="s">&quot;sans-serif&quot;</span><span class="w"></span>
 
-<span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">StyleProperties</span><span class="p">]</span>
-<span class="n">text</span><span class="o">-</span><span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span>
-<span class="n">fill</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span>
-<span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;yellow&quot;</span>
-<span class="n">stroke</span><span class="o">-</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;0.5px&quot;</span>
-<span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{Animations.Style.pulse}</span><span class="s2">&quot;</span> <span class="c1"># refers to Animations.Style.pulse</span>
-<span class="n">font</span><span class="o">-</span><span class="n">family</span><span class="o">=</span><span class="s2">&quot;sans-serif&quot;</span>
-<span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">StyleAnimation</span><span class="o">.</span><span class="n">pulse</span><span class="p">]</span>
-<span class="n">birth_time</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span> <span class="c1"># birth_time specifies when the animation comes into existence</span>
-<span class="n">begin_time</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span> <span class="c1"># begin_time says when the animation starts animating</span>
-                 <span class="c1"># before the begin_time, the animation just returns the initial value</span>
-<span class="n">end_time</span> <span class="o">=</span> <span class="s1">&#39;7*$</span><span class="si">{Global.duration}</span><span class="s1">/8&#39;</span> <span class="c1"># end_time says when the animation has to be fully completed</span>
-<span class="n">death_time</span> <span class="o">=</span> <span class="s1">&#39;$</span><span class="si">{Global.duration}</span><span class="s1">&#39;</span> <span class="c1"># between end_time and death_time the animation returns the last value</span>
+<span class="k">[Styles.special.StyleProperties]</span><span class="w"></span>
+<span class="n">text-anchor</span><span class="o">=</span><span class="s">&quot;middle&quot;</span><span class="w"></span>
+<span class="n">fill</span><span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="w"></span>
+<span class="n">stroke</span><span class="o">=</span><span class="s">&quot;yellow&quot;</span><span class="w"></span>
+<span class="n">stroke-width</span><span class="o">=</span><span class="s">&quot;0.5px&quot;</span><span class="w"></span>
+<span class="n">font-size</span><span class="o">=</span><span class="s">&quot;${Animations.Style.pulse}&quot;</span><span class="w"> </span><span class="c1"># refers to Animations.Style.pulse</span><span class="w"></span>
+<span class="n">font-family</span><span class="o">=</span><span class="s">&quot;sans-serif&quot;</span><span class="w"></span>
+<span class="k">[Styles.special.StyleAnimation.pulse]</span><span class="w"></span>
+<span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;0&#39;</span><span class="w"> </span><span class="c1"># birth_time specifies when the animation comes into existence</span><span class="w"></span>
+<span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;0&#39;</span><span class="w"> </span><span class="c1"># begin_time says when the animation starts animating</span><span class="w"></span>
+<span class="w">                 </span><span class="c1"># before the begin_time, the animation just returns the initial value</span><span class="w"></span>
+<span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;7*${Global.duration}/8&#39;</span><span class="w"> </span><span class="c1"># end_time says when the animation has to be fully completed</span><span class="w"></span>
+<span class="n">death_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;${Global.duration}&#39;</span><span class="w"> </span><span class="c1"># between end_time and death_time the animation returns the last value</span><span class="w"></span>
 
-<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="p">]</span>
-<span class="n">pos</span> <span class="o">=</span> <span class="s2">&quot;[0, 200]&quot;</span>   <span class="c1"># using a higher y value, moves the text down</span>
-<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment1</span><span class="p">]</span>
-<span class="n">text</span><span class="o">=</span> <span class="s2">&quot;Simple caption that appears &quot;</span>
-<span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.normal}</span><span class="s2">&quot;</span>
-<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment2</span><span class="p">]</span>
-<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;in the middle&quot;</span>
-<span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.special}</span><span class="s2">&quot;</span>
-<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment3</span><span class="p">]</span>
-<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot; of the page.&quot;</span>
-<span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.normal}</span><span class="s2">&quot;</span>
+<span class="k">[Caption.Line1]</span><span class="w"></span>
+<span class="n">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[0, 200]&quot;</span><span class="w">   </span><span class="c1"># using a higher y value, moves the text down</span><span class="w"></span>
+<span class="k">[Caption.Line1.Segments.Segment1]</span><span class="w"></span>
+<span class="n">text</span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Simple caption that appears &quot;</span><span class="w"></span>
+<span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.normal}&quot;</span><span class="w"></span>
+<span class="k">[Caption.Line1.Segments.Segment2]</span><span class="w"></span>
+<span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;in the middle&quot;</span><span class="w"></span>
+<span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.special}&quot;</span><span class="w"></span>
+<span class="k">[Caption.Line1.Segments.Segment3]</span><span class="w"></span>
+<span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot; of the page.&quot;</span><span class="w"></span>
+<span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.normal}&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 <img alt="_images/sequential-style-animation.gif" src="_images/sequential-style-animation.gif" />
@@ -411,39 +410,39 @@ will perform these one after the other.</p>
 <h2>Animating the position<a class="headerlink" href="#animating-the-position" title="Permalink to this heading">¶</a></h2>
 <p>In addition to animating the appearance of the text it’s also possible to animate the position of the text. This is accomplished by adding a
 Position section in the Animations and referring to it from the Caption.line pos field.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Global</span><span class="p">]</span>
-<span class="n">W</span> <span class="o">=</span> <span class="s2">&quot;1000&quot;</span>
-<span class="n">H</span> <span class="o">=</span> <span class="s2">&quot;500&quot;</span>
-<span class="n">duration</span> <span class="o">=</span> <span class="s2">&quot;1&quot;</span>
-<span class="n">fps</span> <span class="o">=</span> <span class="s2">&quot;25&quot;</span>
-<span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;gif&quot;</span>
-<span class="n">background</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Global]</span><span class="w"></span>
+<span class="n">W</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1000&quot;</span><span class="w"></span>
+<span class="n">H</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;500&quot;</span><span class="w"></span>
+<span class="n">duration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1&quot;</span><span class="w"></span>
+<span class="n">fps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;25&quot;</span><span class="w"></span>
+<span class="n">format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;gif&quot;</span><span class="w"></span>
+<span class="n">background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="w"></span>
 
-<span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Position</span><span class="o">.</span><span class="n">top_to_bottom</span><span class="p">]</span>
-<span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;PointAnimation&quot;</span>
-<span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;[0, -$</span><span class="si">{Global.H}</span><span class="s2">/3]&quot;</span>
-<span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;[0, $</span><span class="si">{Global.H}</span><span class="s2">/3]&quot;</span>
-<span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
-<span class="n">ytween</span> <span class="o">=</span> <span class="s2">&quot;easeOutBounce&quot;</span>
+<span class="k">[Animations.Position.top_to_bottom]</span><span class="w"></span>
+<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;PointAnimation&quot;</span><span class="w"></span>
+<span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[0, -${Global.H}/3]&quot;</span><span class="w"></span>
+<span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[0, ${Global.H}/3]&quot;</span><span class="w"></span>
+<span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
+<span class="n">ytween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;easeOutBounce&quot;</span><span class="w"></span>
 
-<span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">StyleProperties</span><span class="p">]</span>
-<span class="n">text</span><span class="o">-</span><span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span>
-<span class="n">fill</span><span class="o">=</span><span class="s2">&quot;white&quot;</span>
-<span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;black&quot;</span>
-<span class="n">stroke</span><span class="o">-</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;0.5px&quot;</span>
-<span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="o">=</span><span class="s2">&quot;25&quot;</span>
-<span class="n">font</span><span class="o">-</span><span class="n">family</span><span class="o">=</span><span class="s2">&quot;sans-serif&quot;</span>
+<span class="k">[Styles.normal.StyleProperties]</span><span class="w"></span>
+<span class="n">text-anchor</span><span class="o">=</span><span class="s">&quot;middle&quot;</span><span class="w"></span>
+<span class="n">fill</span><span class="o">=</span><span class="s">&quot;white&quot;</span><span class="w"></span>
+<span class="n">stroke</span><span class="o">=</span><span class="s">&quot;black&quot;</span><span class="w"></span>
+<span class="n">stroke-width</span><span class="o">=</span><span class="s">&quot;0.5px&quot;</span><span class="w"></span>
+<span class="n">font-size</span><span class="o">=</span><span class="s">&quot;25&quot;</span><span class="w"></span>
+<span class="n">font-family</span><span class="o">=</span><span class="s">&quot;sans-serif&quot;</span><span class="w"></span>
 
-<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="p">]</span>
-<span class="n">pos</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Animations.Position.top_to_bottom}</span><span class="s2">&quot;</span>
-<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">PositionAnimation</span><span class="p">]</span>
-<span class="n">birth_time</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-<span class="n">begin_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">/4&quot;</span>
-<span class="n">end_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">*2/3&quot;</span>
-<span class="n">death_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">&quot;</span>
-<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment1</span><span class="p">]</span>
-<span class="n">text</span><span class="o">=</span> <span class="s2">&quot;Simple caption that appears in the middle of the page.&quot;</span>
-<span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.normal}</span><span class="s2">&quot;</span>
+<span class="k">[Caption.Line1]</span><span class="w"></span>
+<span class="n">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Animations.Position.top_to_bottom}&quot;</span><span class="w"></span>
+<span class="k">[Caption.Line1.PositionAnimation]</span><span class="w"></span>
+<span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}/4&quot;</span><span class="w"></span>
+<span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}*2/3&quot;</span><span class="w"></span>
+<span class="n">death_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}&quot;</span><span class="w"></span>
+<span class="k">[Caption.Line1.Segments.Segment1]</span><span class="w"></span>
+<span class="n">text</span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Simple caption that appears in the middle of the page.&quot;</span><span class="w"></span>
+<span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.normal}&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 <img alt="_images/position-animation.gif" src="_images/position-animation.gif" />
@@ -452,58 +451,58 @@ Position section in the Animations and referring to it from the Caption.line pos
 <h2>Summing animations<a class="headerlink" href="#summing-animations" title="Permalink to this heading">¶</a></h2>
 <p>If you want to lower two lines from the top of the screen to the bottom of the screen, maybe you want to reuse the same top_to_bottom animation,
 but specify a constant offset between the positions of the first and second line. This is possible with a SumAnimation.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Global</span><span class="p">]</span>
-<span class="n">W</span> <span class="o">=</span> <span class="s2">&quot;1000&quot;</span>
-<span class="n">H</span> <span class="o">=</span> <span class="s2">&quot;500&quot;</span>
-<span class="n">duration</span> <span class="o">=</span> <span class="s2">&quot;1&quot;</span>
-<span class="n">fps</span> <span class="o">=</span> <span class="s2">&quot;25&quot;</span>
-<span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;gif&quot;</span>
-<span class="n">background</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Global]</span><span class="w"></span>
+<span class="n">W</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1000&quot;</span><span class="w"></span>
+<span class="n">H</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;500&quot;</span><span class="w"></span>
+<span class="n">duration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1&quot;</span><span class="w"></span>
+<span class="n">fps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;25&quot;</span><span class="w"></span>
+<span class="n">format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;gif&quot;</span><span class="w"></span>
+<span class="n">background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="w"></span>
 
-<span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Position</span><span class="o">.</span><span class="n">top_to_bottom</span><span class="p">]</span>
-<span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;PointAnimation&quot;</span>
-<span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;[0, -$</span><span class="si">{Global.H}</span><span class="s2">/3]&quot;</span>
-<span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;[0, $</span><span class="si">{Global.H}</span><span class="s2">/3]&quot;</span>
-<span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
-<span class="n">ytween</span> <span class="o">=</span> <span class="s2">&quot;easeOutBounce&quot;</span>
-<span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Position</span><span class="o">.</span><span class="n">constant_offset</span><span class="p">]</span>
-<span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;PointAnimation&quot;</span>
-<span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;[0, 40]&quot;</span>
-<span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;[0, 40]&quot;</span>
-<span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
-<span class="n">ytween</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
-<span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Position</span><span class="o">.</span><span class="n">top_to_bottom_shifted</span><span class="p">]</span>
-<span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;SumAnimation&quot;</span>
-<span class="n">elements</span> <span class="o">=</span> <span class="s2">&quot;[$</span><span class="si">{Animations.Position.top_to_bottom}</span><span class="s2">, $</span><span class="si">{Animations.Position.constant_offset}</span><span class="s2">]&quot;</span>
+<span class="k">[Animations.Position.top_to_bottom]</span><span class="w"></span>
+<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;PointAnimation&quot;</span><span class="w"></span>
+<span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[0, -${Global.H}/3]&quot;</span><span class="w"></span>
+<span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[0, ${Global.H}/3]&quot;</span><span class="w"></span>
+<span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
+<span class="n">ytween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;easeOutBounce&quot;</span><span class="w"></span>
+<span class="k">[Animations.Position.constant_offset]</span><span class="w"></span>
+<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;PointAnimation&quot;</span><span class="w"></span>
+<span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[0, 40]&quot;</span><span class="w"></span>
+<span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[0, 40]&quot;</span><span class="w"></span>
+<span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
+<span class="n">ytween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
+<span class="k">[Animations.Position.top_to_bottom_shifted]</span><span class="w"></span>
+<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;SumAnimation&quot;</span><span class="w"></span>
+<span class="n">elements</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[${Animations.Position.top_to_bottom}, ${Animations.Position.constant_offset}]&quot;</span><span class="w"></span>
 
-<span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">StyleProperties</span><span class="p">]</span>
-<span class="n">text</span><span class="o">-</span><span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span>
-<span class="n">fill</span><span class="o">=</span><span class="s2">&quot;white&quot;</span>
-<span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;black&quot;</span>
-<span class="n">stroke</span><span class="o">-</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;0.5px&quot;</span>
-<span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="o">=</span><span class="s2">&quot;25&quot;</span>
-<span class="n">font</span><span class="o">-</span><span class="n">family</span><span class="o">=</span><span class="s2">&quot;sans-serif&quot;</span>
+<span class="k">[Styles.normal.StyleProperties]</span><span class="w"></span>
+<span class="n">text-anchor</span><span class="o">=</span><span class="s">&quot;middle&quot;</span><span class="w"></span>
+<span class="n">fill</span><span class="o">=</span><span class="s">&quot;white&quot;</span><span class="w"></span>
+<span class="n">stroke</span><span class="o">=</span><span class="s">&quot;black&quot;</span><span class="w"></span>
+<span class="n">stroke-width</span><span class="o">=</span><span class="s">&quot;0.5px&quot;</span><span class="w"></span>
+<span class="n">font-size</span><span class="o">=</span><span class="s">&quot;25&quot;</span><span class="w"></span>
+<span class="n">font-family</span><span class="o">=</span><span class="s">&quot;sans-serif&quot;</span><span class="w"></span>
 
-<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="p">]</span>
-<span class="n">pos</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Animations.Position.top_to_bottom}</span><span class="s2">&quot;</span>
-<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">PositionAnimation</span><span class="p">]</span>
-<span class="n">birth_time</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-<span class="n">begin_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">/4&quot;</span>
-<span class="n">end_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">*2/3&quot;</span>
-<span class="n">death_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">&quot;</span>
-<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment1</span><span class="p">]</span>
-<span class="n">text</span><span class="o">=</span> <span class="s2">&quot;Simple caption that appears in the middle of the page.&quot;</span>
-<span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.normal}</span><span class="s2">&quot;</span>
-<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line2</span><span class="p">]</span>
-<span class="n">pos</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Animations.Position.top_to_bottom_shifted}</span><span class="s2">&quot;</span>
-<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line2</span><span class="o">.</span><span class="n">PositionAnimation</span><span class="p">]</span>
-<span class="n">birth_time</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-<span class="n">begin_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">/4&quot;</span>
-<span class="n">end_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">*2/3&quot;</span>
-<span class="n">death_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">&quot;</span>
-<span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line2</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment1</span><span class="p">]</span>
-<span class="n">text</span><span class="o">=</span> <span class="s2">&quot;Second line with constant offset to first line.&quot;</span>
-<span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.normal}</span><span class="s2">&quot;</span>
+<span class="k">[Caption.Line1]</span><span class="w"></span>
+<span class="n">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Animations.Position.top_to_bottom}&quot;</span><span class="w"></span>
+<span class="k">[Caption.Line1.PositionAnimation]</span><span class="w"></span>
+<span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}/4&quot;</span><span class="w"></span>
+<span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}*2/3&quot;</span><span class="w"></span>
+<span class="n">death_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}&quot;</span><span class="w"></span>
+<span class="k">[Caption.Line1.Segments.Segment1]</span><span class="w"></span>
+<span class="n">text</span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Simple caption that appears in the middle of the page.&quot;</span><span class="w"></span>
+<span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.normal}&quot;</span><span class="w"></span>
+<span class="k">[Caption.Line2]</span><span class="w"></span>
+<span class="n">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Animations.Position.top_to_bottom_shifted}&quot;</span><span class="w"></span>
+<span class="k">[Caption.Line2.PositionAnimation]</span><span class="w"></span>
+<span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}/4&quot;</span><span class="w"></span>
+<span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}*2/3&quot;</span><span class="w"></span>
+<span class="n">death_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}&quot;</span><span class="w"></span>
+<span class="k">[Caption.Line2.Segments.Segment1]</span><span class="w"></span>
+<span class="n">text</span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Second line with constant offset to first line.&quot;</span><span class="w"></span>
+<span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.normal}&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 <img alt="_images/position-sumanimation.gif" src="_images/position-sumanimation.gif" />
@@ -516,77 +515,77 @@ In Camala this is possible by creating an Animations.TextProvider.name animation
 numbers between 0 and 100 where 0 means that a single character is shown, and 100 means 100% of all characers are shown.
 You can also generate negative numbers up to -100. If the animation produces a negative value V than the last V pct of
 characters are shown instead of the first V pct of characters. Here’s an example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Global</span><span class="p">]</span>
-<span class="n">W</span> <span class="o">=</span> <span class="s2">&quot;1000&quot;</span>
-<span class="n">H</span> <span class="o">=</span> <span class="s2">&quot;500&quot;</span>
-<span class="n">duration</span> <span class="o">=</span> <span class="s2">&quot;10&quot;</span>
-<span class="n">fps</span> <span class="o">=</span> <span class="s2">&quot;25&quot;</span>
-<span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;gif&quot;</span>
-<span class="n">background</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Global]</span><span class="w"></span>
+<span class="n">W</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1000&quot;</span><span class="w"></span>
+<span class="n">H</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;500&quot;</span><span class="w"></span>
+<span class="n">duration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;10&quot;</span><span class="w"></span>
+<span class="n">fps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;25&quot;</span><span class="w"></span>
+<span class="n">format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;gif&quot;</span><span class="w"></span>
+<span class="n">background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="w"></span>
 
-<span class="p">[</span><span class="n">Animations</span><span class="p">]</span>
-    <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">TextProvider</span><span class="o">.</span><span class="n">appear</span><span class="p">]</span>
-        <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;NumberAnimation&quot;</span>
-        <span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-        <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;100&quot;</span>
-        <span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;easeOutQuad&quot;</span>
-    <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">TextProvider</span><span class="o">.</span><span class="n">disappear</span><span class="p">]</span>
-        <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;NumberAnimation&quot;</span>
-        <span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;100&quot;</span>
-        <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-        <span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;easeOutQuad&quot;</span>
-    <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">TextProvider</span><span class="o">.</span><span class="n">reverse_appear</span><span class="p">]</span>
-        <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;NumberAnimation&quot;</span>
-        <span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-        <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;-100&quot;</span>
-        <span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;easeOutQuad&quot;</span>
-    <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">TextProvider</span><span class="o">.</span><span class="n">flash</span><span class="p">]</span>
-        <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;SequentialAnimation&quot;</span>
-        <span class="n">elements</span> <span class="o">=</span> <span class="s2">&quot;[$</span><span class="si">{Animations.TextProvider.appear}</span><span class="s2">, $</span><span class="si">{Animations.TextProvider.disappear}</span><span class="s2">]&quot;</span>
-        <span class="n">time_weights</span> <span class="o">=</span> <span class="s2">&quot;[1,1]&quot;</span>
-        <span class="n">repeats</span> <span class="o">=</span> <span class="s2">&quot;3&quot;</span>
-        <span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
-    <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">TextProvider</span><span class="o">.</span><span class="n">flash_and_appear</span><span class="p">]</span>
-        <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;SequentialAnimation&quot;</span>
-        <span class="n">elements</span> <span class="o">=</span> <span class="s2">&quot;[$</span><span class="si">{Animations.TextProvider.flash}</span><span class="s2">, $</span><span class="si">{Animations.TextProvider.appear}</span><span class="s2">]&quot;</span>
-        <span class="n">time_weights</span> <span class="o">=</span> <span class="s2">&quot;[1,3]&quot;</span>
-        <span class="n">repeats</span> <span class="o">=</span> <span class="s2">&quot;1&quot;</span>
-        <span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
-<span class="p">[</span><span class="n">Styles</span><span class="p">]</span>
-    <span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">StyleProperties</span><span class="p">]</span>
-        <span class="n">text</span><span class="o">-</span><span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span>
-        <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;white&quot;</span>
-        <span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;black&quot;</span>
-        <span class="n">stroke</span><span class="o">-</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;2px&quot;</span>
-        <span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="o">=</span><span class="s2">&quot;55&quot;</span>
-        <span class="n">font</span><span class="o">-</span><span class="n">family</span><span class="o">=</span><span class="s2">&quot;sans-serif&quot;</span>
-    <span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">StyleProperties</span><span class="p">]</span>
-        <span class="n">text</span><span class="o">-</span><span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span>
-        <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span>
-        <span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;yellow&quot;</span>
-        <span class="n">stroke</span><span class="o">-</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;1px&quot;</span>
-        <span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="o">=</span><span class="s2">&quot;70&quot;</span>
-        <span class="n">font</span><span class="o">-</span><span class="n">family</span><span class="o">=</span><span class="s2">&quot;sans-serif&quot;</span>
-<span class="p">[</span><span class="n">Caption</span><span class="p">]</span>
-    <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="p">]</span>
-        <span class="n">pos</span> <span class="o">=</span> <span class="s2">&quot;[0, 0]&quot;</span>
-        <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">TextProvider</span><span class="p">]</span>
-            <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Animations.TextProvider.reverse_appear}</span><span class="s2">&quot;</span>
-        <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">TextProviderAnimation</span><span class="p">]</span>
-            <span class="n">birth_time</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-            <span class="n">begin_time</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-            <span class="n">end_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">/2&quot;</span>
-            <span class="n">death_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">&quot;</span>
-        <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="p">]</span>
-            <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment1</span><span class="p">]</span>
-                <span class="n">text</span><span class="o">=</span> <span class="s2">&quot;Stuck in &quot;</span>
-                <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.normal}</span><span class="s2">&quot;</span>
-            <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment2</span><span class="p">]</span>
-                <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.special}</span><span class="s2">&quot;</span>
-                <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;the middle&quot;</span>
-            <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment3</span><span class="p">]</span>
-                <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.normal}</span><span class="s2">&quot;</span>
-                <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot; with you!&quot;</span>
+<span class="k">[Animations]</span><span class="w"></span>
+<span class="w">    </span><span class="k">[Animations.TextProvider.appear]</span><span class="w"></span>
+<span class="w">        </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;100&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;easeOutQuad&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">[Animations.TextProvider.disappear]</span><span class="w"></span>
+<span class="w">        </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;100&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;easeOutQuad&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">[Animations.TextProvider.reverse_appear]</span><span class="w"></span>
+<span class="w">        </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-100&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;easeOutQuad&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">[Animations.TextProvider.flash]</span><span class="w"></span>
+<span class="w">        </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;SequentialAnimation&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">elements</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[${Animations.TextProvider.appear}, ${Animations.TextProvider.disappear}]&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">time_weights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[1,1]&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">repeats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;3&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">[Animations.TextProvider.flash_and_appear]</span><span class="w"></span>
+<span class="w">        </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;SequentialAnimation&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">elements</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[${Animations.TextProvider.flash}, ${Animations.TextProvider.appear}]&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">time_weights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[1,3]&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">repeats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
+<span class="k">[Styles]</span><span class="w"></span>
+<span class="w">    </span><span class="k">[Styles.normal.StyleProperties]</span><span class="w"></span>
+<span class="w">        </span><span class="n">text-anchor</span><span class="o">=</span><span class="s">&quot;middle&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">fill</span><span class="o">=</span><span class="s">&quot;white&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">stroke</span><span class="o">=</span><span class="s">&quot;black&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">stroke-width</span><span class="o">=</span><span class="s">&quot;2px&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">font-size</span><span class="o">=</span><span class="s">&quot;55&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">font-family</span><span class="o">=</span><span class="s">&quot;sans-serif&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">[Styles.special.StyleProperties]</span><span class="w"></span>
+<span class="w">        </span><span class="n">text-anchor</span><span class="o">=</span><span class="s">&quot;middle&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">fill</span><span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">stroke</span><span class="o">=</span><span class="s">&quot;yellow&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">stroke-width</span><span class="o">=</span><span class="s">&quot;1px&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">font-size</span><span class="o">=</span><span class="s">&quot;70&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">font-family</span><span class="o">=</span><span class="s">&quot;sans-serif&quot;</span><span class="w"></span>
+<span class="k">[Caption]</span><span class="w"></span>
+<span class="w">    </span><span class="k">[Caption.Line1]</span><span class="w"></span>
+<span class="w">        </span><span class="n">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[0, 0]&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Caption.Line1.TextProvider]</span><span class="w"></span>
+<span class="w">            </span><span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Animations.TextProvider.reverse_appear}&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Caption.Line1.TextProviderAnimation]</span><span class="w"></span>
+<span class="w">            </span><span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}/2&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">death_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Caption.Line1.Segments]</span><span class="w"></span>
+<span class="w">            </span><span class="k">[Caption.Line1.Segments.Segment1]</span><span class="w"></span>
+<span class="w">                </span><span class="n">text</span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Stuck in &quot;</span><span class="w"></span>
+<span class="w">                </span><span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.normal}&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="k">[Caption.Line1.Segments.Segment2]</span><span class="w"></span>
+<span class="w">                </span><span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.special}&quot;</span><span class="w"></span>
+<span class="w">                </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;the middle&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="k">[Caption.Line1.Segments.Segment3]</span><span class="w"></span>
+<span class="w">                </span><span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.normal}&quot;</span><span class="w"></span>
+<span class="w">                </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot; with you!&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 <img alt="_images/textprovider.gif" src="_images/textprovider.gif" />
@@ -600,239 +599,393 @@ Some attributes cannot be specified in a style (or rather: you can specify them 
 example is the “rotate” attribute. If you want to rotate characters with the rotate attribute, you need to specify it with a
 CaptionSvgAttribute or a SegmentSvgAttribute. CaptionSvgAttribute and SegmentSvgAttribte can be animated. See here a complex example
 combining many of the techniques mentioned before:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Global</span><span class="p">]</span>
-<span class="n">W</span> <span class="o">=</span> <span class="s2">&quot;1000&quot;</span>
-<span class="n">H</span> <span class="o">=</span> <span class="s2">&quot;500&quot;</span>
-<span class="n">duration</span> <span class="o">=</span> <span class="s2">&quot;10&quot;</span>
-<span class="n">fps</span> <span class="o">=</span> <span class="s2">&quot;25&quot;</span>
-<span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;gif&quot;</span>
-<span class="n">background</span> <span class="o">=</span> <span class="s2">&quot;#ea7ce0&quot;</span>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Global]</span><span class="w"></span>
+<span class="n">W</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1000&quot;</span><span class="w"></span>
+<span class="n">H</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;500&quot;</span><span class="w"></span>
+<span class="n">duration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;10&quot;</span><span class="w"></span>
+<span class="n">fps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;25&quot;</span><span class="w"></span>
+<span class="n">format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;gif&quot;</span><span class="w"></span>
+<span class="n">background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;#ea7ce0&quot;</span><span class="w"></span>
 
-<span class="p">[</span><span class="n">Animations</span><span class="p">]</span>
-    <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">TextProvider</span><span class="p">]</span>
-        <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">TextProvider</span><span class="o">.</span><span class="n">show</span><span class="p">]</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;NumberAnimation&quot;</span>
-            <span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;100&quot;</span>
-            <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;100&quot;</span>
-            <span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
-        <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">TextProvider</span><span class="o">.</span><span class="n">typewriter</span><span class="p">]</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;NumberAnimation&quot;</span>
-            <span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-            <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;100&quot;</span>
-            <span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;easeInQuad&quot;</span>
-        <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">TextProvider</span><span class="o">.</span><span class="n">typewriter2</span><span class="p">]</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;NumberAnimation&quot;</span>
-            <span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-            <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;-100&quot;</span>
-            <span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;easeInQuad&quot;</span>
-    <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Position</span><span class="p">]</span>
-        <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Position</span><span class="o">.</span><span class="n">top_to_bottom</span><span class="p">]</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;PointAnimation&quot;</span>
-            <span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;[0, -$</span><span class="si">{Global.H}</span><span class="s2">/1.5]&quot;</span>
-            <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;[0, $</span><span class="si">{Global.H}</span><span class="s2">/3]&quot;</span>
-            <span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;easeOutBounce&quot;</span>
-            <span class="n">ytween</span> <span class="o">=</span> <span class="s2">&quot;easeOutBounce&quot;</span>
-        <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Position</span><span class="o">.</span><span class="n">right_to_left</span><span class="p">]</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;PointAnimation&quot;</span>
-            <span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;[$</span><span class="si">{Global.W}</span><span class="s2">/5, -$</span><span class="si">{Global.H}</span><span class="s2">/3]&quot;</span>
-            <span class="n">end</span> <span class="o">=</span>   <span class="s2">&quot;[-$</span><span class="si">{Global.W}</span><span class="s2">/5, -$</span><span class="si">{Global.H}</span><span class="s2">/3]&quot;</span>
-            <span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
-            <span class="n">ytween</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
-        <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Position</span><span class="o">.</span><span class="n">left_to_right</span><span class="p">]</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;PointAnimation&quot;</span>
-            <span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;[-$</span><span class="si">{Global.W}</span><span class="s2">/5, -$</span><span class="si">{Global.H}</span><span class="s2">/3]&quot;</span>
-            <span class="n">end</span> <span class="o">=</span>   <span class="s2">&quot;[ $</span><span class="si">{Global.W}</span><span class="s2">/5, -$</span><span class="si">{Global.H}</span><span class="s2">/3]&quot;</span>
-            <span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
-            <span class="n">ytween</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
-        <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Position</span><span class="o">.</span><span class="n">multi</span><span class="p">]</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;SequentialAnimation&quot;</span>
-            <span class="n">elements</span> <span class="o">=</span> <span class="s2">&quot;[$</span><span class="si">{Animations.Position.left_to_right}</span><span class="s2">, $</span><span class="si">{Animations.Position.right_to_left}</span><span class="s2">]&quot;</span>
-            <span class="n">time_weights</span> <span class="o">=</span> <span class="s2">&quot;[1.0, 0.75]&quot;</span>
-            <span class="n">repeats</span> <span class="o">=</span> <span class="s2">&quot;3&quot;</span>
-            <span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;easeOutQuad&quot;</span>
-        <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Position</span><span class="o">.</span><span class="n">offset</span><span class="p">]</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;PointAnimation&quot;</span>
-            <span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;[10, 30]&quot;</span>
-            <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;[10, 30]&quot;</span>
-            <span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
-            <span class="n">ytween</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
-        <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Position</span><span class="o">.</span><span class="n">top_to_bottom_with_offset</span><span class="p">]</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;SumAnimation&quot;</span>
-            <span class="n">elements</span> <span class="o">=</span> <span class="s2">&quot;[$</span><span class="si">{Animations.Position.top_to_bottom}</span><span class="s2">, $</span><span class="si">{Animations.Position.offset}</span><span class="s2">]&quot;</span>
+<span class="k">[Animations]</span><span class="w"></span>
+<span class="w">    </span><span class="k">[Animations.TextProvider]</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Animations.TextProvider.show]</span><span class="w"></span>
+<span class="w">            </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;100&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;100&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Animations.TextProvider.typewriter]</span><span class="w"></span>
+<span class="w">            </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;100&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;easeInQuad&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Animations.TextProvider.typewriter2]</span><span class="w"></span>
+<span class="w">            </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-100&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;easeInQuad&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">[Animations.Position]</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Animations.Position.top_to_bottom]</span><span class="w"></span>
+<span class="w">            </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;PointAnimation&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[0, -${Global.H}/1.5]&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[0, ${Global.H}/3]&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;easeOutBounce&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">ytween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;easeOutBounce&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Animations.Position.right_to_left]</span><span class="w"></span>
+<span class="w">            </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;PointAnimation&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[${Global.W}/5, -${Global.H}/3]&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w">   </span><span class="s">&quot;[-${Global.W}/5, -${Global.H}/3]&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">ytween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Animations.Position.left_to_right]</span><span class="w"></span>
+<span class="w">            </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;PointAnimation&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[-${Global.W}/5, -${Global.H}/3]&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w">   </span><span class="s">&quot;[ ${Global.W}/5, -${Global.H}/3]&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">ytween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Animations.Position.multi]</span><span class="w"></span>
+<span class="w">            </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;SequentialAnimation&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">elements</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[${Animations.Position.left_to_right}, ${Animations.Position.right_to_left}]&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">time_weights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[1.0, 0.75]&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">repeats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;3&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;easeOutQuad&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Animations.Position.offset]</span><span class="w"></span>
+<span class="w">            </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;PointAnimation&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[10, 30]&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[10, 30]&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">ytween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Animations.Position.top_to_bottom_with_offset]</span><span class="w"></span>
+<span class="w">            </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;SumAnimation&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">elements</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[${Animations.Position.top_to_bottom}, ${Animations.Position.offset}]&quot;</span><span class="w"></span>
 
-    <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Style</span><span class="p">]</span>
-        <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Style</span><span class="o">.</span><span class="n">grow</span><span class="p">]</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;NumberAnimation&quot;</span>
-            <span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-            <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;100&quot;</span>
-            <span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;easeOutBounce&quot;</span>
-        <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Style</span><span class="o">.</span><span class="n">shrink</span><span class="p">]</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;NumberAnimation&quot;</span>
-            <span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;100&quot;</span>
-            <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-            <span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;easeOutBounce&quot;</span>
-        <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Style</span><span class="o">.</span><span class="n">pulse</span><span class="p">]</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;SequentialAnimation&quot;</span>
-            <span class="n">elements</span> <span class="o">=</span> <span class="s2">&quot;[$</span><span class="si">{Animations.Style.grow}</span><span class="s2">, $</span><span class="si">{Animations.Style.shrink}</span><span class="s2">]&quot;</span>
-            <span class="n">time_weights</span> <span class="o">=</span> <span class="s2">&quot;[1.0, 1.0]&quot;</span>
-            <span class="n">repeats</span> <span class="o">=</span> <span class="s2">&quot;3&quot;</span>
-        <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Style</span><span class="o">.</span><span class="n">space_shrink</span><span class="p">]</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;NumberAnimation&quot;</span>
-            <span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;50&quot;</span>
-            <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-            <span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
-        <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">Style</span><span class="o">.</span><span class="n">space_grow</span><span class="p">]</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;NumberAnimation&quot;</span>
-            <span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;-50&quot;</span>
-            <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-            <span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
-    <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">CaptionSvgAttribute</span><span class="p">]</span>
-        <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">CaptionSvgAttribute</span><span class="o">.</span><span class="n">rotate</span><span class="p">]</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;NumberAnimation&quot;</span>
-            <span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;-30&quot;</span>
-            <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;30&quot;</span>
-            <span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;easeOutBounce&quot;</span>
-        <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">CaptionSvgAttribute</span><span class="o">.</span><span class="n">rotate</span><span class="o">.</span><span class="n">CaptionSvgAttributeAnimation</span><span class="p">]</span>
-            <span class="n">birth_time</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-            <span class="n">begin_time</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-            <span class="n">end_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">/2&quot;</span>
-            <span class="n">death_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">&quot;</span>
-    <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">SegmentSvgAttribute</span><span class="p">]</span>
-        <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">SegmentSvgAttribute</span><span class="o">.</span><span class="n">rotate</span><span class="p">]</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;NumberAnimation&quot;</span>
-            <span class="n">begin</span> <span class="o">=</span> <span class="s2">&quot;45&quot;</span>
-            <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;-45&quot;</span>
-            <span class="n">tween</span> <span class="o">=</span> <span class="s2">&quot;easeOutBounce&quot;</span>
-        <span class="p">[</span><span class="n">Animations</span><span class="o">.</span><span class="n">SegmentSvgAttribute</span><span class="o">.</span><span class="n">rotate</span><span class="o">.</span><span class="n">SegmentSvgAttributeAnimation</span><span class="p">]</span>
-            <span class="n">birth_time</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-            <span class="n">begin_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">/2&quot;</span>
-            <span class="n">end_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">&quot;</span>
-            <span class="n">death_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">&quot;</span>
-<span class="p">[</span><span class="n">Styles</span><span class="p">]</span>
-    <span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">normal</span><span class="p">]</span>
-        <span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">StyleProperties</span><span class="p">]</span>
-            <span class="n">text</span><span class="o">-</span><span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span>
-            <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;white&quot;</span>
-            <span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;black&quot;</span>
-            <span class="n">stroke</span><span class="o">-</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;2px&quot;</span>
-            <span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="o">=</span><span class="s2">&quot;55&quot;</span>
-            <span class="n">font</span><span class="o">-</span><span class="n">family</span><span class="o">=</span><span class="s2">&quot;sans-serif&quot;</span>
-    <span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">h1</span><span class="p">]</span>
-        <span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">h1</span><span class="o">.</span><span class="n">StyleProperties</span><span class="p">]</span>
-            <span class="n">text</span><span class="o">-</span><span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span>
-            <span class="n">stroke</span><span class="o">-</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;2px&quot;</span>
-            <span class="n">font</span><span class="o">-</span><span class="n">family</span><span class="o">=</span><span class="s2">&quot;serif&quot;</span>
-            <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span>
-            <span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;gold&quot;</span>
-            <span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="o">=</span><span class="s2">&quot;80&quot;</span>
-    <span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">h2</span><span class="p">]</span>
-        <span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">h2</span><span class="o">.</span><span class="n">StyleProperties</span><span class="p">]</span>
-            <span class="n">text</span><span class="o">-</span><span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span>
-            <span class="n">stroke</span><span class="o">-</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;2px&quot;</span>
-            <span class="n">font</span><span class="o">-</span><span class="n">family</span><span class="o">=</span><span class="s2">&quot;sans-serif&quot;</span>
-            <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;gold&quot;</span>
-            <span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;maroon&quot;</span>
-            <span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="o">=</span><span class="s2">&quot;33&quot;</span>
-            <span class="n">font</span><span class="o">-</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;italic&quot;</span>
-    <span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">h3_grow</span><span class="p">]</span>
-        <span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">h3_grow</span><span class="o">.</span><span class="n">StyleProperties</span><span class="p">]</span>
-            <span class="n">text</span><span class="o">-</span><span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span>
-            <span class="n">font</span><span class="o">-</span><span class="n">family</span><span class="o">=</span><span class="s2">&quot;serif&quot;</span>
-            <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;green&quot;</span>
-            <span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;white&quot;</span>
-            <span class="n">stroke</span><span class="o">-</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;3px&quot;</span>
-            <span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{Animations.Style.grow}</span><span class="s2">&quot;</span>
-        <span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">h3_grow</span><span class="o">.</span><span class="n">StyleAnimation</span><span class="p">]</span>
-            <span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">h3_grow</span><span class="o">.</span><span class="n">StyleAnimation</span><span class="o">.</span><span class="n">grow</span><span class="p">]</span>
-                <span class="n">begin_time</span> <span class="o">=</span> <span class="s1">&#39;$</span><span class="si">{Global.duration}</span><span class="s1">/3&#39;</span>
-                <span class="n">end_time</span> <span class="o">=</span> <span class="s1">&#39;2*$</span><span class="si">{Global.duration}</span><span class="s1">/3&#39;</span>
-    <span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">h3_pulse</span><span class="p">]</span>
-        <span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">h3_pulse</span><span class="o">.</span><span class="n">StyleProperties</span><span class="p">]</span>
-            <span class="n">text</span><span class="o">-</span><span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span>
-            <span class="n">font</span><span class="o">-</span><span class="n">family</span><span class="o">=</span><span class="s2">&quot;serif&quot;</span>
-            <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;green&quot;</span>
-            <span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;white&quot;</span>
-            <span class="n">stroke</span><span class="o">-</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;3px&quot;</span>
-            <span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{Animations.Style.grow}</span><span class="s2">&quot;</span>
-            <span class="n">letter</span><span class="o">-</span><span class="n">spacing</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{Animations.Style.space_shrink}</span><span class="s2">&quot;</span>
-            <span class="n">word</span><span class="o">-</span><span class="n">spacing</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{Animations.Style.space_grow}</span><span class="s2">&quot;</span>
-        <span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">h3_pulse</span><span class="o">.</span><span class="n">StyleAnimation</span><span class="p">]</span>
-            <span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">h3_pulse</span><span class="o">.</span><span class="n">StyleAnimation</span><span class="o">.</span><span class="n">grow</span><span class="p">]</span>
-                <span class="n">begin_time</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
-                <span class="n">end_time</span> <span class="o">=</span> <span class="s1">&#39;$</span><span class="si">{Global.duration}</span><span class="s1">&#39;</span>
-            <span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">h3_pulse</span><span class="o">.</span><span class="n">StyleAnimation</span><span class="o">.</span><span class="n">pulse</span><span class="p">]</span>
-                <span class="n">begin_time</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
-                <span class="n">end_time</span> <span class="o">=</span> <span class="s1">&#39;$</span><span class="si">{Global.duration}</span><span class="s1">&#39;</span>
-            <span class="p">[</span><span class="n">Styles</span><span class="o">.</span><span class="n">h3_pulse</span><span class="o">.</span><span class="n">StyleAnimation</span><span class="o">.</span><span class="n">space_shrink</span><span class="p">]</span>
-                <span class="n">begin_time</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
-                <span class="n">end_time</span> <span class="o">=</span> <span class="s1">&#39;$</span><span class="si">{Global.duration}</span><span class="s1">&#39;</span>
+<span class="w">    </span><span class="k">[Animations.Style]</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Animations.Style.grow]</span><span class="w"></span>
+<span class="w">            </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;100&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;easeOutBounce&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Animations.Style.shrink]</span><span class="w"></span>
+<span class="w">            </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;100&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;easeOutBounce&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Animations.Style.pulse]</span><span class="w"></span>
+<span class="w">            </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;SequentialAnimation&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">elements</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[${Animations.Style.grow}, ${Animations.Style.shrink}]&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">time_weights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[1.0, 1.0]&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">repeats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;3&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Animations.Style.space_shrink]</span><span class="w"></span>
+<span class="w">            </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;50&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Animations.Style.space_grow]</span><span class="w"></span>
+<span class="w">            </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-50&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">[Animations.CaptionSvgAttribute]</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Animations.CaptionSvgAttribute.rotate]</span><span class="w"></span>
+<span class="w">            </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-30&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;30&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;easeOutBounce&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Animations.CaptionSvgAttribute.rotate.CaptionSvgAttributeAnimation]</span><span class="w"></span>
+<span class="w">            </span><span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}/2&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">death_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">[Animations.SegmentSvgAttribute]</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Animations.SegmentSvgAttribute.rotate]</span><span class="w"></span>
+<span class="w">            </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;45&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-45&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;easeOutBounce&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Animations.SegmentSvgAttribute.rotate.SegmentSvgAttributeAnimation]</span><span class="w"></span>
+<span class="w">            </span><span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}/2&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">death_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}&quot;</span><span class="w"></span>
+<span class="k">[Styles]</span><span class="w"></span>
+<span class="w">    </span><span class="k">[Styles.normal]</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Styles.normal.StyleProperties]</span><span class="w"></span>
+<span class="w">            </span><span class="n">text-anchor</span><span class="o">=</span><span class="s">&quot;middle&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">fill</span><span class="o">=</span><span class="s">&quot;white&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">stroke</span><span class="o">=</span><span class="s">&quot;black&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">stroke-width</span><span class="o">=</span><span class="s">&quot;2px&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">font-size</span><span class="o">=</span><span class="s">&quot;55&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">font-family</span><span class="o">=</span><span class="s">&quot;sans-serif&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">[Styles.h1]</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Styles.h1.StyleProperties]</span><span class="w"></span>
+<span class="w">            </span><span class="n">text-anchor</span><span class="o">=</span><span class="s">&quot;middle&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">stroke-width</span><span class="o">=</span><span class="s">&quot;2px&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">font-family</span><span class="o">=</span><span class="s">&quot;serif&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">fill</span><span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">stroke</span><span class="o">=</span><span class="s">&quot;gold&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">font-size</span><span class="o">=</span><span class="s">&quot;80&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">[Styles.h2]</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Styles.h2.StyleProperties]</span><span class="w"></span>
+<span class="w">            </span><span class="n">text-anchor</span><span class="o">=</span><span class="s">&quot;middle&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">stroke-width</span><span class="o">=</span><span class="s">&quot;2px&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">font-family</span><span class="o">=</span><span class="s">&quot;sans-serif&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">fill</span><span class="o">=</span><span class="s">&quot;gold&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">stroke</span><span class="o">=</span><span class="s">&quot;maroon&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">font-size</span><span class="o">=</span><span class="s">&quot;33&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">font-style</span><span class="o">=</span><span class="s">&quot;italic&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">[Styles.h3_grow]</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Styles.h3_grow.StyleProperties]</span><span class="w"></span>
+<span class="w">            </span><span class="n">text-anchor</span><span class="o">=</span><span class="s">&quot;middle&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">font-family</span><span class="o">=</span><span class="s">&quot;serif&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">fill</span><span class="o">=</span><span class="s">&quot;green&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">stroke</span><span class="o">=</span><span class="s">&quot;white&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">stroke-width</span><span class="o">=</span><span class="s">&quot;3px&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">font-size</span><span class="o">=</span><span class="s">&quot;${Animations.Style.grow}&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Styles.h3_grow.StyleAnimation]</span><span class="w"></span>
+<span class="w">            </span><span class="k">[Styles.h3_grow.StyleAnimation.grow]</span><span class="w"></span>
+<span class="w">                </span><span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;${Global.duration}/3&#39;</span><span class="w"></span>
+<span class="w">                </span><span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;2*${Global.duration}/3&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="k">[Styles.h3_pulse]</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Styles.h3_pulse.StyleProperties]</span><span class="w"></span>
+<span class="w">            </span><span class="n">text-anchor</span><span class="o">=</span><span class="s">&quot;middle&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">font-family</span><span class="o">=</span><span class="s">&quot;serif&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">fill</span><span class="o">=</span><span class="s">&quot;green&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">stroke</span><span class="o">=</span><span class="s">&quot;white&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">stroke-width</span><span class="o">=</span><span class="s">&quot;3px&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">font-size</span><span class="o">=</span><span class="s">&quot;${Animations.Style.grow}&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">letter-spacing</span><span class="o">=</span><span class="s">&quot;${Animations.Style.space_shrink}&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">word-spacing</span><span class="o">=</span><span class="s">&quot;${Animations.Style.space_grow}&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Styles.h3_pulse.StyleAnimation]</span><span class="w"></span>
+<span class="w">            </span><span class="k">[Styles.h3_pulse.StyleAnimation.grow]</span><span class="w"></span>
+<span class="w">                </span><span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;0&#39;</span><span class="w"></span>
+<span class="w">                </span><span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;${Global.duration}&#39;</span><span class="w"></span>
+<span class="w">            </span><span class="k">[Styles.h3_pulse.StyleAnimation.pulse]</span><span class="w"></span>
+<span class="w">                </span><span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;0&#39;</span><span class="w"></span>
+<span class="w">                </span><span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;${Global.duration}&#39;</span><span class="w"></span>
+<span class="w">            </span><span class="k">[Styles.h3_pulse.StyleAnimation.space_shrink]</span><span class="w"></span>
+<span class="w">                </span><span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;0&#39;</span><span class="w"></span>
+<span class="w">                </span><span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;${Global.duration}&#39;</span><span class="w"></span>
 
-<span class="p">[</span><span class="n">Caption</span><span class="p">]</span>
-    <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="p">]</span>
-        <span class="n">pos</span> <span class="o">=</span> <span class="s2">&quot;[0, 0]&quot;</span>
-        <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">CaptionSvgAttribute</span><span class="p">]</span>
-            <span class="n">rotate</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Animations.CaptionSvgAttribute.rotate}</span><span class="s2">&quot;</span>
-        <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">TextProvider</span><span class="p">]</span>
-            <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Animations.TextProvider.show}</span><span class="s2">&quot;</span>
-        <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="p">]</span>
-            <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment1</span><span class="p">]</span>
-                <span class="n">text</span><span class="o">=</span> <span class="s2">&quot;Stuck in &quot;</span>
-                <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.normal}</span><span class="s2">&quot;</span>
-            <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment2</span><span class="p">]</span>
-                <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.h3_grow}</span><span class="s2">&quot;</span>
-                <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;the middle&quot;</span>
-            <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment2</span><span class="o">.</span><span class="n">SegmentSvgAttribute</span><span class="p">]</span>
-                <span class="n">rotate</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Animations.SegmentSvgAttribute.rotate}</span><span class="s2">&quot;</span>
-            <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line1</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment3</span><span class="p">]</span>
-                <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.normal}</span><span class="s2">&quot;</span>
-                <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot; with you!&quot;</span>
-    <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line2</span><span class="p">]</span>
-        <span class="n">pos</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Animations.Position.top_to_bottom}</span><span class="s2">&quot;</span>
-        <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line2</span><span class="o">.</span><span class="n">PositionAnimation</span><span class="p">]</span>
-            <span class="n">birth_time</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-            <span class="n">begin_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">/4&quot;</span>
-            <span class="n">end_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">*2/3&quot;</span>
-            <span class="n">death_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">&quot;</span>
-        <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line2</span><span class="o">.</span><span class="n">TextProvider</span><span class="p">]</span>
-            <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Animations.TextProvider.typewriter}</span><span class="s2">&quot;</span>
-        <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line2</span><span class="o">.</span><span class="n">TextProviderAnimation</span><span class="p">]</span>
-            <span class="n">birth_time</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-            <span class="n">begin_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">/4&quot;</span>
-            <span class="n">end_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">*2/3&quot;</span>
-            <span class="n">death_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">&quot;</span>
-        <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line2</span><span class="o">.</span><span class="n">Segments</span><span class="p">]</span>
-            <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line2</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment1</span><span class="p">]</span>
-                <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.h3_pulse}</span><span class="s2">&quot;</span>
-                <span class="n">text</span><span class="o">=</span> <span class="s2">&quot;London Bridge &quot;</span>
-            <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line2</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment2</span><span class="p">]</span>
-                <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.h2}</span><span class="s2">&quot;</span>
-                <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;is falling down!&quot;</span>
-                <span class="n">dy</span> <span class="o">=</span> <span class="s2">&quot;1.5em&quot;</span>
-    <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line3</span><span class="p">]</span>
-        <span class="n">pos</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Animations.Position.top_to_bottom_with_offset}</span><span class="s2">&quot;</span>
-        <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line3</span><span class="o">.</span><span class="n">PositionAnimation</span><span class="p">]</span>
-            <span class="n">birth_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">/2&quot;</span>
-            <span class="n">begin_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">/2&quot;</span>
-            <span class="n">end_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">&quot;</span>
-            <span class="n">death_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">&quot;</span>
-        <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line3</span><span class="o">.</span><span class="n">TextProvider</span><span class="p">]</span>
-            <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Animations.TextProvider.typewriter2}</span><span class="s2">&quot;</span>
-        <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line3</span><span class="o">.</span><span class="n">TextProviderAnimation</span><span class="p">]</span>
-            <span class="n">birth_time</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-            <span class="n">begin_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">*0.5&quot;</span>
-            <span class="n">end_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">*0.8&quot;</span>
-            <span class="n">death_time</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Global.duration}</span><span class="s2">&quot;</span>
-        <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line3</span><span class="o">.</span><span class="n">Segments</span><span class="p">]</span>
-            <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line3</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment1</span><span class="p">]</span>
-                <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.h3_pulse}</span><span class="s2">&quot;</span>
-                <span class="n">text</span><span class="o">=</span> <span class="s2">&quot;London Bridge &quot;</span>
-            <span class="p">[</span><span class="n">Caption</span><span class="o">.</span><span class="n">Line3</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">Segment2</span><span class="p">]</span>
-                <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.h2}</span><span class="s2">&quot;</span>
-                <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;is falling down!&quot;</span>
-                <span class="n">dy</span> <span class="o">=</span> <span class="s2">&quot;1.5em&quot;</span>
+<span class="k">[Caption]</span><span class="w"></span>
+<span class="w">    </span><span class="k">[Caption.Line1]</span><span class="w"></span>
+<span class="w">        </span><span class="n">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[0, 0]&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Caption.Line1.CaptionSvgAttribute]</span><span class="w"></span>
+<span class="w">            </span><span class="n">rotate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Animations.CaptionSvgAttribute.rotate}&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Caption.Line1.TextProvider]</span><span class="w"></span>
+<span class="w">            </span><span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Animations.TextProvider.show}&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Caption.Line1.Segments]</span><span class="w"></span>
+<span class="w">            </span><span class="k">[Caption.Line1.Segments.Segment1]</span><span class="w"></span>
+<span class="w">                </span><span class="n">text</span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Stuck in &quot;</span><span class="w"></span>
+<span class="w">                </span><span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.normal}&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="k">[Caption.Line1.Segments.Segment2]</span><span class="w"></span>
+<span class="w">                </span><span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.h3_grow}&quot;</span><span class="w"></span>
+<span class="w">                </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;the middle&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="k">[Caption.Line1.Segments.Segment2.SegmentSvgAttribute]</span><span class="w"></span>
+<span class="w">                </span><span class="n">rotate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Animations.SegmentSvgAttribute.rotate}&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="k">[Caption.Line1.Segments.Segment3]</span><span class="w"></span>
+<span class="w">                </span><span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.normal}&quot;</span><span class="w"></span>
+<span class="w">                </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot; with you!&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">[Caption.Line2]</span><span class="w"></span>
+<span class="w">        </span><span class="n">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Animations.Position.top_to_bottom}&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Caption.Line2.PositionAnimation]</span><span class="w"></span>
+<span class="w">            </span><span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}/4&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}*2/3&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">death_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Caption.Line2.TextProvider]</span><span class="w"></span>
+<span class="w">            </span><span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Animations.TextProvider.typewriter}&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Caption.Line2.TextProviderAnimation]</span><span class="w"></span>
+<span class="w">            </span><span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}/4&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}*2/3&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">death_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Caption.Line2.Segments]</span><span class="w"></span>
+<span class="w">            </span><span class="k">[Caption.Line2.Segments.Segment1]</span><span class="w"></span>
+<span class="w">                </span><span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.h3_pulse}&quot;</span><span class="w"></span>
+<span class="w">                </span><span class="n">text</span><span class="o">=</span><span class="w"> </span><span class="s">&quot;London Bridge &quot;</span><span class="w"></span>
+<span class="w">            </span><span class="k">[Caption.Line2.Segments.Segment2]</span><span class="w"></span>
+<span class="w">                </span><span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.h2}&quot;</span><span class="w"></span>
+<span class="w">                </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;is falling down!&quot;</span><span class="w"></span>
+<span class="w">                </span><span class="n">dy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1.5em&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">[Caption.Line3]</span><span class="w"></span>
+<span class="w">        </span><span class="n">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Animations.Position.top_to_bottom_with_offset}&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Caption.Line3.PositionAnimation]</span><span class="w"></span>
+<span class="w">            </span><span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}/2&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}/2&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">death_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Caption.Line3.TextProvider]</span><span class="w"></span>
+<span class="w">            </span><span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Animations.TextProvider.typewriter2}&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Caption.Line3.TextProviderAnimation]</span><span class="w"></span>
+<span class="w">            </span><span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}*0.5&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}*0.8&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">death_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="k">[Caption.Line3.Segments]</span><span class="w"></span>
+<span class="w">            </span><span class="k">[Caption.Line3.Segments.Segment1]</span><span class="w"></span>
+<span class="w">                </span><span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.h3_pulse}&quot;</span><span class="w"></span>
+<span class="w">                </span><span class="n">text</span><span class="o">=</span><span class="w"> </span><span class="s">&quot;London Bridge &quot;</span><span class="w"></span>
+<span class="w">            </span><span class="k">[Caption.Line3.Segments.Segment2]</span><span class="w"></span>
+<span class="w">                </span><span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.h2}&quot;</span><span class="w"></span>
+<span class="w">                </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;is falling down!&quot;</span><span class="w"></span>
+<span class="w">                </span><span class="n">dy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1.5em&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 <img alt="_images/complex.gif" src="_images/complex.gif" />
+</section>
+</section>
+<section id="modifying-appearance-with-svg-filters">
+<h1>Modifying appearance with SVG filters<a class="headerlink" href="#modifying-appearance-with-svg-filters" title="Permalink to this heading">¶</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
+<p>The look and feel of text can be drastically altered by applying SVG filters.
+Here’s an example of using filters to introduce distortion and blurring:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Global]</span><span class="w"></span>
+<span class="n">W</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1000&quot;</span><span class="w"></span>
+<span class="n">H</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;500&quot;</span><span class="w"></span>
+<span class="n">duration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;5&quot;</span><span class="w"></span>
+<span class="n">fps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;25&quot;</span><span class="w"></span>
+<span class="n">format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;gif&quot;</span><span class="w"></span>
+<span class="n">background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="w"></span>
+
+<span class="k">[Animations.Filter.seedchange]</span><span class="w"></span>
+<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
+<span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.fps}*${Global.duration}/2.5&quot;</span><span class="w"></span>
+<span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
+<span class="k">[Animations.Filter.seedchange.FilterAnimation]</span><span class="w"></span>
+<span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}&quot;</span><span class="w"></span>
+<span class="n">death_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}&quot;</span><span class="w"></span>
+<span class="k">[Animations.Filter.scalereduction]</span><span class="w"></span>
+<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
+<span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;25&quot;</span><span class="w"></span>
+<span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
+<span class="k">[Animations.Filter.scalereduction.FilterAnimation]</span><span class="w"></span>
+<span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}&quot;</span><span class="w"></span>
+<span class="n">death_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}&quot;</span><span class="w"></span>
+<span class="k">[Animations.Filter.sharpen]</span><span class="w"></span>
+<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
+<span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;60&quot;</span><span class="w"></span>
+<span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;easeOutQuad&quot;</span><span class="w"></span>
+<span class="k">[Animations.Filter.sharpen.FilterAnimation]</span><span class="w"></span>
+<span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}*0.75&quot;</span><span class="w"></span>
+<span class="n">death_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}&quot;</span><span class="w"></span>
+
+<span class="k">[Styles.normal.StyleProperties]</span><span class="w"></span>
+<span class="n">text-anchor</span><span class="o">=</span><span class="s">&quot;middle&quot;</span><span class="w"></span>
+<span class="n">fill</span><span class="o">=</span><span class="s">&quot;white&quot;</span><span class="w"></span>
+<span class="n">stroke</span><span class="o">=</span><span class="s">&quot;black&quot;</span><span class="w"></span>
+<span class="n">stroke-width</span><span class="o">=</span><span class="s">&quot;0.5px&quot;</span><span class="w"></span>
+<span class="n">font-size</span><span class="o">=</span><span class="s">&quot;100&quot;</span><span class="w"></span>
+<span class="n">font-family</span><span class="o">=</span><span class="s">&quot;sans-serif&quot;</span><span class="w"></span>
+
+<span class="k">[Caption.Line1]</span><span class="w"></span>
+<span class="n">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[0, -75]&quot;</span><span class="w"></span>
+<span class="k">[Caption.Line1.Filter]</span><span class="w"></span>
+<span class="n">filter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Filters.displacement}&quot;</span><span class="w"> </span><span class="c1"># points to displacement.svgtemplate in the templates/filter folder</span><span class="w"></span>
+<span class="k">[Caption.Line1.Filter.Overrides]</span><span class="w"></span>
+<span class="n">numOctaves</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1&quot;</span><span class="w"> </span><span class="c1"># overrides default values specified in displacment.toml in the templates/filter folder</span><span class="w"></span>
+<span class="n">scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Animations.Filter.scalereduction}&quot;</span><span class="w"></span>
+<span class="n">seed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Animations.Filter.seedchange}&quot;</span><span class="w"></span>
+<span class="k">[Caption.Line1.Segments.Segment1]</span><span class="w"></span>
+<span class="n">text</span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Distortion&quot;</span><span class="w"></span>
+<span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.normal}&quot;</span><span class="w"></span>
+<span class="k">[Caption.Line2]</span><span class="w"></span>
+<span class="n">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[0, 75]&quot;</span><span class="w"></span>
+<span class="k">[Caption.Line2.Filter]</span><span class="w"></span>
+<span class="n">filter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Filters.blur}&quot;</span><span class="w"></span>
+<span class="k">[Caption.Line2.Filter.Overrides]</span><span class="w"></span>
+<span class="n">stdDeviationx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Animations.Filter.sharpen}&quot;</span><span class="w"></span>
+<span class="n">stdDeviationy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Animations.Filter.sharpen}&quot;</span><span class="w"></span>
+<span class="k">[Caption.Line2.Segments.Segment1]</span><span class="w"></span>
+<span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Blur blur blur&quot;</span><span class="w"></span>
+<span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.normal}&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+<img alt="_images/textfilter.gif" src="_images/textfilter.gif" />
+<p>SVG filters are supported in camala in the form of filter plugins.</p>
+</section>
+<section id="using-an-svg-filter-plugin">
+<h2>using an SVG filter plugin<a class="headerlink" href="#using-an-svg-filter-plugin" title="Permalink to this heading">¶</a></h2>
+<p>An SVG filter plugin consists of two files located in the templates/filters subfolder.
+Suppose you want to add a blur effect onto your text. In the templates/filters subfolder there’s a blur.svgtemplate and a blur.toml file.
+In the blur.toml file, you find a list of all parameters the plugin takes, and their default values.
+If you don’t override their value in your camala specification, those default values will be used instead.</p>
+<dl>
+<dt>To use a filter plugin in camala, you need to reference it in a line:</dt><dd><div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Caption.Line1.Filter]</span><span class="w"></span>
+<span class="n">filter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Filters.displacement}&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+</dd>
+<dt>By writing the above, you point to a plugin consisting of files displacement.svgtemplate and displacement.toml in the templates/filters subfolder. To set the filter parameters other than the default values, add an Overrides section:</dt><dd><div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Caption.Line1.Filter.Overrides]</span><span class="w"></span>
+<span class="n">scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;2&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+</dd>
+<dt>As with other parameters, the filter parameters can be animated. To animate filter parameters, define an animation in the Animations.Filter section, and reference it in the Overrides section.</dt><dd><div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Animations.Filter.scalereduce]</span><span class="w"></span>
+<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
+<span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;10&quot;</span><span class="w"></span>
+<span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
+<span class="c1">#...</span><span class="w"></span>
+<span class="k">[Caption.Line1.Filter]</span><span class="w"></span>
+<span class="n">filter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Filters.displacement}&quot;</span><span class="w"></span>
+<span class="k">[Caption.Line1.Filter.Overrides]</span><span class="w"></span>
+<span class="n">scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Animations.Filter.scalereduce}&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>Similar to how it’s done for style values, birth_time, begin_time, end_time and death_time are specified in the Animations.Filter.scalereduce.FilterAnimation section.</p>
+<blockquote>
+<div><div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Animations.Filter.scalereduce]</span><span class="w"></span>
+<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NumberAnimation&quot;</span><span class="w"></span>
+<span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;10&quot;</span><span class="w"></span>
+<span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">tween</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="w"></span>
+<span class="k">[Animations.Filter.scalereduce.FilterAnimation]</span><span class="w"></span>
+<span class="n">birth_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="n">end_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}*0.75&quot;</span><span class="w"></span>
+<span class="n">death_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Global.duration}&quot;</span><span class="w"></span>
+<span class="c1">#...</span><span class="w"></span>
+<span class="k">[Caption.Line1.Filter]</span><span class="w"></span>
+<span class="n">filter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Filters.displacement}&quot;</span><span class="w"></span>
+<span class="k">[Caption.Line1.Filter.Overrides]</span><span class="w"></span>
+<span class="n">scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Animations.Filter.scalereduce}&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="adding-your-own-svg-filters">
+<h2>Adding your own SVG filters<a class="headerlink" href="#adding-your-own-svg-filters" title="Permalink to this heading">¶</a></h2>
+<p>Since the plugins consist of just two files, nothing stops you from adding SVG filters of your own.
+Some rules have to be observed. Consider the blur plugin:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;filter</span> <span class="na">id=</span><span class="s">&quot;blur_${line}&quot;</span> <span class="na">x=</span><span class="s">&quot;-20%&quot;</span> <span class="na">y=</span><span class="s">&quot;-20%&quot;</span> <span class="na">width=</span><span class="s">&quot;140%&quot;</span> <span class="na">height=</span><span class="s">&quot;140%&quot;</span> <span class="na">filterUnits=</span><span class="s">&quot;objectBoundingBox&quot;</span> <span class="na">primitiveUnits=</span><span class="s">&quot;userSpaceOnUse&quot;</span> <span class="na">color-interpolation-filters=</span><span class="s">&quot;${Animations.Filter.colorInterpolationFilters_${line}}&quot;</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;feGaussianBlur</span> <span class="na">stdDeviation=</span><span class="s">&quot;${Animations.Filter.stdDeviationx_${line}} ${Animations.Filter.stdDeviationy_${line}}&quot;</span> <span class="na">x=</span><span class="s">&quot;0%&quot;</span> <span class="na">y=</span><span class="s">&quot;0%&quot;</span> <span class="na">width=</span><span class="s">&quot;100%&quot;</span> <span class="na">height=</span><span class="s">&quot;100%&quot;</span> <span class="na">in=</span><span class="s">&quot;SourceGraphic&quot;</span> <span class="na">edgeMode=</span><span class="s">&quot;none&quot;</span> <span class="na">result=</span><span class="s">&quot;blur&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/filter&gt;</span>
+</pre></div>
+</div>
+<p>The filter <cite>id</cite> must have the same name as the file without extension, and augmented with <cite>_${line}</cite>.
+Each parameter in the svg template that you want to expose to the user, must be named using a specific naming scheme. Suppose you want to expose parameters stDeviationx and stdDeviationy for the blurring filter, then in the svg attribute:
+<cite>stdDeviation=”${Animations.Filter.stdDeviationx_${line}} ${Animations.Filter.stdDeviationy_${line}}”</cite>. In the corresponding toml file with default parameters, there must be a
+[defaults] section, containing a value for stdDeviationx and stdDeviationy.</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[defaults]</span><span class="w"></span>
+<span class="n">stdDeviationx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="w"></span>
+<span class="n">stdDeviationy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="w"></span>
+<span class="n">colorInterpolationFilters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;sRGB&quot;</span><span class="w"> </span><span class="c1"># or linearRGB</span><span class="w"></span>
+</pre></div>
+</div>
+<p>SVG filters are a very deep topic. You can learn more about SVG filters online, e.g. <a class="reference external" href="https://www.smashingmagazine.com/2015/05/why-the-svg-filter-is-awesome/">https://www.smashingmagazine.com/2015/05/why-the-svg-filter-is-awesome/</a>
+An interesting web tool to help you develop your own SVG filters, is <a class="reference external" href="https://yoksel.github.io/svg-filters/#/">https://yoksel.github.io/svg-filters/#/</a></p>
 </section>
 </section>
 <section id="examples-from-real-life-videos">
@@ -1069,6 +1222,12 @@ combining many of the techniques mentioned before:</p>
 <li class="toctree-l2"><a class="reference internal" href="#summing-animations">Summing animations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#textprovider-and-textprovideranimation">TextProvider and TextProviderAnimation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#playing-with-captionsvgattribute-and-segmentsvgattribute">Playing with CaptionSvgAttribute and SegmentSvgAttribute</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#modifying-appearance-with-svg-filters">Modifying appearance with SVG filters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-an-svg-filter-plugin">using an SVG filter plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-your-own-svg-filters">Adding your own SVG filters</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#examples-from-real-life-videos">Examples from real life videos</a></li>

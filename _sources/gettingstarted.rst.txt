@@ -106,6 +106,7 @@ Suppose you want the text "in the middle" to change size over time. This can be 
 and referring to it from the Styles section.
 
 .. literalinclude:: ../examples/gettingstarted/simple-animatedstyle.toml
+  :language: toml
 
 The result of this toml specification is
 
@@ -121,7 +122,7 @@ Animating multiple style parameters
 You can animate multiple style parameters independently. E.g. here I also change the letter-spacing of the first line segment.
 
 .. literalinclude:: ../examples/gettingstarted/simple-animatedstyle2.toml
-
+  :language: toml
 .. image:: ../examples/gettingstarted/outputs/simple-animatedstyle2.gif
 
 Sequencing style animations
@@ -130,7 +131,7 @@ You can sequence different animations one after the other into a new animation b
 E.g. here's an example of sequencing a grow and shrink animation to get a pulsing animation.
 
 .. literalinclude:: ../examples/gettingstarted/sequential-style-animation.toml
-
+  :language: toml
 .. image:: ../examples/gettingstarted/outputs/sequential-style-animation.gif
 
 Notice how the SequentialAnimation takes different parameters from a NumberAnimation. SequentialAnimation takes a list of animations and
@@ -148,6 +149,7 @@ In addition to animating the appearance of the text it's also possible to animat
 Position section in the Animations and referring to it from the Caption.line pos field.
 
 .. literalinclude:: ../examples/gettingstarted/position-animation.toml
+  :language: toml
 .. image:: ../examples/gettingstarted/outputs/position-animation.gif
 
 Summing animations
@@ -157,6 +159,7 @@ If you want to lower two lines from the top of the screen to the bottom of the s
 but specify a constant offset between the positions of the first and second line. This is possible with a SumAnimation.
 
 .. literalinclude:: ../examples/gettingstarted/position-sumanimation.toml
+  :language: toml
 .. image:: ../examples/gettingstarted/outputs/position-sumanimation.gif
 
 Of course you can also sum more complex animations.
@@ -170,6 +173,7 @@ You can also generate negative numbers up to -100. If the animation produces a n
 characters are shown instead of the first V pct of characters. Here's an example:
 
 .. literalinclude:: ../examples/gettingstarted/textprovider.toml
+  :language: toml
 .. image:: ../examples/gettingstarted/outputs/textprovider.gif
 
 Playing with CaptionSvgAttribute and SegmentSvgAttribute
@@ -184,7 +188,101 @@ CaptionSvgAttribute or a SegmentSvgAttribute. CaptionSvgAttribute and SegmentSvg
 combining many of the techniques mentioned before:
 
 .. literalinclude:: ../examples/gettingstarted/complex.toml
+  :language: toml
 .. image:: ../examples/gettingstarted/outputs/complex.gif
+
+Modifying appearance with SVG filters
+=====================================
+
+Introduction
+------------
+
+The look and feel of text can be drastically altered by applying SVG filters.
+Here's an example of using filters to introduce distortion and blurring:
+
+.. literalinclude:: ../examples/gettingstarted/textfilter.toml
+  :language: toml
+.. image:: ../examples/gettingstarted/outputs/textfilter.gif
+
+SVG filters are supported in camala in the form of filter plugins.
+
+using an SVG filter plugin
+--------------------------
+
+An SVG filter plugin consists of two files located in the templates/filters subfolder.
+Suppose you want to add a blur effect onto your text. In the templates/filters subfolder there's a blur.svgtemplate and a blur.toml file.
+In the blur.toml file, you find a list of all parameters the plugin takes, and their default values.
+If you don't override their value in your camala specification, those default values will be used instead.
+
+To use a filter plugin in camala, you need to reference it in a line:
+    .. code-block:: toml
+
+        [Caption.Line1.Filter]
+        filter = "${Filters.displacement}"
+
+
+By writing the above, you point to a plugin consisting of files displacement.svgtemplate and displacement.toml in the templates/filters subfolder. To set the filter parameters other than the default values, add an Overrides section:
+    .. code-block:: toml
+
+        [Caption.Line1.Filter.Overrides]
+        scale = "2"
+
+
+As with other parameters, the filter parameters can be animated. To animate filter parameters, define an animation in the Animations.Filter section, and reference it in the Overrides section.
+    .. code-block:: toml
+
+        [Animations.Filter.scalereduce]
+        type = "NumberAnimation"
+        begin = "10"
+        end = "0"
+        tween = "linear"
+        #...
+        [Caption.Line1.Filter]
+        filter = "${Filters.displacement}"
+        [Caption.Line1.Filter.Overrides]
+        scale = "${Animations.Filter.scalereduce}"
+
+
+Similar to how it's done for style values, birth_time, begin_time, end_time and death_time are specified in the Animations.Filter.scalereduce.FilterAnimation section.
+
+    .. code-block:: toml
+
+        [Animations.Filter.scalereduce]
+        type = "NumberAnimation"
+        begin = "10"
+        end = "0"
+        tween = "linear"
+        [Animations.Filter.scalereduce.FilterAnimation]
+        birth_time = "0"
+        begin_time = "0"
+        end_time = "${Global.duration}*0.75"
+        death_time = "${Global.duration}"
+        #...
+        [Caption.Line1.Filter]
+        filter = "${Filters.displacement}"
+        [Caption.Line1.Filter.Overrides]
+        scale = "${Animations.Filter.scalereduce}"
+
+
+Adding your own SVG filters
+---------------------------
+
+Since the plugins consist of just two files, nothing stops you from adding SVG filters of your own.
+Some rules have to be observed. Consider the blur plugin:
+
+.. literalinclude:: ../src/templates/filters/blur.svgtemplate
+  :language: xml
+
+The filter `id` must have the same name as the file without extension, and augmented with `_${line}`.
+Each parameter in the svg template that you want to expose to the user, must be named using a specific naming scheme. Suppose you want to expose parameters stDeviationx and stdDeviationy for the blurring filter, then in the svg attribute:
+`stdDeviation="${Animations.Filter.stdDeviationx_${line}} ${Animations.Filter.stdDeviationy_${line}}"`. In the corresponding toml file with default parameters, there must be a
+[defaults] section, containing a value for stdDeviationx and stdDeviationy.
+
+.. literalinclude:: ../src/templates/filters/blur.toml
+  :language: toml
+
+SVG filters are a very deep topic. You can learn more about SVG filters online, e.g. https://www.smashingmagazine.com/2015/05/why-the-svg-filter-is-awesome/
+An interesting web tool to help you develop your own SVG filters, is https://yoksel.github.io/svg-filters/#/
 
 Examples from real life videos
 ==============================
