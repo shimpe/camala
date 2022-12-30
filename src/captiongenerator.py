@@ -1210,7 +1210,7 @@ if __name__ == "__main__":
     filenames = ['simple', 'simple-colorchange', 'simple-animatedstyle', 'simple-animatedstyle2',
                  'sequential-style-animation', 'position-animation', 'position-sumanimation',
                  'complex', 'textprovider', 'howtomakeapianosing', 'thisvideomaycontaintracesofmath', 'introducing',
-                 'textfilter']
+                 'textfilter', 'textfilters2']
     for index, filename in enumerate(filenames):
         output_file = str(Path(__file__).absolute().parent.joinpath(f"../examples/gettingstarted/outputs/{filename}"))
         print(f"[{index+1}/{len(filenames)}] Processing {output_file}.")
