@@ -2,14 +2,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
      width="${spec['Global']['W']}" height="${spec['Global']['H']}"
      viewBox="${-int(spec['Global']['W'])//2} ${-int(spec['Global']['H'])//2} ${spec['Global']['W']} ${spec['Global']['H']}">
-% if thefilters:
+% if thefilters or spec['Styles']:
 <defs>
+% endif
+% if thefilters:
 % for line in spec['Caption']:
 % for filter in thefilters:
 ${thefilters[filter].svg_template.replace("${line}", line)}
 % endfor
 % endfor
-</defs>
 % endif
 % if spec['Styles']:
 <style type="text/css">
@@ -27,6 +28,9 @@ ${thefilters[filter].svg_template.replace("${line}", line)}
     % endfor
 ]]>
 </style>
+% endif
+% if thefilters or spec['Styles']:
+</defs>
 % endif
 % for line in spec['Caption']:
 % if x is not None and y is not None:
