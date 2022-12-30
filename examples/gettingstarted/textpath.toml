@@ -1,0 +1,44 @@
+[Global]
+W = "1000"
+H = "500"
+duration = "15"
+fps = "25"
+format = "gif"
+background = "black"
+
+[Paths.mypath]
+# design the path with e.g. inkscape
+d = "M -78.852544,-240.20076 C 58.855926,-262.32979 196.64283,-169.19795 218.39473,-29.553448 237.98768,96.230928 152.64092,221.95741 24.908313,241.1001 -88.950691,258.16363 -202.62691,180.59621 -219.15153,64.774609 -233.69446,-37.157379 -163.89861,-138.7972 -59.986937,-152.69151 30.015762,-164.72602 119.63885,-102.69091 130.88547,-10.687839 140.42892,67.382399 86.138653,145.01798 6.042703,153.59086 -60.090315,160.66925 -125.78459,114.09913 -131.64228,45.909002 -136.29716,-8.2790466 -97.40527,-62.111562 -41.121326,-65.182267 1.1071754,-67.486139 43.232919,-36.191314 43.376226,8.1777716 43.473873,38.41142 19.577331,69.196211 -12.822905,66.081605 -30.936089,64.340402 -51.542578,47.057084 -44.133023,27.043382 c 2.734212,-7.38529 19.039637,-17.8791264 21.877312,-4.716401"
+
+[Animations.Path.increase]
+type = "NumberAnimation"
+begin = "0"
+end = "2253"
+tween = "easeOutBounce"
+
+[Styles.normal.StyleProperties]
+text-anchor="middle"
+fill="white"
+stroke="black"
+stroke-width="0.5px"
+font-size="25"
+font-family="sans-serif"
+
+[Caption.Line1]
+path = "${Paths.mypath}"
+[Caption.Line1.PathProperties]
+lengthAdjust = "spacing" # or spacingAndGlyphs
+method = "align" # or stretch
+side = "left" # or right
+spacing = "auto" # or auto
+startOffset = "${Animations.Path.increase}"
+#textLength = "135" #a number
+[Caption.Line1.PathAnimation.increase]
+birth_time = "0"
+begin_time = "0"
+end_time = "${Global.duration}-2"
+death_time = "${Global.duration}"
+
+[Caption.Line1.Segments.Segment1]
+text= "Simple caption that follows a path."
+style = "${Styles.normal}"

@@ -51,6 +51,7 @@ class CaptionGenerator(object):
         self.frame_maker = None
         self.animations = {}
         self.filters = {}
+        self.paths = {}
         self.spec = None
 
     def duration(self):
@@ -100,6 +101,9 @@ class CaptionGenerator(object):
             return False
         if not self._build_animations():
             print("Errors in animation specification found.")
+            return False
+        if not self._build_paths():
+            print("Errors in path specification found.")
             return False
         if not self._build_filters():
             print("Errors in filter specification found.")
@@ -470,6 +474,13 @@ class CaptionGenerator(object):
         """
         return self._collect_animations('Filter', 'NumberAnimation', NumberAnimation)
 
+    def _collect_path_animations(self):
+        """
+        helper function to collect animations in the Animations.Path section
+        :return: True if ok; False if nok
+        """
+        return self._collect_animations('Path', 'NumberAnimation', NumberAnimation)
+
     def _build_animations(self):
         """
         function to search the .toml spec for animation specifications and build up an internal lookup table of animation objects
@@ -499,6 +510,10 @@ class CaptionGenerator(object):
 
         self.animations['Filter'] = {}
         if not self._collect_filter_animations():
+            return False
+
+        self.animations['Path'] = {}
+        if not self._collect_path_animations():
             return False
 
         return True
@@ -532,6 +547,13 @@ class CaptionGenerator(object):
                         return False
 
                     self.filters[filter_name] = FilterTemplate(svg_template=filter_template, defaults=filter_defaults)
+        return True
+
+    def _build_paths(self):
+        self.paths = {}
+        if 'Paths' in self.spec:
+            for path in self.spec['Paths']:
+                self.paths[path] = True # just remember which paths exist for validation purposes later on
         return True
 
     def _get_text_per_segment_for_line(self, text_per_line_per_segment, line, animated_value):
@@ -598,7 +620,7 @@ class CaptionGenerator(object):
         try:
             svg_text_template = Template(filename=os.path.join(self.template_folder, "doc.svgtemplate"),
                                          module_directory=os.path.join(self.template_folder, "modules"))
-            return True, svg_text_template.render(spec=self.spec, thefilters=self.filters)
+            return True, svg_text_template.render(spec=self.spec, thefilters=self.filters, thepaths=self.paths)
         except:
             print(exceptions.text_error_template().render())
         return False, ""
@@ -814,6 +836,47 @@ class CaptionGenerator(object):
                         f"Warning: no death_time specified in Animations.SegmentSvgAttribute.{attrib_anim_name}. Using {death_frame}.")
         return birth_frame, start_frame, stop_frame, death_frame
 
+    def _parse_path_animation_times(self, fps, line, short_name):
+        """
+        helper function to parse birth_time, begin_time, end_time and death_time from the .toml spec
+        this variant is used in Captions.line.PathAnimation.shortname of the .toml spec
+        :param fps: frames per second (to convert between seconds and frames)
+        :param short_name: which animation is being processed
+        :return: tuple birth_time, begin_time, end_time and death_time
+        """
+        birth_frame = 0
+        start_frame = 0
+        stop_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
+        death_frame = self._eval_expr(self._replace_globals('${Global.duration}')) * fps
+        if not 'PathAnimation' in self.spec['Caption'][line]:
+            print(f"Warning. No PathAnimation section in Caption.{line}. Using birth_frame = {birth_frame}, start_frame = {start_frame}, stop_frame = {stop_frame}, death_frame = {death_frame}.")
+        elif not short_name in self.spec['Caption'][line]['PathAnimation']:
+            print(
+                f"Warning! didn't find a section Caption.{line}.PathAnimation.{short_name}. Using birth_frame = {birth_frame}, start_frame = {start_frame}, stop_frame = {stop_frame}, death_frame = {death_frame}.")
+        else:
+            time_section = self.spec['Caption'][line]['PathAnimation'][short_name]
+            if 'birth_time' in time_section:
+                birth_frame = self._eval_expr(self._replace_globals(time_section['birth_time'])) * fps
+            else:
+                print(
+                    f"Warning: no birth_time specified in Caption.{line}.PathAnimation.{short_name}. Using {birth_frame}.")
+            if 'begin_time' in time_section:
+                start_frame = self._eval_expr(self._replace_globals(time_section['begin_time'])) * fps
+            else:
+                print(
+                    f"Warning: no start_time specified in Caption.{line}.PathAnimation.{short_name}. Using {start_frame}.")
+            if 'end_time' in time_section:
+                stop_frame = self._eval_expr(self._replace_globals(time_section['end_time'])) * fps
+            else:
+                print(
+                    f"Warning: no stop_time specified in Caption.{line}.PathAnimation.{short_name}. Using {stop_frame}.")
+            if 'death_time' in time_section:
+                death_frame = self._eval_expr(self._replace_globals(time_section['death_time'])) * fps
+            else:
+                print(
+                    f"Warning: no death_time specified in Caption.{line}.PathAnimation.{short_name}. Using {death_frame}.")
+        return birth_frame, start_frame, stop_frame, death_frame
+
     def _resolve_textprovider_animations(self, fps, current_frame, line, svg):
         """
         helper function to iterate over all Caption.Line.Segments and fill in the value of the animated properties for the value of current_frame
@@ -855,6 +918,31 @@ class CaptionGenerator(object):
                                                                    animated_value)
         svg = string.Template(svg).safe_substitute(resolved_text_values)
         return svg
+
+    def _resolve_pathproperty_animations(self, fps, current_frame, line, svg):
+        if 'PathProperties' not in self.spec['Caption'][line]:
+            # use defaults
+            return svg
+        else:
+            resolved_pathanimation_values = {}
+            for prop in self.spec['Caption'][line]['PathProperties']:
+                if "${" in self.spec['Caption'][line]['PathProperties'][prop]:
+                    short_name = self.spec['Caption'][line]['PathProperties'][prop][len("${Animations.Path."):-1]
+                    if short_name not in self.animations['Path']:
+                        print(
+                            f"Error! Section Caption.{line}.PathProperties uses an animation {short_name} which is not defined in Animations.Path section")
+                        return False
+                    birth_frame, start_frame, end_frame, death_frame = self._parse_path_animation_times(fps, line, short_name)
+                    current_value = self.animations['Path'][short_name].make_frame(current_frame,
+                                                                                   birth_frame,
+                                                                                   start_frame,
+                                                                                   end_frame,
+                                                                                   death_frame)
+                    key = "${Animations.Path." + f"{short_name}" + "_for_line_" + f"{line}" + "}"
+                    resolved_pathanimation_values[key] = current_value
+            svg = self._replace_placeholders(svg, resolved_pathanimation_values)
+        return svg
+
 
     def _resolve_captionsvgattribute_animations(self, fps, current_frame, line, svg):
         """
@@ -931,12 +1019,17 @@ class CaptionGenerator(object):
         :return: new svg string with (potentially) some placeholders replaced by values
         """
         current_pos = [0, 0]
-        if not 'pos' in self.spec['Caption'][line]:  # no position
-            print(f"Warning: no position specified i caption Caption.{line}. Using {current_pos} instead.")
+        if 'pos' not in self.spec['Caption'][line] and 'path' not in self.spec['Caption'][line]:  # no position or path
+            print(f"Warning: no position/path specified in caption Caption.{line}. Using {current_pos} instead.")
             resolved_values = {line + '_x': current_pos[0],
                                line + "_y": current_pos[1]}
             svg = string.Template(svg).safe_substitute(resolved_values)
-        else:
+        elif 'path' in self.spec['Caption'][line] and not 'pos' in self.spec['Caption'][line]:
+            # with path specified, but no position
+            resolved_values = {line + '_x': current_pos[0],
+                               line + "_y": current_pos[1]}
+            svg = string.Template(svg).safe_substitute(resolved_values)
+        elif 'pos' in self.spec['Caption'][line]:
             cap = self.spec['Caption'][line]
             if '${' in cap['pos']:  # animated position
                 if not 'PositionAnimation' in cap:
@@ -1121,6 +1214,10 @@ class CaptionGenerator(object):
                 if not svg:
                     return False
 
+                svg = self._resolve_pathproperty_animations(fps, current_frame, line, svg)
+                if not svg:
+                    return False
+
             svg = self._resolve_uninstantiated_filter_animations(svg)
             if not svg:
                 return False
@@ -1210,7 +1307,7 @@ if __name__ == "__main__":
     filenames = ['simple', 'simple-colorchange', 'simple-animatedstyle', 'simple-animatedstyle2',
                  'sequential-style-animation', 'position-animation', 'position-sumanimation',
                  'complex', 'textprovider', 'howtomakeapianosing', 'thisvideomaycontaintracesofmath', 'introducing',
-                 'textfilter', 'textfilters2']
+                 'textfilter', 'textfilters2', 'textpath']
     for index, filename in enumerate(filenames):
         output_file = str(Path(__file__).absolute().parent.joinpath(f"../examples/gettingstarted/outputs/{filename}"))
         print(f"[{index+1}/{len(filenames)}] Processing {output_file}.")

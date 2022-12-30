@@ -187,6 +187,69 @@ combining many of the techniques mentioned before:
 .. literalinclude:: ../examples/gettingstarted/complex.toml
   :language: toml
 
+Text along a path
+=================
+
+.. image:: ../examples/gettingstarted/outputs/textpath.gif
+
+Sometimes you may want text to follow a curved path instead of a straight line. SVG has provisions for doing exactly that.
+The way you can tap into these possibilities with camala is as follows:
+
+First you need to define a path in the (optional) Paths section. The easiest way to come up with a path definition, is to create one in a program like inkscape.
+Then copy the path definition from inkscape's XML editor. If you work with objects in inkscape, be sure to convert them to path. If you have multiple paths in inkscape, be sure to merge them together into a single path (see separate section on defining a path with inkscape for some tips and tricks).
+
+.. code-block:: toml
+
+    [Paths.mypath]
+    d = "M -78.852544,-240.20076 C 58.855926,-262.32979 196.64283,-169.19795 218.39473,-29.553448 237.98768,96.230928 152.64092,221.95741 24.908313,241.1001 -88.950691,258.16363 -202.62691,180.59621 -219.15153,64.774609 -233.69446,-37.157379 -163.89861,-138.7972 -59.986937,-152.69151 30.015762,-164.72602 119.63885,-102.69091 130.88547,-10.687839 140.42892,67.382399 86.138653,145.01798 6.042703,153.59086 -60.090315,160.66925 -125.78459,114.09913 -131.64228,45.909002 -136.29716,-8.2790466 -97.40527,-62.111562 -41.121326,-65.182267 1.1071754,-67.486139 43.232919,-36.191314 43.376226,8.1777716 43.473873,38.41142 19.577331,69.196211 -12.822905,66.081605 -30.936089,64.340402 -51.542578,47.057084 -44.133023,27.043382 c 2.734212,-7.38529 19.039637,-17.8791264 21.877312,-4.716401"
+
+
+Next, in a Caption.line you need to reference the path instead of the position:
+
+.. code-block:: toml
+
+    [Caption.Line1]
+    path = "${Paths.mypath}"
+
+
+You can set up path properties in the PathProperties section, e.g.
+
+.. code-block:: toml
+
+    [Caption.Line1.PathProperties]
+    lengthAdjust = "spacing" # or spacingAndGlyphs
+    method = "align" # or stretch
+    side = "left" # or right
+    spacing = "auto" # or auto
+    startOffset = "${Animations.Path.increase}"
+    #textLength = "135" #a number
+
+Note that the startOffset is animated. The animation is defined in the Animations.Path.animationname section:
+
+.. code-block:: toml
+
+    [Animations.Path.increase]
+    type = "NumberAnimation"
+    begin = "0"
+    end = "2253"
+    tween = "easeOutBounce"
+
+
+And the birth_time, begin_time, end_time and death_time for the animation are defined in the Caption.line.PathAnimation section:
+
+.. code-block:: toml
+
+    [Caption.Line1.PathAnimation.increase]
+    birth_time = "0"
+    begin_time = "0"
+    end_time = "${Global.duration}-2"
+    death_time = "${Global.duration}"
+
+
+The complete spec for the animated text therefore becomes:
+
+.. literalinclude:: ../examples/gettingstarted/textpath.toml
+  :language: toml
 
 Modifying appearance with SVG filters
 =====================================
@@ -282,6 +345,8 @@ Each parameter in the svg template that you want to expose to the user, must be 
 
 SVG filters are a very deep topic. You can learn more about SVG filters online, e.g. https://www.smashingmagazine.com/2015/05/why-the-svg-filter-is-awesome/
 An interesting web tool to help you develop your own SVG filters, is https://yoksel.github.io/svg-filters/#/
+
+Pro-tip: the inkscape source code has a file called filters.svg which contains over 200 filters which all can be ported to camala.
 
 Examples from real life videos
 ==============================

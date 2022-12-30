@@ -2,8 +2,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
      width="${spec['Global']['W']}" height="${spec['Global']['H']}"
      viewBox="${-int(spec['Global']['W'])//2} ${-int(spec['Global']['H'])//2} ${spec['Global']['W']} ${spec['Global']['H']}">
-% if thefilters or spec['Styles']:
+
 <defs>
+% if spec['Paths']:
+% for path in spec['Paths']:
+<path id="${path}" d="${spec['Paths'][path]['d']}" />
+% endfor
 % endif
 % if thefilters:
 % for line in spec['Caption']:
@@ -29,9 +33,9 @@ ${thefilters[filter].svg_template.replace("${line}", line)}
 ]]>
 </style>
 % endif
-% if thefilters or spec['Styles']:
+
 </defs>
-% endif
+
 % for line in spec['Caption']:
 % if x is not None and y is not None:
     <text x="<%text>$</%text>{${line}_x}" y="<%text>$</%text>{${line}_y}"\
@@ -44,6 +48,15 @@ ${thefilters[filter].svg_template.replace("${line}", line)}
  filter="url(#${spec['Caption'][line]['Filter']['filter'][len('${Filters.'):-1]}_${line})"\
 % endif
  >
+% if 'path' in spec['Caption'][line]:
+<textPath xlink:href="#${spec['Caption'][line]['path'][len("${Paths."):-1]}"\
+%if 'PathProperties' in spec['Caption'][line]:
+%for prop in spec['Caption'][line]['PathProperties']:
+ ${prop}="${spec['Caption'][line]['PathProperties'][prop].replace("}", "_for_line_" + line + "}") | x}"\
+%endfor
+%endif
+>
+% endif
 % for segment in spec['Caption'][line]['Segments']:
 % if 'style' in spec['Caption'][line]['Segments'][segment]:
         <tspan xml:space="preserve" class="${spec['Caption'][line]['Segments'][segment]['style'][9:-1]}"\
@@ -63,6 +76,9 @@ ${thefilters[filter].svg_template.replace("${line}", line)}
  > <%text>$</%text>{text_${line}_${segment}}</tspan>
 % endif
 % endfor
+% if 'path' in spec['Caption'][line]:
+</textPath>
+% endif
 </text>
 % endif
 % endfor
