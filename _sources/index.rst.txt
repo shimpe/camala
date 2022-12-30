@@ -12,11 +12,10 @@ Welcome to camala's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   gettingstarted 
+   gettingstarted
+   definepathwithinkscape
 
 Indices and tables
 ==================
 
-* :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
