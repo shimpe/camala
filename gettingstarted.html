@@ -105,6 +105,7 @@ with caption generation instructions.</p>
 <h2>First caption<a class="headerlink" href="#first-caption" title="Permalink to this heading">¶</a></h2>
 <p>The Camala language consists of a number of sections with caption generation instruction, some of which are optional.
 A small camala specification looks as follows:</p>
+<img alt="_images/simple.gif" src="_images/simple.gif" />
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Global]</span><span class="w"></span>
 <span class="n">W</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1000&quot;</span><span class="w"></span>
 <span class="n">H</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;500&quot;</span><span class="w"></span>
@@ -130,8 +131,6 @@ A small camala specification looks as follows:</p>
 <span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.normal}&quot;</span><span class="w"></span>
 </pre></div>
 </div>
-<p>The result of this first toml specification is</p>
-<img alt="_images/simple.gif" src="_images/simple.gif" />
 <ol class="arabic simple">
 <li><p>there’s a <code class="code highlight toml docutils literal highlight-toml"><span class="k">[Global]</span><span class="w"></span></code> section. In this section some properties of the generated movie clip are setup. These properties include:</p>
 <ul class="simple">
@@ -151,6 +150,7 @@ A small camala specification looks as follows:</p>
 <section id="changing-font-properties-mid-way">
 <h2>Changing font properties mid-way<a class="headerlink" href="#changing-font-properties-mid-way" title="Permalink to this heading">¶</a></h2>
 <p>Suppose you want to change the color of the text mid-way the sentence. This can be accomplished by defining an extra style and dividing the line in different segments as shown below:</p>
+<img alt="_images/simple-colorchange.gif" src="_images/simple-colorchange.gif" />
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Global]</span><span class="w"></span>
 <span class="n">W</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1000&quot;</span><span class="w"></span>
 <span class="n">H</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;500&quot;</span><span class="w"></span>
@@ -190,13 +190,12 @@ A small camala specification looks as follows:</p>
 <span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.normal}&quot;</span><span class="w"></span>
 </pre></div>
 </div>
-<p>The result of this toml specification is</p>
-<img alt="_images/simple-colorchange.gif" src="_images/simple-colorchange.gif" />
 </section>
 <section id="animating-style-parameters">
 <h2>Animating style parameters<a class="headerlink" href="#animating-style-parameters" title="Permalink to this heading">¶</a></h2>
 <p>Suppose you want the text “in the middle” to change size over time. This can be done by specifying an animation in the Animations section,
 and referring to it from the Styles section.</p>
+<img alt="_images/simple-animatedstyle.gif" src="_images/simple-animatedstyle.gif" />
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Global]</span><span class="w"></span>
 <span class="n">W</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1000&quot;</span><span class="w"></span>
 <span class="n">H</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;500&quot;</span><span class="w"></span>
@@ -246,8 +245,6 @@ and referring to it from the Styles section.</p>
 <span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.normal}&quot;</span><span class="w"></span>
 </pre></div>
 </div>
-<p>The result of this toml specification is</p>
-<img alt="_images/simple-animatedstyle.gif" src="_images/simple-animatedstyle.gif" />
 <p>Notice how the <code class="code highlight toml docutils literal highlight-toml"><span class="n">font-size</span><span class="w"></span></code> now has a value of <code class="code highlight toml docutils literal highlight-toml"><span class="s">&quot;${Animations.Style.grow}&quot;</span><span class="w"></span></code>, and the <code class="code highlight toml docutils literal highlight-toml"><span class="n">Animations</span><span class="p">.</span><span class="n">Style</span><span class="p">.</span><span class="n">grow</span><span class="w"></span></code> section
 describes a NumberAnimation from 0 to 50 with tweening.
 In the Style definition where the animation is used, there’s now also a StyleAnimation section added, which says when the
@@ -256,6 +253,7 @@ animation starts animating, and when it stops animating.</p>
 <section id="animating-multiple-style-parameters">
 <h2>Animating multiple style parameters<a class="headerlink" href="#animating-multiple-style-parameters" title="Permalink to this heading">¶</a></h2>
 <p>You can animate multiple style parameters independently. E.g. here I also change the letter-spacing of the first line segment.</p>
+<img alt="_images/simple-animatedstyle2.gif" src="_images/simple-animatedstyle2.gif" />
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Global]</span><span class="w"></span>
 <span class="n">W</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1000&quot;</span><span class="w"></span>
 <span class="n">H</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;500&quot;</span><span class="w"></span>
@@ -325,12 +323,12 @@ animation starts animating, and when it stops animating.</p>
 <span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.normal}&quot;</span><span class="w"></span>
 </pre></div>
 </div>
-<img alt="_images/simple-animatedstyle2.gif" src="_images/simple-animatedstyle2.gif" />
 </section>
 <section id="sequencing-style-animations">
 <h2>Sequencing style animations<a class="headerlink" href="#sequencing-style-animations" title="Permalink to this heading">¶</a></h2>
 <p>You can sequence different animations one after the other into a new animation by using SequentialAnimation instead of NumberAnimation.
 E.g. here’s an example of sequencing a grow and shrink animation to get a pulsing animation.</p>
+<img alt="_images/sequential-style-animation.gif" src="_images/sequential-style-animation.gif" />
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Global]</span><span class="w"></span>
 <span class="n">W</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1000&quot;</span><span class="w"></span>
 <span class="n">H</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;500&quot;</span><span class="w"></span>
@@ -391,7 +389,6 @@ E.g. here’s an example of sequencing a grow and shrink animation to get a puls
 <span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.normal}&quot;</span><span class="w"></span>
 </pre></div>
 </div>
-<img alt="_images/sequential-style-animation.gif" src="_images/sequential-style-animation.gif" />
 <p>Notice how the SequentialAnimation takes different parameters from a NumberAnimation. SequentialAnimation takes a list of animations and
 will perform these one after the other.</p>
 <blockquote>
@@ -407,6 +404,7 @@ will perform these one after the other.</p>
 <h2>Animating the position<a class="headerlink" href="#animating-the-position" title="Permalink to this heading">¶</a></h2>
 <p>In addition to animating the appearance of the text it’s also possible to animate the position of the text. This is accomplished by adding a
 Position section in the Animations and referring to it from the Caption.line pos field.</p>
+<img alt="_images/position-animation.gif" src="_images/position-animation.gif" />
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Global]</span><span class="w"></span>
 <span class="n">W</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1000&quot;</span><span class="w"></span>
 <span class="n">H</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;500&quot;</span><span class="w"></span>
@@ -442,12 +440,12 @@ Position section in the Animations and referring to it from the Caption.line pos
 <span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.normal}&quot;</span><span class="w"></span>
 </pre></div>
 </div>
-<img alt="_images/position-animation.gif" src="_images/position-animation.gif" />
 </section>
 <section id="summing-animations">
 <h2>Summing animations<a class="headerlink" href="#summing-animations" title="Permalink to this heading">¶</a></h2>
 <p>If you want to lower two lines from the top of the screen to the bottom of the screen, maybe you want to reuse the same top_to_bottom animation,
 but specify a constant offset between the positions of the first and second line. This is possible with a SumAnimation.</p>
+<img alt="_images/position-sumanimation.gif" src="_images/position-sumanimation.gif" />
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Global]</span><span class="w"></span>
 <span class="n">W</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1000&quot;</span><span class="w"></span>
 <span class="n">H</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;500&quot;</span><span class="w"></span>
@@ -502,7 +500,6 @@ but specify a constant offset between the positions of the first and second line
 <span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.normal}&quot;</span><span class="w"></span>
 </pre></div>
 </div>
-<img alt="_images/position-sumanimation.gif" src="_images/position-sumanimation.gif" />
 <p>Of course you can also sum more complex animations.</p>
 </section>
 <section id="textprovider-and-textprovideranimation">
@@ -512,6 +509,7 @@ In Camala this is possible by creating an Animations.TextProvider.name animation
 numbers between 0 and 100 where 0 means that a single character is shown, and 100 means 100% of all characers are shown.
 You can also generate negative numbers up to -100. If the animation produces a negative value V than the last V pct of
 characters are shown instead of the first V pct of characters. Here’s an example:</p>
+<img alt="_images/textprovider.gif" src="_images/textprovider.gif" />
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Global]</span><span class="w"></span>
 <span class="n">W</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1000&quot;</span><span class="w"></span>
 <span class="n">H</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;500&quot;</span><span class="w"></span>
@@ -585,7 +583,6 @@ characters are shown instead of the first V pct of characters. Here’s an examp
 <span class="w">                </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot; with you!&quot;</span><span class="w"></span>
 </pre></div>
 </div>
-<img alt="_images/textprovider.gif" src="_images/textprovider.gif" />
 </section>
 <section id="playing-with-captionsvgattribute-and-segmentsvgattribute">
 <h2>Playing with CaptionSvgAttribute and SegmentSvgAttribute<a class="headerlink" href="#playing-with-captionsvgattribute-and-segmentsvgattribute" title="Permalink to this heading">¶</a></h2>
@@ -596,6 +593,7 @@ Some attributes cannot be specified in a style (or rather: you can specify them 
 example is the “rotate” attribute. If you want to rotate characters with the rotate attribute, you need to specify it with a
 CaptionSvgAttribute or a SegmentSvgAttribute. CaptionSvgAttribute and SegmentSvgAttribte can be animated. See here a complex example
 combining many of the techniques mentioned before:</p>
+<img alt="_images/complex.gif" src="_images/complex.gif" />
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Global]</span><span class="w"></span>
 <span class="n">W</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1000&quot;</span><span class="w"></span>
 <span class="n">H</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;500&quot;</span><span class="w"></span>
@@ -828,15 +826,16 @@ combining many of the techniques mentioned before:</p>
 <span class="w">                </span><span class="n">dy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1.5em&quot;</span><span class="w"></span>
 </pre></div>
 </div>
-<img alt="_images/complex.gif" src="_images/complex.gif" />
 </section>
 </section>
 <section id="modifying-appearance-with-svg-filters">
 <h1>Modifying appearance with SVG filters<a class="headerlink" href="#modifying-appearance-with-svg-filters" title="Permalink to this heading">¶</a></h1>
+<img alt="_images/textfilters2.gif" src="_images/textfilters2.gif" />
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
-<p>The look and feel of text can be drastically altered by applying SVG filters.
-Here’s an example of using filters to introduce distortion and blurring:</p>
+<p>The look and feel of text can be drastically altered by applying SVG filters. SVG filters are supported in camala in the form of filter plugins.
+Here are some examples of using SVG filters to introduce distortion and blurring:</p>
+<img alt="_images/textfilter.gif" src="_images/textfilter.gif" />
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Global]</span><span class="w"></span>
 <span class="n">W</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1000&quot;</span><span class="w"></span>
 <span class="n">H</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;500&quot;</span><span class="w"></span>
@@ -1011,8 +1010,6 @@ Here’s an example of using filters to introduce distortion and blurring:</p>
 <span class="n">style</span><span class="o">=</span><span class="w"> </span><span class="s">&quot;${Styles.normal}&quot;</span><span class="w"></span>
 </pre></div>
 </div>
-<img alt="_images/textfilter.gif" src="_images/textfilter.gif" />
-<p>SVG filters are supported in camala in the form of filter plugins.</p>
 </section>
 <section id="using-an-svg-filter-plugin">
 <h2>Using an SVG filter plugin<a class="headerlink" href="#using-an-svg-filter-plugin" title="Permalink to this heading">¶</a></h2>
@@ -1091,6 +1088,7 @@ An interesting web tool to help you develop your own SVG filters, is <a class="r
 </section>
 <section id="examples-from-real-life-videos">
 <h1>Examples from real life videos<a class="headerlink" href="#examples-from-real-life-videos" title="Permalink to this heading">¶</a></h1>
+<img alt="_images/howtomakeapianosing.gif" src="_images/howtomakeapianosing.gif" />
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Global</span><span class="p">]</span>
 <span class="n">W</span> <span class="o">=</span> <span class="s2">&quot;1920&quot;</span>
 <span class="n">H</span> <span class="o">=</span> <span class="s2">&quot;1080&quot;</span>
@@ -1212,7 +1210,7 @@ An interesting web tool to help you develop your own SVG filters, is <a class="r
                 <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{Styles.subsubtitle}</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
-<img alt="_images/howtomakeapianosing.gif" src="_images/howtomakeapianosing.gif" />
+<img alt="_images/thisvideomaycontaintracesofmath.gif" src="_images/thisvideomaycontaintracesofmath.gif" />
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Global</span><span class="p">]</span>
 <span class="n">W</span> <span class="o">=</span> <span class="s2">&quot;1920&quot;</span>
 <span class="n">H</span> <span class="o">=</span> <span class="s2">&quot;1080&quot;</span>
@@ -1290,7 +1288,6 @@ An interesting web tool to help you develop your own SVG filters, is <a class="r
 
 </pre></div>
 </div>
-<img alt="_images/thisvideomaycontaintracesofmath.gif" src="_images/thisvideomaycontaintracesofmath.gif" />
 </section>
 
 

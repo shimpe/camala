@@ -70,12 +70,9 @@ First caption
 The Camala language consists of a number of sections with caption generation instruction, some of which are optional.
 A small camala specification looks as follows:
 
+.. image:: ../examples/gettingstarted/outputs/simple.gif
 .. literalinclude:: ../examples/gettingstarted/simple.toml
   :language: toml
-
-The result of this first toml specification is
-
-.. image:: ../examples/gettingstarted/outputs/simple.gif
 
 1. there's a :toml:`[Global]` section. In this section some properties of the generated movie clip are setup. These properties include:
 
@@ -93,24 +90,18 @@ Changing font properties mid-way
 --------------------------------
 Suppose you want to change the color of the text mid-way the sentence. This can be accomplished by defining an extra style and dividing the line in different segments as shown below:
 
+.. image:: ../examples/gettingstarted/outputs/simple-colorchange.gif
 .. literalinclude:: ../examples/gettingstarted/simple-colorchange.toml
    :language: toml
-
-The result of this toml specification is
-
-.. image:: ../examples/gettingstarted/outputs/simple-colorchange.gif
 
 Animating style parameters
 --------------------------
 Suppose you want the text "in the middle" to change size over time. This can be done by specifying an animation in the Animations section,
 and referring to it from the Styles section.
 
+.. image:: ../examples/gettingstarted/outputs/simple-animatedstyle.gif
 .. literalinclude:: ../examples/gettingstarted/simple-animatedstyle.toml
   :language: toml
-
-The result of this toml specification is
-
-.. image:: ../examples/gettingstarted/outputs/simple-animatedstyle.gif
 
 Notice how the :toml:`font-size` now has a value of :toml:`"${Animations.Style.grow}"`, and the :toml:`Animations.Style.grow` section
 describes a NumberAnimation from 0 to 50 with tweening.
@@ -121,18 +112,20 @@ Animating multiple style parameters
 -----------------------------------
 You can animate multiple style parameters independently. E.g. here I also change the letter-spacing of the first line segment.
 
+.. image:: ../examples/gettingstarted/outputs/simple-animatedstyle2.gif
 .. literalinclude:: ../examples/gettingstarted/simple-animatedstyle2.toml
   :language: toml
-.. image:: ../examples/gettingstarted/outputs/simple-animatedstyle2.gif
+
 
 Sequencing style animations
 ---------------------------
 You can sequence different animations one after the other into a new animation by using SequentialAnimation instead of NumberAnimation.
 E.g. here's an example of sequencing a grow and shrink animation to get a pulsing animation.
 
+.. image:: ../examples/gettingstarted/outputs/sequential-style-animation.gif
 .. literalinclude:: ../examples/gettingstarted/sequential-style-animation.toml
   :language: toml
-.. image:: ../examples/gettingstarted/outputs/sequential-style-animation.gif
+
 
 Notice how the SequentialAnimation takes different parameters from a NumberAnimation. SequentialAnimation takes a list of animations and
 will perform these one after the other.
@@ -148,9 +141,10 @@ Animating the position
 In addition to animating the appearance of the text it's also possible to animate the position of the text. This is accomplished by adding a
 Position section in the Animations and referring to it from the Caption.line pos field.
 
+.. image:: ../examples/gettingstarted/outputs/position-animation.gif
 .. literalinclude:: ../examples/gettingstarted/position-animation.toml
   :language: toml
-.. image:: ../examples/gettingstarted/outputs/position-animation.gif
+
 
 Summing animations
 -------------------
@@ -158,9 +152,10 @@ Summing animations
 If you want to lower two lines from the top of the screen to the bottom of the screen, maybe you want to reuse the same top_to_bottom animation,
 but specify a constant offset between the positions of the first and second line. This is possible with a SumAnimation.
 
+.. image:: ../examples/gettingstarted/outputs/position-sumanimation.gif
 .. literalinclude:: ../examples/gettingstarted/position-sumanimation.toml
   :language: toml
-.. image:: ../examples/gettingstarted/outputs/position-sumanimation.gif
+
 
 Of course you can also sum more complex animations.
 
@@ -172,9 +167,10 @@ numbers between 0 and 100 where 0 means that a single character is shown, and 10
 You can also generate negative numbers up to -100. If the animation produces a negative value V than the last V pct of
 characters are shown instead of the first V pct of characters. Here's an example:
 
+.. image:: ../examples/gettingstarted/outputs/textprovider.gif
 .. literalinclude:: ../examples/gettingstarted/textprovider.toml
   :language: toml
-.. image:: ../examples/gettingstarted/outputs/textprovider.gif
+
 
 Playing with CaptionSvgAttribute and SegmentSvgAttribute
 --------------------------------------------------------
@@ -187,24 +183,27 @@ example is the "rotate" attribute. If you want to rotate characters with the rot
 CaptionSvgAttribute or a SegmentSvgAttribute. CaptionSvgAttribute and SegmentSvgAttribte can be animated. See here a complex example
 combining many of the techniques mentioned before:
 
+.. image:: ../examples/gettingstarted/outputs/complex.gif
 .. literalinclude:: ../examples/gettingstarted/complex.toml
   :language: toml
-.. image:: ../examples/gettingstarted/outputs/complex.gif
+
 
 Modifying appearance with SVG filters
 =====================================
 
+.. image:: ../examples/gettingstarted/outputs/textfilters2.gif
+
 Introduction
 ------------
 
-The look and feel of text can be drastically altered by applying SVG filters.
-Here's an example of using filters to introduce distortion and blurring:
+The look and feel of text can be drastically altered by applying SVG filters. SVG filters are supported in camala in the form of filter plugins.
+Here are some examples of using SVG filters to introduce distortion and blurring:
 
+.. image:: ../examples/gettingstarted/outputs/textfilter.gif
 .. literalinclude:: ../examples/gettingstarted/textfilter.toml
   :language: toml
-.. image:: ../examples/gettingstarted/outputs/textfilter.gif
 
-SVG filters are supported in camala in the form of filter plugins.
+
 
 Using an SVG filter plugin
 --------------------------
@@ -287,8 +286,9 @@ An interesting web tool to help you develop your own SVG filters, is https://yok
 Examples from real life videos
 ==============================
 
-.. literalinclude:: ../examples/gettingstarted/howtomakeapianosing.toml
 .. image:: ../examples/gettingstarted/outputs/howtomakeapianosing.gif
+.. literalinclude:: ../examples/gettingstarted/howtomakeapianosing.toml
 
-.. literalinclude:: ../examples/gettingstarted/thisvideomaycontaintracesofmath.toml
 .. image:: ../examples/gettingstarted/outputs/thisvideomaycontaintracesofmath.gif
+.. literalinclude:: ../examples/gettingstarted/thisvideomaycontaintracesofmath.toml
+
