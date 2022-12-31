@@ -347,6 +347,7 @@ SVG filters are a very deep topic. You can learn more about SVG filters online, 
 An interesting web tool to help you develop your own SVG filters, is https://yoksel.github.io/svg-filters/#/
 
 Pro-tip: the inkscape source code has a file called filters.svg which contains over 200 filters which all can be ported to camala.
+Also on this webpage there's a big collection of filters: http://srufaculty.sru.edu/david.dailey/svg/text/
 
 Examples from real life videos
 ==============================
