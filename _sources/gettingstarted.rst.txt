@@ -349,6 +349,23 @@ An interesting web tool to help you develop your own SVG filters, is https://yok
 Pro-tip: the inkscape source code has a file called filters.svg which contains over 200 filters which all can be ported to camala.
 Also on this webpage there's a big collection of filters: http://srufaculty.sru.edu/david.dailey/svg/text/
 
+Using RawSvgDefs, RawSvgElementsUnder and RawSvgElementsOver
+============================================================
+Camala doesn't support every feature SVG supports.
+
+To inject a raw svg definition, you can use the 'RawSvgDefs' section. This can e.g. be used to define a gradient.
+To inject raw svg elements outside the <defs> </defs> section, you can use 'RawSvgElementsUnder' (these are drawn before the text, so under the text) and 'RawSvgElementsOver' (drawn after the text, so on top of it).
+Note that the RawSvgXxx sections cannot be animated at this moment.
+
+An example can be to use it to generate a gradient and some rectangles, as shown below:
+
+.. image:: ../examples/gettingstarted/outputs/gradient.gif
+.. literalinclude:: ../examples/gettingstarted/gradient.toml
+  :language: toml
+
+
+
+
 Examples from real life videos
 ==============================
 
