@@ -4,7 +4,14 @@
      viewBox="${-int(spec['Global']['W'])//2} ${-int(spec['Global']['H'])//2} ${spec['Global']['W']} ${spec['Global']['H']}">
 
 <defs>
-% if spec['Paths']:
+
+% if 'RawSvgDefs' in spec:
+% for d in spec['RawSvgDefs']:
+${spec['RawSvgDefs'][d]['def']}
+% endfor
+% endif
+
+% if 'Paths' in spec:
 % for path in spec['Paths']:
 <path id="${path}" d="${spec['Paths'][path]['d']}" />
 % endfor
