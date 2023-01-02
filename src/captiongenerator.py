@@ -1,4 +1,4 @@
-import toml
+import tomli
 from mako.template import Template
 from mako import exceptions
 import platform
@@ -95,7 +95,7 @@ class CaptionGenerator(object):
         :param contents: a string containing the .toml specification
         :return: True if the initialization succeeded; False if it failed (e.g. because of syntax errors in the .toml file)
         """
-        self.spec = toml.loads(contents)
+        self.spec = tomli.loads(contents)
         if not self._validate_spec():
             print("Errors in specification found.")
             return False
@@ -541,7 +541,7 @@ class CaptionGenerator(object):
                         print(f"Error! Caption.{line}.Filter.filter does not point to an existing file {filter_defaults_file}.")
                         return False
                     try:
-                        filter_defaults = toml.load(filter_defaults_file)
+                        filter_defaults = tomli.load(filter_defaults_file)
                     except Exception:
                         print(f"Error! Couldn't parse {filter_defaults_file}. Check for syntax errors.")
                         return False
@@ -1307,7 +1307,8 @@ if __name__ == "__main__":
     filenames = ['simple', 'simple-colorchange', 'simple-animatedstyle', 'simple-animatedstyle2',
                  'sequential-style-animation', 'position-animation', 'position-sumanimation',
                  'complex', 'textprovider', 'howtomakeapianosing', 'thisvideomaycontaintracesofmath', 'introducing',
-                 'textfilter', 'textfilters2', 'textpath', 'gradient']
+                 'textfilter', 'textfilters2', 'textpath',
+                 'gradient']
     for index, filename in enumerate(filenames):
         output_file = str(Path(__file__).absolute().parent.joinpath(f"../examples/gettingstarted/outputs/{filename}"))
         print(f"[{index+1}/{len(filenames)}] Processing {output_file}.")

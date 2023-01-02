@@ -11,17 +11,17 @@ background = "black"
 [RawSvgDefs.def1]
 def = """
 <linearGradient id="MyGradient">
-    <stop offset="5%" stop-color="#F60" />
-    <stop offset="95%" stop-color="#FF6" />
+    <stop offset="5%" stop-color="#F60"/>
+    <stop offset="95%" stop-color="#FF6"/>
 </linearGradient>
 """
 
 [RawSvgDefs.def2]
 def = """
-<radialGradient id="MyGradient2" gradientUnits="userSpaceOnUse" cx="400" cy="200" r="300" fx="400" fy="200">
-    <stop offset="0%" stop-color="red" />
-    <stop offset="50%" stop-color="blue" />
-    <stop offset="100%" stop-color="red" />
+<radialGradient id="MyGradient2" gradientUnits="userSpaceOnUse" cx="400" cy="200" r="300" fx="400" fy="200">\
+    <stop offset="0%" stop-color="red"/>
+    <stop offset="50%" stop-color="blue"/>
+    <stop offset="100%" stop-color="red"/>
 </radialGradient>
 """
 
@@ -41,13 +41,24 @@ stroke-width="0.5px"
 font-size="30"
 font-family="sans-serif"
 
+[RawSvgElementsUnder.element1]
+element = """
+<rect fill="url(#MyGradient2)" stroke="black" stroke-width="5" x="-500" y="-50" width="1000" height="100"/>
+"""
+
+[RawSvgElementsOver.element1]
+element = """
+<rect fill="url(#MyGradient)" stroke="black" stroke-width="5" x="-300" y="100" width="600" height="200"/>
+"""
+
+
 [Caption.Line1]
 pos = "[0, 0]"
 [Caption.Line1.Segments.Segment1]
-text= "Simple caption with nice colors.."
+text= "Simple caption on top of rectangle."
 style = "${Styles.normal}"
 [Caption.Line2]
 pos = "[0, 100]"
 [Caption.Line2.Segments.Segment1]
-text = "A smaller caption appearing lower."
+text = "A smaller caption overwritten by rectangle."
 style = "${Styles.normal2}"

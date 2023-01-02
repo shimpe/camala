@@ -43,6 +43,12 @@ ${thefilters[filter].svg_template.replace("${line}", line)}
 
 </defs>
 
+% if 'RawSvgElementsUnder' in spec:
+% for el in spec['RawSvgElementsUnder']:
+${spec['RawSvgElementsUnder'][el]['element']}
+% endfor
+% endif
+
 % for line in spec['Caption']:
 % if x is not None and y is not None:
     <text x="<%text>$</%text>{${line}_x}" y="<%text>$</%text>{${line}_y}"\
@@ -89,5 +95,12 @@ ${thefilters[filter].svg_template.replace("${line}", line)}
 </text>
 % endif
 % endfor
+
+% if 'RawSvgElementsOver' in spec:
+% for el in spec['RawSvgElementsOver']:
+${spec['RawSvgElementsOver'][el]['element']}
+% endfor
+% endif
+
 </svg>
 
