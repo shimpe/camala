@@ -1214,6 +1214,13 @@ def = &quot;&quot;&quot;
 &lt;/radialGradient&gt;
 &quot;&quot;&quot;
 
+[RawSvgDefs.def3]
+def = &quot;&quot;&quot;
+&lt;pattern id=&quot;star&quot; viewBox=&quot;0,0,10,10&quot; width=&quot;1%&quot; height=&quot;10%&quot; style=&quot;fill:yellow;&quot;&gt;
+  &lt;polygon points=&quot;0,0 2,5 0,10 5,8 10,10 8,5 10,0 5,2&quot; /&gt;
+&lt;/pattern&gt;
+&quot;&quot;&quot;
+
 [Styles.normal.StyleProperties]
 text-anchor=&quot;middle&quot;
 fill=&quot;url(#MyGradient)&quot;
@@ -1228,6 +1235,14 @@ fill=&quot;url(#MyGradient2)&quot;
 stroke=&quot;black&quot;
 stroke-width=&quot;0.5px&quot;
 font-size=&quot;30&quot;
+font-family=&quot;sans-serif&quot;
+
+[Styles.stars.StyleProperties]
+text-anchor=&quot;middle&quot;
+fill=&quot;url(#star)&quot;
+stroke=&quot;yellow&quot;
+stroke-width=&quot;1px&quot;
+font-size=&quot;150&quot;
 font-family=&quot;sans-serif&quot;
 
 [RawSvgElementsUnder.element1]
@@ -1251,6 +1266,11 @@ pos = &quot;[0, 100]&quot;
 [Caption.Line2.Segments.Segment1]
 text = &quot;A smaller caption overwritten by rectangle.&quot;
 style = &quot;${Styles.normal2}&quot;
+[Caption.Line3]
+pos = &quot;[0, -100]&quot;
+[Caption.Line3.Segments.Segment1]
+text = &quot;PATTERNS?!&quot;
+style = &quot;${Styles.stars}&quot;
 </pre></div>
 </div>
 </section>
