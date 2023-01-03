@@ -25,6 +25,13 @@ def = """
 </radialGradient>
 """
 
+[RawSvgDefs.def3]
+def = """
+<pattern id="star" viewBox="0,0,10,10" width="1%" height="10%" style="fill:yellow;">
+  <polygon points="0,0 2,5 0,10 5,8 10,10 8,5 10,0 5,2" />
+</pattern>
+"""
+
 [Styles.normal.StyleProperties]
 text-anchor="middle"
 fill="url(#MyGradient)"
@@ -39,6 +46,14 @@ fill="url(#MyGradient2)"
 stroke="black"
 stroke-width="0.5px"
 font-size="30"
+font-family="sans-serif"
+
+[Styles.stars.StyleProperties]
+text-anchor="middle"
+fill="url(#star)"
+stroke="yellow"
+stroke-width="1px"
+font-size="150"
 font-family="sans-serif"
 
 [RawSvgElementsUnder.element1]
@@ -62,3 +77,8 @@ pos = "[0, 100]"
 [Caption.Line2.Segments.Segment1]
 text = "A smaller caption overwritten by rectangle."
 style = "${Styles.normal2}"
+[Caption.Line3]
+pos = "[0, -100]"
+[Caption.Line3.Segments.Segment1]
+text = "PATTERNS?!"
+style = "${Styles.stars}"
